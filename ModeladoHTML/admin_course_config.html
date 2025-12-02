@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración del Curso - Panel Administrador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-preview {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-preview:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .btn-save {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .config-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .sidebar-nav {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: #f7fafc;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .main-config {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .config-section {
+            display: none;
+            padding: 2rem;
+        }
+
+        .config-section.active {
+            display: block;
+        }
+
+        .section-header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .image-upload {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f7fafc;
+        }
+
+        .image-upload:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+
+        .image-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .module-item {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .module-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .module-number {
+            background: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .icon-btn:hover {
+            background: #f7fafc;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 1rem;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add:hover {
+            background: #edf2f7;
+            border-color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .config-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-nav {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .nav-title {
+                grid-column: 1 / -1;
+            }
+
+            .nav-item {
+                padding: 0.75rem;
+                font-size: 13px;
+            }
+
+            .nav-icon {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+
+            .config-section {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .section-description {
+                font-size: 0.9rem;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-title {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .header-title h1 {
+                font-size: 1.25rem;
+            }
+
+            .header-title p {
+                font-size: 0.85rem;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .sidebar-nav {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 0.75rem 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .nav-icon {
+                font-size: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                gap: 1.5rem;
+            }
+
+            .form-label {
+                font-size: 13px;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+
+            .module-item {
+                padding: 1rem;
+            }
+
+            .module-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .module-number {
+                width: 28px;
+                height: 28px;
+                font-size: 13px;
+            }
+
+            .module-actions {
+                justify-content: flex-end;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .image-upload {
+                padding: 1.5rem;
+            }
+
+            .image-upload-icon {
+                font-size: 2rem;
+            }
+
+            .alert {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .toggle-switch {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-header {
+                padding: 0.75rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+                margin: 0.75rem auto;
+            }
+
+            .main-config {
+                border-radius: 8px;
+            }
+
+            .config-section {
+                padding: 0.75rem;
+            }
+
+            .section-header {
+                padding-bottom: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
+            .sidebar-nav {
+                grid-template-columns: 1fr;
+                padding: 0.75rem;
+            }
+
+            .nav-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 0.75rem;
+            }
+
+            .nav-item span:not(.nav-icon) {
+                text-align: left;
+            }
+
+            .btn {
+                padding: 0.65rem 1rem;
+                font-size: 13px;
+            }
+
+            .form-grid {
+                gap: 1.25rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 0.65rem 0.85rem;
+            }
+
+            .module-item {
+                padding: 0.75rem;
+            }
+
+            .module-header input {
+                font-size: 1rem;
+            }
+
+            .icon-btn {
+                padding: 0.4rem;
+                font-size: 16px;
+            }
+
+            .stat-card {
+                padding: 0.85rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                gap: 0.75rem;
+            }
+
+            .tag {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .btn-add {
+                padding: 0.85rem;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-title h1 {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .nav-icon {
+                font-size: 18px;
+            }
+
+            .module-number {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+        }
+
+        .price-input-group {
+            position: relative;
+        }
+
+        .currency-prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .price-input-group input {
+            padding-left: 2.5rem;
+        }
+
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            min-height: 50px;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .alert-warning {
+            background: #feebc8;
+            color: #744210;
+            border: 1px solid #fbd38d;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="header-content">
+            <div class="header-title">
+                <button class="back-btn" onclick="goBack()">
+                    ← Volver a Cursos
+                </button>
+                <div>
+                    <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Configuración del Curso</h1>
+                    <p style="opacity: 0.9; font-size: 0.9rem;">Análisis Socioemocional de la Docencia Contemporánea</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-preview" onclick="previewCourse()">
+                    👁️ Vista Previa
+                </button>
+                <button class="btn btn-save" onclick="saveCourse()">
+                    💾 Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="config-layout">
+            <nav class="sidebar-nav">
+                <div class="nav-title">Configuración</div>
+                <div class="nav-item active" onclick="switchSection(this, 'general')">
+                    <span class="nav-icon">📝</span>
+                    <span>Información General</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'content')">
+                    <span class="nav-icon">📚</span>
+                    <span>Contenido</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'modules')">
+                    <span class="nav-icon">📋</span>
+                    <span>Módulos</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'pricing')">
+                    <span class="nav-icon">💰</span>
+                    <span>Precio y Acceso</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Configuración</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'stats')">
+                    <span class="nav-icon">📊</span>
+                    <span>Estadísticas</span>
+                </div>
+            </nav>
+
+            <div class="main-config">
+                <!-- Sección: Información General -->
+                <div class="config-section active" id="section-general">
+                    <div class="section-header">
+                        <h2 class="section-title">Información General</h2>
+                        <p class="section-description">Configura los datos básicos del curso que verán los estudiantes</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Título del Curso <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" value="Análisis Socioemocional de la Docencia Contemporánea" placeholder="Ej: Introducción a la Programación">
+                            <span class="form-help">El título debe ser claro y descriptivo (máx. 80 caracteres)</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Descripción Corta <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" placeholder="Resumen breve que aparecerá en las tarjetas del curso">Este curso innovador explora la intersección entre las emociones y la práctica docente en el contexto educativo actual.</textarea>
+                            <span class="form-help">Máximo 200 caracteres</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Descripción Completa <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" style="min-height: 180px;">Este curso innovador explora la intersección entre las emociones y la práctica docente en el contexto educativo actual. Analizaremos cómo las competencias socioemocionales impactan en el desempeño profesional, el bienestar del educador y el aprendizaje de los estudiantes.</textarea>
+                            <span class="form-help">Descripción detallada que aparecerá en la página del curso</span>
+                        </div>
+
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Instructor <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-input" value="Dr. Francisco Conejo" placeholder="Nombre del instructor">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Categoría <span class="required">*</span>
+                                </label>
+                                <select class="form-select">
+                                    <option value="educacion">Educación Transformadora</option>
+                                    <option value="bienestar">Bienestar Emocional</option>
+                                    <option value="inclusion">Inclusión Educativa</option>
+                                    <option value="liderazgo">Liderazgo Educativo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Imagen de Portada <span class="required">*</span>
+                            </label>
+                            <div class="image-upload" onclick="document.getElementById('fileInput').click()">
+                                <div class="image-upload-icon">🖼️</div>
+                                <p><strong>Haz clic para subir</strong> o arrastra una imagen</p>
+                                <p style="font-size: 0.85rem; color: #718096; margin-top: 0.5rem;">PNG, JPG hasta 5MB (Recomendado: 1200x600px)</p>
+                                <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="previewImage(event)">
+                            </div>
+                            <img id="imagePreview" class="image-preview" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Contenido -->
+                <div class="config-section" id="section-content">
+                    <div class="section-header">
+                        <h2 class="section-title">Contenido del Curso</h2>
+                        <p class="section-description">Define objetivos, requisitos y recursos adicionales</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Objetivos de Aprendizaje
+                            </label>
+                            <textarea class="form-textarea" placeholder="Un objetivo por línea">✓ Comprender los fundamentos teóricos de la inteligencia emocional aplicada a la docencia
+✓ Desarrollar estrategias para gestionar el estrés y prevenir el burnout docente
+✓ Implementar técnicas de comunicación empática con estudiantes y colegas
+✓ Crear ambientes de aprendizaje emocionalmente seguros y estimulantes</textarea>
+                            <span class="form-help">Separa cada objetivo con una nueva línea</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Requisitos Previos
+                            </label>
+                            <textarea class="form-textarea" placeholder="Un requisito por línea">✓ Experiencia docente (deseable)
+✓ Interés en desarrollo personal
+✓ Compromiso de 5-7 hrs/semana</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Etiquetas del Curso
+                            </label>
+                            <div class="tag-input">
+                                <span class="tag">Inteligencia Emocional <span class="tag-remove">×</span></span>
+                                <span class="tag">Docencia <span class="tag-remove">×</span></span>
+                                <span class="tag">Bienestar <span class="tag-remove">×</span></span>
+                            </div>
+                            <span class="form-help">Las etiquetas ayudan a los estudiantes a encontrar el curso</span>
+                        </div>
+
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Duración Total
+                                </label>
+                                <input type="number" class="form-input" value="28" placeholder="Horas">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Nivel del Curso
+                                </label>
+                                <select class="form-select">
+                                    <option value="principiante">Principiante</option>
+                                    <option value="intermedio" selected>Intermedio</option>
+                                    <option value="avanzado">Avanzado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Módulos -->
+                <div class="config-section" id="section-modules">
+                    <div class="section-header">
+                        <h2 class="section-title">Módulos del Curso</h2>
+                        <p class="section-description">Organiza el contenido en módulos y lecciones</p>
+                    </div>
+
+                    <div class="modules-list">
+                        <div class="module-item">
+                            <div class="module-header">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="module-number">1</div>
+                                    <input type="text" class="form-input" value="Fundamentos de la Inteligencia Emocional" style="border: none; background: transparent; padding: 0; font-weight: 600; font-size: 1.1rem;">
+                                </div>
+                                <div class="module-actions">
+                                    <button class="icon-btn" title="Editar">✏️</button>
+                                    <button class="icon-btn" title="Eliminar">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="two-col">
+                                <input type="text" class="form-input" value="Teorías, modelos y aplicaciones" placeholder="Descripción del módulo">
+                                <input type="number" class="form-input" value="6" placeholder="Duración (horas)">
+                            </div>
+                        </div>
+
+                        <div class="module-item">
+                            <div class="module-header">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="module-number">2</div>
+                                    <input type="text" class="form-input" value="Autoconocimiento y Autorregulación" style="border: none; background: transparent; padding: 0; font-weight: 600; font-size: 1.1rem;">
+                                </div>
+                                <div class="module-actions">
+                                    <button class="icon-btn" title="Editar">✏️</button>
+                                    <button class="icon-btn" title="Eliminar">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="two-col">
+                                <input type="text" class="form-input" value="Desarrolla tu conciencia emocional" placeholder="Descripción del módulo">
+                                <input type="number" class="form-input" value="7" placeholder="Duración (horas)">
+                            </div>
+                        </div>
+
+                        <div class="module-item">
+                            <div class="module-header">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="module-number">3</div>
+                                    <input type="text" class="form-input" value="Empatía y Habilidades Sociales" style="border: none; background: transparent; padding: 0; font-weight: 600; font-size: 1.1rem;">
+                                </div>
+                                <div class="module-actions">
+                                    <button class="icon-btn" title="Editar">✏️</button>
+                                    <button class="icon-btn" title="Eliminar">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="two-col">
+                                <input type="text" class="form-input" value="Construcción de relaciones significativas" placeholder="Descripción del módulo">
+                                <input type="number" class="form-input" value="8" placeholder="Duración (horas)">
+                            </div>
+                        </div>
+
+                        <div class="module-item">
+                            <div class="module-header">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="module-number">4</div>
+                                    <input type="text" class="form-input" value="Aplicaciones Prácticas y Casos" style="border: none; background: transparent; padding: 0; font-weight: 600; font-size: 1.1rem;">
+                                </div>
+                                <div class="module-actions">
+                                    <button class="icon-btn" title="Editar">✏️</button>
+                                    <button class="icon-btn" title="Eliminar">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="two-col">
+                                <input type="text" class="form-input" value="Estrategias para transformar tu práctica" placeholder="Descripción del módulo">
+                                <input type="number" class="form-input" value="7" placeholder="Duración (horas)">
+                            </div>
+                        </div>
+
+                        <button class="btn-add" onclick="addModule()">
+                            + Agregar Nuevo Módulo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección: Precio -->
+                <div class="config-section" id="section-pricing">
+                    <div class="section-header">
+                        <h2 class="section-title">Precio y Acceso</h2>
+                        <p class="section-description">Configura el precio y las opciones de inscripción</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Precio del Curso <span class="required">*</span>
+                                </label>
+                                <div class="price-input-group">
+                                    <span class="currency-prefix">$</span>
+                                    <input type="number" class="form-input" value="39990" placeholder="0">
+                                </div>
+                                <span class="form-help">Precio en pesos chilenos (CLP)</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Precio con Descuento
+                                </label>
+                                <div class="price-input-group">
+                                    <span class="currency-prefix">$</span>
+                                    <input type="number" class="form-input" placeholder="0">
+                                </div>
+                                <span class="form-help">Opcional - Muestra precio rebajado</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Curso Gratuito</label>
+                                    <p class="form-help" style="margin: 0;">El curso estará disponible sin costo</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" onchange="toggleFreeMode(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Fecha de Inicio
+                                </label>
+                                <input type="date" class="form-input" value="2025-10-24">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Fecha de Finalización
+                                </label>
+                                <input type="date" class="form-input" placeholder="Opcional">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Cupo Máximo de Estudiantes
+                            </label>
+                            <input type="number" class="form-input" placeholder="Dejar en blanco para ilimitado">
+                            <span class="form-help">Limita el número de inscripciones permitidas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Configuración -->
+                <div class="config-section" id="section-settings">
+                    <div class="section-header">
+                        <h2 class="section-title">Configuración Avanzada</h2>
+                        <p class="section-description">Opciones adicionales del curso</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Curso Publicado</label>
+                                    <p class="form-help" style="margin: 0;">Los estudiantes pueden ver e inscribirse</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Certificado al Finalizar</label>
+                                    <p class="form-help" style="margin: 0;">Genera certificado automáticamente al completar</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Permitir Comentarios</label>
+                                    <p class="form-help" style="margin: 0;">Los estudiantes pueden comentar en las lecciones</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Foro de Discusión</label>
+                                    <p class="form-help" style="margin: 0;">Habilita un foro para el curso</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div>
+                                    <label class="form-label" style="margin-bottom: 0.25rem;">Descargar Recursos</label>
+                                    <p class="form-help" style="margin: 0;">Permite descargar materiales del curso</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Idioma del Curso
+                            </label>
+                            <select class="form-select">
+                                <option value="es" selected>Español</option>
+                                <option value="en">Inglés</option>
+                                <option value="pt">Portugués</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Porcentaje Mínimo para Aprobar
+                            </label>
+                            <input type="number" class="form-input" value="70" min="0" max="100" placeholder="70">
+                            <span class="form-help">Porcentaje mínimo necesario para obtener el certificado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Estadísticas -->
+                <div class="config-section" id="section-stats">
+                    <div class="section-header">
+                        <h2 class="section-title">Estadísticas del Curso</h2>
+                        <p class="section-description">Métricas y rendimiento actual del curso</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Estudiantes Inscritos</div>
+                            <div class="stat-value">852</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Tasa de Finalización</div>
+                            <div class="stat-value">68%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Valoración Promedio</div>
+                            <div class="stat-value">4.8 ⭐</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Ingresos Totales</div>
+                            <div class="stat-value">$34M</div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="margin-top: 2rem;">
+                        <div class="alert alert-success">
+                            <span style="font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong>Curso activo y funcionando correctamente</strong>
+                                <p style="margin-top: 0.25rem; font-size: 0.9rem;">Última actualización: Hace 2 horas</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Actividad Reciente</label>
+                            <div style="background: #f7fafc; padding: 1.5rem; border-radius: 8px;">
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">
+                                        <span>👤 Nuevo estudiante inscrito</span>
+                                        <span style="color: #718096; font-size: 0.85rem;">Hace 5 min</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">
+                                        <span>⭐ Nueva valoración de 5 estrellas</span>
+                                        <span style="color: #718096; font-size: 0.85rem;">Hace 1 hora</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">
+                                        <span>🎓 3 estudiantes completaron el curso</span>
+                                        <span style="color: #718096; font-size: 0.85rem;">Hace 3 horas</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>💬 Nuevo comentario en Módulo 2</span>
+                                        <span style="color: #718096; font-size: 0.85rem;">Hace 5 horas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">Progreso Promedio</label>
+                                <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #667eea;">45%</div>
+                                    <div style="color: #718096; font-size: 0.9rem; margin-top: 0.5rem;">De todos los estudiantes</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tiempo Promedio</label>
+                                <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #667eea;">12.5h</div>
+                                    <div style="color: #718096; font-size: 0.9rem; margin-top: 0.5rem;">Dedicadas al curso</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchSection(element, sectionId) {
+            // Remover active de todos los nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Agregar active al elemento clickeado
+            element.classList.add('active');
+            
+            // Ocultar todas las secciones
+            document.querySelectorAll('.config-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById('section-' + sectionId).classList.add('active');
+            
+            // Scroll suave al top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            if (confirm('¿Estás seguro de salir? Los cambios no guardados se perderán.')) {
+                alert('Volviendo al panel de cursos...');
+                // window.location.href = 'admin-courses.html';
+            }
+        }
+
+        function saveCourse() {
+            // Simular guardado
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Guardando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '✓ Guardado';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    alert('✓ Curso guardado exitosamente');
+                }, 1000);
+            }, 1500);
+        }
+
+        function previewCourse() {
+            alert('Abriendo vista previa del curso...\n\nEsto abrirá una nueva pestaña con la vista del estudiante.');
+            // window.open('course-preview.html', '_blank');
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addModule() {
+            const modulesList = document.querySelector('.modules-list');
+            const moduleCount = document.querySelectorAll('.module-item').length + 1;
+            
+            const newModule = document.createElement('div');
+            newModule.className = 'module-item';
+            newModule.innerHTML = `
+                <div class="module-header">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="module-number">${moduleCount}</div>
+                        <input type="text" class="form-input" placeholder="Título del módulo" style="border: none; background: transparent; padding: 0; font-weight: 600; font-size: 1.1rem;">
+                    </div>
+                    <div class="module-actions">
+                        <button class="icon-btn" title="Editar">✏️</button>
+                        <button class="icon-btn" title="Eliminar" onclick="removeModule(this)">🗑️</button>
+                    </div>
+                </div>
+                <div class="two-col">
+                    <input type="text" class="form-input" placeholder="Descripción del módulo">
+                    <input type="number" class="form-input" placeholder="Duración (horas)">
+                </div>
+            `;
+            
+            modulesList.insertBefore(newModule, modulesList.lastElementChild);
+            newModule.querySelector('input').focus();
+        }
+
+        function removeModule(button) {
+            if (confirm('¿Estás seguro de eliminar este módulo?')) {
+                const moduleItem = button.closest('.module-item');
+                moduleItem.style.transform = 'translateX(-100%)';
+                moduleItem.style.opacity = '0';
+                setTimeout(() => {
+                    moduleItem.remove();
+                    updateModuleNumbers();
+                }, 300);
+            }
+        }
+
+        function updateModuleNumbers() {
+            document.querySelectorAll('.module-number').forEach((number, index) => {
+                number.textContent = index + 1;
+            });
+        }
+
+        function toggleFreeMode(checkbox) {
+            const priceInputs = document.querySelectorAll('.price-input-group input');
+            priceInputs.forEach(input => {
+                input.disabled = checkbox.checked;
+                if (checkbox.checked) {
+                    input.style.opacity = '0.5';
+                } else {
+                    input.style.opacity = '1';
+                }
+            });
+        }
+
+        // Prevenir pérdida de datos
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+</body>
+</html>

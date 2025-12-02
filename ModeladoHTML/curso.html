@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Socioemocional de la Docencia Contemporánea</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .hero {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23667eea" width="1200" height="400"/><path fill="%23764ba2" opacity="0.3" d="M0,200 Q300,100 600,200 T1200,200 L1200,400 L0,400 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+        }
+
+        .hero-content {
+            color: white;
+            z-index: 1;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .instructor {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section p {
+            line-height: 1.8;
+            color: #4a5568;
+            font-size: 16px;
+        }
+
+        .modules {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .module {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .module:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.2);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .module-title {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 18px;
+        }
+
+        .module-duration {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s;
+            fill: transparent;
+            stroke: #667eea;
+            stroke-width: 8;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        @media (max-width: 968px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border-radius: 0;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 25px;
+            }
+            
+            .hero {
+                height: auto;
+                min-height: 350px;
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+
+            .instructor {
+                font-size: 16px;
+            }
+
+            .back-btn {
+                top: 15px;
+                left: 15px;
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+
+            .meta-info {
+                gap: 10px;
+            }
+
+            .meta-item {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section h2 {
+                font-size: 20px;
+            }
+
+            .section p {
+                font-size: 15px;
+            }
+
+            .module {
+                padding: 15px;
+            }
+
+            .module-title {
+                font-size: 16px;
+            }
+
+            .module-duration {
+                font-size: 13px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-item {
+                padding: 12px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .cta-button {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            .progress-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .progress-circle svg {
+                width: 120px;
+                height: 120px;
+            }
+
+            .progress-text {
+                font-size: 28px;
+            }
+
+            .objetivo-item {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .meta-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .meta-item {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section h2 {
+                font-size: 18px;
+            }
+        }
+
+        .objetivos-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .objetivo-item {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <button class="back-btn" onclick="goBack()">← Volver</button>
+            <div class="hero-content">
+                <h1>Análisis Socioemocional de la Docencia Contemporánea</h1>
+                <p class="instructor">👨‍🏫 Dr. Francisco Conejo</p>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span>📅</span>
+                        <span>Inicio: 24/10/2025</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>28 horas totales</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>🎓</span>
+                        <span>Certificado incluido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="main-content">
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                        </svg>
+                        Descripción del Curso
+                    </h2>
+                    <p>
+                        Este curso innovador explora la intersección entre las emociones y la práctica docente en el contexto educativo actual. 
+                        Analizaremos cómo las competencias socioemocionales impactan en el desempeño profesional, el bienestar del educador 
+                        y el aprendizaje de los estudiantes. A través de marcos teóricos contemporáneos y casos prácticos, desarrollarás 
+                        herramientas para fortalecer tu inteligencia emocional y crear ambientes de aprendizaje más empáticos y efectivos.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                        </svg>
+                        Objetivos de Aprendizaje
+                    </h2>
+                    <div class="objetivos-list">
+                        <div class="objetivo-item">
+                            <div class="check-icon">✓</div>
+                            <span>Comprender los fundamentos teóricos de la inteligencia emocional aplicada a la docencia</span>
+                        </div>
+                        <div class="objetivo-item">
+                            <div class="check-icon">✓</div>
+                            <span>Desarrollar estrategias para gestionar el estrés y prevenir el burnout docente</span>
+                        </div>
+                        <div class="objetivo-item">
+                            <div class="check-icon">✓</div>
+                            <span>Implementar técnicas de comunicación empática con estudiantes y colegas</span>
+                        </div>
+                        <div class="objetivo-item">
+                            <div class="check-icon">✓</div>
+                            <span>Crear ambientes de aprendizaje emocionalmente seguros y estimulantes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                        </svg>
+                        Módulos del Curso
+                    </h2>
+                    <div class="modules">
+                        <div class="module" onclick="toggleModule(this)">
+                            <div class="module-header">
+                                <span class="module-title">Módulo 1: Fundamentos de la Inteligencia Emocional</span>
+                                <span class="module-duration">⏱️ 6h</span>
+                            </div>
+                            <p class="module-duration">Teorías, modelos y aplicaciones en el contexto educativo</p>
+                        </div>
+                        <div class="module" onclick="toggleModule(this)">
+                            <div class="module-header">
+                                <span class="module-title">Módulo 2: Autoconocimiento y Autorregulación</span>
+                                <span class="module-duration">⏱️ 7h</span>
+                            </div>
+                            <p class="module-duration">Desarrolla tu conciencia emocional y gestión personal</p>
+                        </div>
+                        <div class="module" onclick="toggleModule(this)">
+                            <div class="module-header">
+                                <span class="module-title">Módulo 3: Empatía y Habilidades Sociales</span>
+                                <span class="module-duration">⏱️ 8h</span>
+                            </div>
+                            <p class="module-duration">Construcción de relaciones significativas en el aula</p>
+                        </div>
+                        <div class="module" onclick="toggleModule(this)">
+                            <div class="module-header">
+                                <span class="module-title">Módulo 4: Aplicaciones Prácticas y Casos</span>
+                                <span class="module-duration">⏱️ 7h</span>
+                            </div>
+                            <p class="module-duration">Estrategias concretas para transformar tu práctica docente</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <h3 style="text-align: center; color: #2d3748; margin-bottom: 10px;">Tu Progreso</h3>
+                    <div class="progress-circle">
+                        <svg class="progress-ring" width="150" height="150">
+                            <circle class="progress-ring-circle" stroke="#e2e8f0" stroke-width="8" fill="transparent" r="65" cx="75" cy="75"/>
+                            <circle class="progress-ring-circle" stroke="#667eea" stroke-width="8" fill="transparent" r="65" cx="75" cy="75" stroke-dasharray="408.4" stroke-dashoffset="408.4" id="progressCircle"/>
+                        </svg>
+                        <div class="progress-text">0%</div>
+                    </div>
+                    <button class="cta-button" onclick="startCourse()">Continuar Curso →</button>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: #2d3748; margin-bottom: 15px;">Información del Curso</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-value">28h</span>
+                            <span class="stat-label">Duración</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">4</span>
+                            <span class="stat-label">Módulos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">852</span>
+                            <span class="stat-label">Estudiantes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">4.8★</span>
+                            <span class="stat-label">Valoración</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: #2d3748; margin-bottom: 15px;">Requisitos</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Experiencia docente (deseable)</li>
+                        <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Interés en desarrollo personal</li>
+                        <li style="padding: 10px 0; color: #4a5568;">✓ Compromiso de 5-7 hrs/semana</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            alert('Volviendo a la lista de cursos...');
+        }
+
+        function startCourse() {
+            const progress = Math.floor(Math.random() * 100);
+            updateProgress(progress);
+        }
+
+        function updateProgress(percent) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.querySelector('.progress-text');
+            const circumference = 2 * Math.PI * 65;
+            const offset = circumference - (percent / 100 * circumference);
+            
+            circle.style.strokeDashoffset = offset;
+            text.textContent = percent + '%';
+            
+            if (percent > 0) {
+                document.querySelector('.cta-button').textContent = 'Continuar Curso →';
+            }
+        }
+
+        function toggleModule(module) {
+            module.style.backgroundColor = module.style.backgroundColor === 'rgb(237, 242, 247)' ? 'white' : '#edf2f7';
+        }
+
+        // Animación inicial
+        window.addEventListener('load', () => {
+            updateProgress(0);
+        });
+    </script>
+</body>
+</html>
