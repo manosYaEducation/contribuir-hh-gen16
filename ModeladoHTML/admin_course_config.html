@@ -788,6 +788,63 @@
             color: #744210;
             border: 1px solid #fbd38d;
         }
+
+        /* ----- ESTILOS NUEVOS PARA DRAG AND DROP ----- */
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block; /* Para que funcione como label */
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #ebf4ff;
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #a0aec0;
+        }
+
+        .upload-area h3 {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .browse-btn {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .upload-info {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        /* Lista de archivos */
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #a0aec0;
+            font-style: italic;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -848,7 +905,6 @@
             </nav>
 
             <div class="main-config">
-                <!-- Sección: Información General -->
                 <div class="config-section active" id="section-general">
                     <div class="section-header">
                         <h2 class="section-title">Información General</h2>
@@ -916,7 +972,6 @@
                     </div>
                 </div>
 
-                <!-- Sección: Contenido -->
                 <div class="config-section" id="section-content">
                     <div class="section-header">
                         <h2 class="section-title">Contenido del Curso</h2>
@@ -978,7 +1033,6 @@
                     </div>
                 </div>
 
-                <!-- Sección: Módulos -->
                 <div class="config-section" id="section-modules">
                     <div class="section-header">
                         <h2 class="section-title">Módulos del Curso</h2>
@@ -1060,7 +1114,6 @@
                     </div>
                 </div>
 
-                <!-- Sección: Precio -->
                 <div class="config-section" id="section-pricing">
                     <div class="section-header">
                         <h2 class="section-title">Precio y Acceso</h2>
@@ -1131,7 +1184,6 @@
                     </div>
                 </div>
 
-                <!-- Sección: Configuración -->
                 <div class="config-section" id="section-settings">
                     <div class="section-header">
                         <h2 class="section-title">Configuración Avanzada</h2>
@@ -1225,7 +1277,6 @@
                     </div>
                 </div>
 
-                <!-- Sección: Estadísticas -->
                 <div class="config-section" id="section-stats">
                     <div class="section-header">
                         <h2 class="section-title">Estadísticas del Curso</h2>
@@ -1302,6 +1353,36 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="config-section" id="section-downloads">
+                    <div class="section-header">
+                        <h2 class="section-title">Material Descargable</h2>
+                        <p class="section-description">Sube documentos complementarios (PDF, DOCX, ZIP) para los estudiantes.</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Zona de Carga
+                            </label>
+                            <label class="upload-area" id="drop-zone">
+                                <div class="upload-icon">📂</div>
+                                <h3>Arrastra y suelta documentos aquí</h3>
+                                <p>o <span class="browse-btn">busca en tu ordenador</span></p>
+                                <p class="upload-info">Soporta: PDF, Word, Excel, ZIP (Máx. 10MB)</p>
+                                <input type="file" id="file-input" multiple hidden>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Archivos Cargados</label>
+                            <div class="file-list" id="file-list">
+                                <div class="empty-state">No hay documentos adjuntos todavía.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
