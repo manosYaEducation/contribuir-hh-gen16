@@ -789,7 +789,7 @@
             border: 1px solid #fbd38d;
         }
 
-        /* ----- ESTILOS NUEVOS PARA DRAG AND DROP ----- */
+        /* ----- ESTILOS PARA DRAG AND DROP ----- */
         .upload-area {
             border: 2px dashed #cbd5e0;
             border-radius: 12px;
@@ -799,7 +799,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            display: block; /* Para que funcione como label */
+            display: block; 
         }
 
         .upload-area:hover {
@@ -844,6 +844,115 @@
             font-style: italic;
             background: #f7fafc;
             border-radius: 8px;
+        }
+
+        /* --- Estilos para el Foro en Módulos  --- */
+        .module-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .qa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .qa-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qa-badge {
+            background: #ebf8ff;
+            color: #3182ce;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .qa-list {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .qa-item {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            gap: 0.75rem;
+            align-items: start;
+        }
+
+        .qa-avatar {
+            width: 32px;
+            height: 32px;
+            background: #cbd5e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .qa-content {
+            flex: 1;
+        }
+
+        .qa-student-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .qa-text {
+            font-size: 0.85rem;
+            color: #718096;
+            margin: 0.2rem 0;
+            line-height: 1.4;
+        }
+
+        .qa-meta {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-reply {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .btn-reply:hover {
+            text-decoration: underline;
+        }
+
+        .no-questions {
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            font-style: italic;
         }
     </style>
 </head>
@@ -1055,6 +1164,43 @@
                                 <input type="text" class="form-input" value="Teorías, modelos y aplicaciones" placeholder="Descripción del módulo">
                                 <input type="number" class="form-input" value="6" placeholder="Duración (horas)">
                             </div>
+                            
+                            <div class="module-footer">
+                                <div class="qa-header">
+                                    <div class="qa-title">
+                                        💬 Foro de Dudas
+                                        <span class="qa-badge">2 Pendientes</span>
+                                    </div>
+                                    <label class="toggle-switch" title="Habilitar foro en este módulo">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="qa-list">
+                                    <div class="qa-item">
+                                        <div class="qa-avatar">👩🏻</div>
+                                        <div class="qa-content">
+                                            <div class="qa-student-name">Sofía M.</div>
+                                            <p class="qa-text">Profesor, en el video 2, ¿el modelo de Goleman se aplica también a secundaria?</p>
+                                            <div class="qa-meta">
+                                                <span>Hace 2 horas</span>
+                                                <button class="btn-reply">↩ Responder</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="qa-item">
+                                        <div class="qa-avatar">👨🏽</div>
+                                        <div class="qa-content">
+                                            <div class="qa-student-name">Carlos R.</div>
+                                            <p class="qa-text">No pude descargar el PDF adjunto de la lectura complementaria.</p>
+                                            <div class="qa-meta">
+                                                <span>Hace 5 horas</span>
+                                                <button class="btn-reply">↩ Responder</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="module-item">
@@ -1071,6 +1217,21 @@
                             <div class="two-col">
                                 <input type="text" class="form-input" value="Desarrolla tu conciencia emocional" placeholder="Descripción del módulo">
                                 <input type="number" class="form-input" value="7" placeholder="Duración (horas)">
+                            </div>
+                            <div class="module-footer">
+                                <div class="qa-header">
+                                    <div class="qa-title">
+                                        💬 Foro de Dudas
+                                        <span class="qa-badge" style="background: #edf2f7; color: #718096;">0 Nuevas</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="qa-list">
+                                    <p class="no-questions">No hay preguntas recientes en este módulo.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -1089,6 +1250,21 @@
                                 <input type="text" class="form-input" value="Construcción de relaciones significativas" placeholder="Descripción del módulo">
                                 <input type="number" class="form-input" value="8" placeholder="Duración (horas)">
                             </div>
+                            <div class="module-footer">
+                                <div class="qa-header">
+                                    <div class="qa-title">
+                                        💬 Foro de Dudas
+                                        <span class="qa-badge" style="background: #edf2f7; color: #718096;">0 Nuevas</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="qa-list">
+                                    <p class="no-questions">No hay preguntas recientes en este módulo.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="module-item">
@@ -1105,6 +1281,21 @@
                             <div class="two-col">
                                 <input type="text" class="form-input" value="Estrategias para transformar tu práctica" placeholder="Descripción del módulo">
                                 <input type="number" class="form-input" value="7" placeholder="Duración (horas)">
+                            </div>
+                            <div class="module-footer">
+                                <div class="qa-header">
+                                    <div class="qa-title">
+                                        💬 Foro de Dudas
+                                        <span class="qa-badge" style="background: #edf2f7; color: #718096;">0 Nuevas</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="qa-list">
+                                    <p class="no-questions">No hay preguntas recientes en este módulo.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -1454,9 +1645,12 @@
         function addModule() {
             const modulesList = document.querySelector('.modules-list');
             const moduleCount = document.querySelectorAll('.module-item').length + 1;
+            const btnAdd = document.querySelector('.btn-add');
             
             const newModule = document.createElement('div');
             newModule.className = 'module-item';
+            
+            // Modificado para incluir el foro vacío en nuevos módulos
             newModule.innerHTML = `
                 <div class="module-header">
                     <div style="display: flex; align-items: center; gap: 1rem;">
@@ -1472,9 +1666,25 @@
                     <input type="text" class="form-input" placeholder="Descripción del módulo">
                     <input type="number" class="form-input" placeholder="Duración (horas)">
                 </div>
+                
+                <div class="module-footer">
+                    <div class="qa-header">
+                        <div class="qa-title">
+                            💬 Foro de Dudas
+                            <span class="qa-badge" style="background: #edf2f7; color: #718096;">0 Nuevas</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="qa-list">
+                        <p class="no-questions">El foro está activo. Las preguntas aparecerán aquí.</p>
+                    </div>
+                </div>
             `;
             
-            modulesList.insertBefore(newModule, modulesList.lastElementChild);
+            modulesList.insertBefore(newModule, btnAdd);
             newModule.querySelector('input').focus();
         }
 
