@@ -22,7 +22,7 @@ body {
 
 .hero {
     position: relative;
-    height: 400px;
+    height: 500px; /* Aumenté un poco la altura para que respire mejor */
     background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23667eea" width="1200" height="400"/><path fill="%23764ba2" opacity="0.3" d="M0,200 Q300,100 600,200 T1200,200 L1200,400 L0,400 Z"/></svg>');
     background-size: cover;
     background-position: center;
@@ -34,6 +34,8 @@ body {
 .hero-content {
     color: white;
     z-index: 1;
+    text-align: center;
+    width: 100%;
 }
 
 .back-btn {
@@ -57,31 +59,110 @@ body {
 }
 
 .hero h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-size: 48px;
+    margin: 0 0 60px 0;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    line-height: 1.2;
 }
 
-.instructor {
+/* ==================== PERFIL DEL PROFESOR - FINAL PROLIJO ==================== */
+
+.professor-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 60px 0;
+}
+
+.professor-photo {
+    margin-bottom: 25px;
+}
+
+.prof-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.professor-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 15px 30px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.professor-button:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+}
+
+.professor-button .arrow {
+    margin-left: 15px;
+    font-size: 34px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.professor-button.active .arrow {
+    transform: rotate(45deg);
+}
+
+.professor-bio-panel {
+    display: none;
+    margin-top: 40px;
+    max-width: 750px;
+    width: 100%;
+}
+
+.professor-bio-panel.open {
+    display: block;
+    animation: fadeInUp 0.4s ease;
+}
+
+.professor-bio-panel p {
+    color: white;
     font-size: 18px;
-    opacity: 0.95;
-    margin-bottom: 20px;
+    line-height: 1.8;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+    text-align: center;
 }
 
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pastillas más prolijas y espaciadas */
 .meta-info {
     display: flex;
-    gap: 30px;
+    justify-content: center;
+    gap: 60px;
     flex-wrap: wrap;
+    margin-top: 30px;
 }
 
 .meta-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.2);
-    padding: 10px 20px;
-    border-radius: 25px;
-    backdrop-filter: blur(10px);
+    gap: 10px;
+    background: rgba(255,255,255,0.25);
+    padding: 14px 32px;
+    border-radius: 30px;
+    backdrop-filter: blur(12px);
+    font-size: 17px;
 }
 
 .content-wrapper {
@@ -283,19 +364,7 @@ body {
     flex-shrink: 0;
 }
 
-/* Media Queries para Responsividad */
-@media (max-width: 968px) {
-    body { padding: 0; }
-    .container { border-radius: 0; }
-    .content-wrapper { grid-template-columns: 1fr; padding: 20px; gap: 25px; }
-    .hero { height: auto; min-height: 350px; padding: 20px; }
-    .hero h1 { font-size: 28px; }
-    /* ... resto de estilos de media query ... */
-}
-
-
-/*            */
-/* ==================== FAQ FLOTANTE - VERSIÓN MEJORADA Y BELLA ==================== */
+/* ==================== FAQ FLOTANTE ==================== */
 
 .faq-floating {
     position: fixed;
@@ -311,7 +380,7 @@ body {
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 20px;
+    font-size: 36px;
     font-weight: bold;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     cursor: pointer;
@@ -344,11 +413,6 @@ body {
 .faq-panel.open {
     display: block;
     animation: fadeInUp 0.35s ease;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .faq-panel h3 {
@@ -427,29 +491,31 @@ body {
     display: block;
 }
 
-
-
-/* Boton de preguntas fre3cuentes*/
-/* respomnsivo */    
+/* Media Queries */
 @media (max-width: 968px) {
+    body { padding: 0; }
+    .container { border-radius: 0; }
+    .content-wrapper { grid-template-columns: 1fr; padding: 20px; gap: 25px; }
+    .hero { height: auto; min-height: 450px; padding: 30px; }
+    .hero h1 { font-size: 36px; margin-bottom: 50px; }
+
+    .prof-img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .professor-button {
+        font-size: 25px;
+    }
+
     .faq-floating {
         bottom: 20px;
-        right: 20px;     
+        right: 20px;
     }
-}
-    .faq-floating {
-    .faq-floating {
-    position: fixed;    
-    right: 30px;         
-    z-index: 1000;
-}
-}
-    
+
     .faq-button {
         width: 58px;
         height: 58px;
-        font-size: 19px;
-        font-size: 36px;  
-    font-weight: bold
+        font-size: 32px;
     }
-
+}

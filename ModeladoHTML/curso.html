@@ -7,28 +7,44 @@
     <link rel="stylesheet" href="../css/curso.css">
 </head>
 <body>
-    <div class="container">
-        <div class="hero">
-            <button class="back-btn" onclick="goBack()">← Volver</button>
-            <div class="hero-content">
-                <h1>Análisis Socioemocional de la Docencia Contemporánea</h1>
-                <p class="instructor">👨‍🏫 Dr. Francisco Conejo</p>
-                <div class="meta-info">
-                    <div class="meta-item">
-                        <span>📅</span>
-                        <span>Inicio: 24/10/2025</span>
-                    </div>
-                    <div class="meta-item">
-                        <span>⏱️</span>
-                        <span>28 horas totales</span>
-                    </div>
-                    <div class="meta-item">
-                        <span>🎓</span>
-                        <span>Certificado incluido</span>
-                    </div>
-                </div>
+   <div class="hero-content">
+    <h1>Análisis Socioemocional de la Docencia Contemporánea</h1>
+    
+    <!-- Perfil del profesor con foto y desplegable -->
+    <div class="professor-section">
+        <div class="professor-header">
+            <button class="professor-button" id="profToggle">
+                Dr. Francisco Conejo <span class="arrow">+</span>
+            </button>
+            <div class="professor-photo">
+                <img src="../photos/imagen1.png" alt="Dr. Francisco Conejo" class="prof-img">
             </div>
         </div>
+        
+        <div class="professor-bio-panel" id="profPanel">
+            <p>
+                Doctor en Psicología Educativa con más de 15 años de experiencia en formación docente. 
+                Especialista en inteligencia emocional y bienestar del educador. 
+                Ha capacitado a más de 5.000 profesores en América Latina.
+            </p>
+        </div>
+    </div>
+
+    <div class="meta-info">
+        <div class="meta-item">
+            <span>📅</span>
+            <span>Inicio: 24/10/2025</span>
+        </div>
+        <div class="meta-item">
+            <span>⏱️</span>
+            <span>28 horas totales</span>
+        </div>
+        <div class="meta-item">
+            <span>🎓</span>
+            <span>Certificado incluido</span>
+        </div>
+    </div>
+</div>
 
         <div class="content-wrapper">
             <div class="main-content">
@@ -224,40 +240,61 @@
         document.addEventListener('DOMContentLoaded', function () {
             updateProgress(0);
 
+            // FAQ
             const faqToggle = document.getElementById('faqToggle');
             const faqPanel = document.getElementById('faqPanel');
             const faqOverlay = document.getElementById('faqOverlay');
 
-            if (!faqToggle || !faqPanel || !faqOverlay) return;
+            if (faqToggle && faqPanel && faqOverlay) {
+                faqToggle.onclick = function (e) {
+                    e.stopPropagation();
+                    faqPanel.classList.toggle('open');
+                    faqOverlay.classList.toggle('open');
+                };
 
-            faqToggle.onclick = function (e) {
-                e.stopPropagation();
-                faqPanel.classList.toggle('open');
-                faqOverlay.classList.toggle('open');
-            };
-
-            faqOverlay.onclick = function () {
-                faqPanel.classList.remove('open');
-                faqOverlay.classList.remove('open');
-            };
-
-            document.onclick = function (e) {
-                if (!faqPanel.contains(e.target) && e.target !== faqToggle) {
+                faqOverlay.onclick = function () {
                     faqPanel.classList.remove('open');
                     faqOverlay.classList.remove('open');
-                }
-            };
+                };
 
-            document.querySelectorAll('.accordion-button').forEach(btn => {
-                btn.onclick = function (e) {
-                    e.stopPropagation();
-                    const target = document.getElementById(this.dataset.target);
-                    if (target) {
-                        target.classList.toggle('open');
-                        this.classList.toggle('active');
+                document.onclick = function (e) {
+                    if (!faqPanel.contains(e.target) && e.target !== faqToggle) {
+                        faqPanel.classList.remove('open');
+                        faqOverlay.classList.remove('open');
                     }
                 };
-            });
+
+                document.querySelectorAll('.accordion-button').forEach(btn => {
+                    btn.onclick = function (e) {
+                        e.stopPropagation();
+                        const target = document.getElementById(this.dataset.target);
+                        if (target) {
+                            target.classList.toggle('open');
+                            this.classList.toggle('active');
+                        }
+                    };
+                });
+            }
+
+            // BOTÓN DEL PROFESOR
+            const profToggle = document.getElementById('profToggle');
+            const profPanel = document.getElementById('profPanel');
+
+            if (profToggle && profPanel) {
+                profToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    profPanel.classList.toggle('open');
+                    profToggle.classList.toggle('active');
+                });
+
+                // Cerrar al hacer clic fuera
+                document.addEventListener('click', function (e) {
+                    if (!profPanel.contains(e.target) && e.target !== profToggle) {
+                        profPanel.classList.remove('open');
+                        profToggle.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>
