@@ -101,6 +101,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            position: relative; /* Para el botón de favorito */
         }
 
         .course-card:hover {
@@ -124,6 +125,7 @@
             justify-content: space-between;
             align-items: start;
             margin-bottom: 1rem;
+            position: relative;
         }
 
         .course-title {
@@ -270,6 +272,32 @@
             color: #2e7d32;
         }
 
+        /* NUEVO: Botón de favorito */
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.favorited {
+            background: #ffebee;
+            color: #e53e3e;
+        }
+
         @media (max-width: 768px) {
             .courses-grid {
                 grid-template-columns: 1fr;
@@ -300,6 +328,7 @@
                 <button class="tab-btn active" onclick="filterCourses('activos', this)">En Progreso</button>
                 <button class="tab-btn" onclick="filterCourses('completados', this)">Completados</button>
                 <button class="tab-btn" onclick="filterCourses('todos', this)">Todos</button>
+                <button class="tab-btn" onclick="filterCourses('favoritos', this)">Favoritos ❤️</button>
             </div>
         </div>
 
@@ -318,118 +347,158 @@
     </div>
 
     <script>
-        let allEnrollments = [];
-        let currentFilter = 'activos';
+    let allEnrollments = [];
+    let currentFilter = 'activos';
+    let favorites = JSON.parse(localStorage.getItem('contribuir_favorites') || '[]');
 
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // ====== MODO PRUEBA LOCAL (detecta si estás en local) ======
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('🔧 Modo prueba local activado - usando datos falsos');
+            useMockData();
+            filterCourses('activos');
+        } else {
+            // ====== MODO PRODUCCIÓN (servidor real) ======
             loadEnrollments();
-        });
+        }
+    });
 
-        async function loadEnrollments() {
-            let sessionResponse, enrollmentsResponse;
-            
-            try {
-                // Primero verificamos si hay sesión activa
-                sessionResponse = await fetch('../api/check_session.php', {
-                    credentials: 'same-origin' // Importante: enviar cookies
-                });
-                
-                if (!sessionResponse.ok) {
-                    const errorText = await sessionResponse.text();
-                    console.error('Error de sesión:', {
-                        status: sessionResponse.status,
-                        statusText: sessionResponse.statusText,
-                        response: errorText
-                    });
-                    throw new Error('No autenticado');
-                }
-
-                // Si hay sesión, cargamos los cursos
-                enrollmentsResponse = await fetch('../api/get_enrollments.php', {
-                    credentials: 'same-origin' // Importante: enviar cookies
-                });
-                
-                if (!enrollmentsResponse.ok) {
-                    const errorText = await enrollmentsResponse.text();
-                    console.error('Error al cargar cursos:', {
-                        status: enrollmentsResponse.status,
-                        statusText: enrollmentsResponse.statusText,
-                        response: errorText
-                    });
-                    throw new Error('Error al cargar cursos');
-                }
-
-                allEnrollments = await enrollmentsResponse.json();
-                filterCourses('activos');
-            } catch (error) {
-                console.error('Error en la carga:', {
-                    error: error.message,
-                    sessionStatus: sessionResponse ? sessionResponse.status : 'No disponible',
-                    enrollmentsStatus: enrollmentsResponse ? enrollmentsResponse.status : 'No disponible'
-                });
-
-                document.getElementById('coursesContainer').innerHTML = '';
-                
-                // Personalizar el mensaje según el tipo de error
-                let errorMessage = 'Hubo un problema al cargar tus cursos.';
-                let actionMessage = 'Por favor, inicia sesión nuevamente.';
-                
-                if (!sessionResponse || sessionResponse.status === 401) {
-                    errorMessage = 'Necesitas iniciar sesión para ver tus cursos.';
-                    actionMessage = 'Haz clic en el botón para iniciar sesión.';
-                } else if (enrollmentsResponse && enrollmentsResponse.status === 500) {
-                    errorMessage = 'Error en el servidor al cargar los cursos.';
-                    actionMessage = 'Por favor, intenta de nuevo más tarde.';
-                }
-
-                document.getElementById('emptyState').innerHTML = `
-                    <div class="empty-state-icon">⚠️</div>
-                    <h2>${errorMessage}</h2>
-                    <p>${actionMessage}</p>
-                    <a href="../index.html" class="btn-explore">Ir al inicio</a>
-                `;
-                document.getElementById('emptyState').style.display = 'block';
+    // Datos falsos para probar localmente
+    function useMockData() {
+        allEnrollments = [
+            {
+                id: 1,
+                enrollmentId: 101,
+                title: "Metodologías Innovadoras: De la Teoría a la Práctica",
+                instructor: "Prof. Mauricio Paredes",
+                image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                progress: 0,
+                enrolledDate: "05/11/2025",
+                hoursCompleted: "0",
+                totalHours: "30"
+            },
+            {
+                id: 2,
+                enrollmentId: 102,
+                title: "Análisis Socioemocional de la Docencia Contemporánea",
+                instructor: "Dr. Francisco Conejo",
+                image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                progress: 45,
+                enrolledDate: "24/10/2025",
+                hoursCompleted: "12",
+                totalHours: "28"
+            },
+            {
+                id: 3,
+                enrollmentId: 103,
+                title: "Educación Consciente para Docentes",
+                instructor: "Dra. María García López",
+                image: "https://images.unsplash.com/photo-1529390079861-591de3544d49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                progress: 100,
+                enrolledDate: "19/10/2025",
+                hoursCompleted: "20",
+                totalHours: "20"
+            },
+            {
+                id: 4,
+                enrollmentId: 104,
+                title: "Mindfulness en el Aula",
+                instructor: "Lic. Ana Rivera",
+                image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                progress: 72,
+                enrolledDate: "10/12/2025",
+                hoursCompleted: "18",
+                totalHours: "25"
             }
+        ];
+
+        // Si ya tenías favoritos guardados, los respeta
+        displayCourses(allEnrollments);
+    }
+
+    // Tu función original para producción
+    async function loadEnrollments() {
+        let sessionResponse, enrollmentsResponse;
+        try {
+            sessionResponse = await fetch('../api/check_session.php', { credentials: 'same-origin' });
+            if (!sessionResponse.ok) throw new Error('No autenticado');
+
+            enrollmentsResponse = await fetch('../api/get_enrollments.php', { credentials: 'same-origin' });
+            if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
+
+            allEnrollments = await enrollmentsResponse.json();
+            filterCourses('activos');
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('coursesContainer').innerHTML = '';
+            document.getElementById('emptyState').innerHTML = `
+                <div class="empty-state-icon">⚠️</div>
+                <h2>No se pudieron cargar los cursos</h2>
+                <p>Estás en modo producción pero no hay conexión al servidor.</p>
+                <a href="../index.html" class="btn-explore">Volver al inicio</a>
+            `;
+            document.getElementById('emptyState').style.display = 'block';
+        }
+    }
+
+    // ====== EL RESTO DE TUS FUNCIONES (filterCourses, displayCourses, toggleFavorite, etc.) ======
+    // (Pégalas aquí exactamente como en el código anterior que te pasé)
+
+    function filterCourses(filter, buttonElement) {
+        currentFilter = filter;
+        if (buttonElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
         }
 
-        function filterCourses(filter, buttonElement) {
-            currentFilter = filter;
-            
-            // Actualizar botones activos
-            if (buttonElement) {
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                buttonElement.classList.add('active');
-            }
-
-            let filtered = [];
-            
-            if (filter === 'activos') {
-                filtered = allEnrollments.filter(e => e.progress < 100);
-            } else if (filter === 'completados') {
-                filtered = allEnrollments.filter(e => e.progress === 100);
-            } else {
-                filtered = allEnrollments;
-            }
-
-            displayCourses(filtered);
+        let filtered = [];
+        if (filter === 'activos') {
+            filtered = allEnrollments.filter(e => e.progress < 100);
+        } else if (filter === 'completados') {
+            filtered = allEnrollments.filter(e => e.progress === 100);
+        } else if (filter === 'favoritos') {
+            filtered = allEnrollments.filter(e => favorites.includes(e.id));
+        } else {
+            filtered = allEnrollments;
         }
 
-        function displayCourses(courses) {
-            const container = document.getElementById('coursesContainer');
-            const emptyState = document.getElementById('emptyState');
+        displayCourses(filtered);
+    }
 
-            if (courses.length === 0) {
-                container.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
+    function displayCourses(courses) {
+        const container = document.getElementById('coursesContainer');
+        const emptyState = document.getElementById('emptyState');
 
-            container.style.display = 'grid';
-            emptyState.style.display = 'none';
+        if (courses.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
 
-            container.innerHTML = courses.map(course => `
+            let message = 'No tienes cursos en esta categoría.';
+            if (currentFilter === 'favoritos') message = 'Aún no has marcado ningún curso como favorito ❤️';
+            else if (currentFilter === 'activos') message = '¡Inscríbete en un curso para comenzar!';
+            else if (currentFilter === 'completados') message = '¡Termina un curso para verlo aquí!';
+
+            emptyState.innerHTML = `
+                <div class="empty-state-icon">📖</div>
+                <h2>${message}</h2>
+                <p>Explora nuestra oferta educativa</p>
+                <a href="../index.html#cursos" class="btn-explore">Explorar Cursos</a>
+            `;
+            return;
+        }
+
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+
+        container.innerHTML = courses.map(course => {
+            const isFavorite = favorites.includes(course.id);
+            return `
                 <div class="course-card">
-                    <img src="${course.image}" alt="${course.title}" class="course-image" onerror="this.src='https://via.placeholder.com/600x400?text=${encodeURIComponent(course.title)}'">
+                    <img src="${course.image}" alt="${course.title}" class="course-image">
+                    <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                            onclick="toggleFavorite(${course.id}, event)">
+                        ${isFavorite ? '❤️' : '🤍'}
+                    </button>
                     <div class="course-body">
                         <div class="course-header">
                             <div>
@@ -438,7 +507,6 @@
                             </div>
                             ${course.progress === 100 ? '<span class="badge completed">✓ Completado</span>' : ''}
                         </div>
-
                         <div class="progress-section">
                             <div class="progress-label">
                                 <span>Progreso</span>
@@ -448,18 +516,10 @@
                                 <div class="progress-fill" style="width: ${course.progress}%"></div>
                             </div>
                         </div>
-
                         <div class="course-stats">
-                            <div class="stat-item">
-                                <span>📅</span>
-                                <span>${course.enrolledDate}</span>
-                            </div>
-                            <div class="stat-item">
-                                <span>⏱️</span>
-                                <span>${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</span>
-                            </div>
+                            <div class="stat-item">📅 ${course.enrolledDate}</div>
+                            <div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</div>
                         </div>
-
                         <div class="course-actions">
                             <button class="btn btn-primary" onclick="continueCourse(${course.enrollmentId})">
                                 ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
@@ -470,20 +530,35 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `;
+        }).join('');
+    }
 
-        function continueCourse(enrollmentId) {
-            alert(`🎓 Abriendo lección del curso ${enrollmentId}\n\nProximamente: Panel de lecciones disponible`);
-            // Aquí irías a la página del curso cuando esté lista
-            // window.location.href = `/course/${enrollmentId}`;
+    function toggleFavorite(courseId, event) {
+        event.stopPropagation();
+        if (favorites.includes(courseId)) {
+            favorites = favorites.filter(id => id !== courseId);
+        } else {
+            favorites.push(courseId);
         }
+        localStorage.setItem('contribuir_favorites', JSON.stringify(favorites));
 
-        function viewDetails(courseId) {
-            alert(`📋 Detalles del curso ${courseId}\n\nProximamente: Vista detallada disponible`);
-            // Aquí irías a la página de detalles
-            // window.location.href = `/#curso-${courseId}`;
+        const button = event.target;
+        button.innerHTML = favorites.includes(courseId) ? '❤️' : '🤍';
+        button.classList.toggle('favorited');
+
+        if (currentFilter === 'favoritos') {
+            filterCourses('favoritos');
         }
-    </script>
+    }
+
+    function continueCourse(enrollmentId) {
+        alert(`🎓 Abriendo curso ${enrollmentId} (próximamente disponible)`);
+    }
+
+    function viewDetails(courseId) {
+        alert(`📋 Detalles del curso ${courseId}`);
+    }
+</script>
 </body>
 </html>
