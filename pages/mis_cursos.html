@@ -101,7 +101,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            position: relative; /* Para el botón de favorito */
+            position: relative;
         }
 
         .course-card:hover {
@@ -185,8 +185,14 @@
 
         .course-actions {
             display: flex;
+            flex-direction: column;
             gap: 0.75rem;
             margin-top: 1.5rem;
+        }
+
+        .course-actions-row {
+            display: flex;
+            gap: 0.75rem;
         }
 
         .btn {
@@ -217,6 +223,16 @@
 
         .btn-secondary:hover {
             background: #e0e0e0;
+        }
+
+        .btn-certificate {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+        }
+
+        .btn-certificate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 55, 68, 0.4);
         }
 
         .empty-state {
@@ -272,7 +288,6 @@
             color: #2e7d32;
         }
 
-        /* NUEVO: Botón de favorito */
         .favorite-btn {
             position: absolute;
             top: 12px;
@@ -347,218 +362,188 @@
     </div>
 
     <script>
-    let allEnrollments = [];
-    let currentFilter = 'activos';
-    let favorites = JSON.parse(localStorage.getItem('contribuir_favorites') || '[]');
+        let allEnrollments = [];
+        let currentFilter = 'activos';
+        let favorites = JSON.parse(localStorage.getItem('contribuir_favorites') || '[]');
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // ====== MODO PRUEBA LOCAL (detecta si estás en local) ======
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            console.log('🔧 Modo prueba local activado - usando datos falsos');
-            useMockData();
-            filterCourses('activos');
-        } else {
-            // ====== MODO PRODUCCIÓN (servidor real) ======
-            loadEnrollments();
-        }
-    });
-
-    // Datos falsos para probar localmente
-    function useMockData() {
-        allEnrollments = [
-            {
-                id: 1,
-                enrollmentId: 101,
-                title: "Metodologías Innovadoras: De la Teoría a la Práctica",
-                instructor: "Prof. Mauricio Paredes",
-                image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
-                progress: 0,
-                enrolledDate: "05/11/2025",
-                hoursCompleted: "0",
-                totalHours: "30"
-            },
-            {
-                id: 2,
-                enrollmentId: 102,
-                title: "Análisis Socioemocional de la Docencia Contemporánea",
-                instructor: "Dr. Francisco Conejo",
-                image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
-                progress: 45,
-                enrolledDate: "24/10/2025",
-                hoursCompleted: "12",
-                totalHours: "28"
-            },
-            {
-                id: 3,
-                enrollmentId: 103,
-                title: "Educación Consciente para Docentes",
-                instructor: "Dra. María García López",
-                image: "https://images.unsplash.com/photo-1529390079861-591de3544d49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
-                progress: 100,
-                enrolledDate: "19/10/2025",
-                hoursCompleted: "20",
-                totalHours: "20"
-            },
-            {
-                id: 4,
-                enrollmentId: 104,
-                title: "Mindfulness en el Aula",
-                instructor: "Lic. Ana Rivera",
-                image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
-                progress: 72,
-                enrolledDate: "10/12/2025",
-                hoursCompleted: "18",
-                totalHours: "25"
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('🔧 Modo prueba local activado');
+                useMockData();
+            } else {
+                loadEnrollments();
             }
-        ];
+        });
 
-        // Si ya tenías favoritos guardados, los respeta
-        displayCourses(allEnrollments);
-    }
-
-    // Tu función original para producción
-    async function loadEnrollments() {
-        let sessionResponse, enrollmentsResponse;
-        try {
-            sessionResponse = await fetch('../api/check_session.php', { credentials: 'same-origin' });
-            if (!sessionResponse.ok) throw new Error('No autenticado');
-
-            enrollmentsResponse = await fetch('../api/get_enrollments.php', { credentials: 'same-origin' });
-            if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
-
-            allEnrollments = await enrollmentsResponse.json();
+        function useMockData() {
+            allEnrollments = [
+                { id: 1, enrollmentId: 101, title: "Metodologías Innovadoras: De la Teoría a la Práctica", instructor: "Prof. Mauricio Paredes", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 0, enrolledDate: "05/11/2025", hoursCompleted: "0", totalHours: "30" },
+                { id: 2, enrollmentId: 102, title: "Análisis Socioemocional de la Docencia Contemporánea", instructor: "Dr. Francisco Conejo", image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 45, enrolledDate: "24/10/2025", hoursCompleted: "12", totalHours: "28" },
+                { id: 3, enrollmentId: 103, title: "Educación Consciente para Docentes", instructor: "Dra. María García López", image: "https://images.unsplash.com/photo-1529390079861-591de3544d49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 100, enrolledDate: "19/10/2025", hoursCompleted: "20", totalHours: "20" },
+                { id: 4, enrollmentId: 104, title: "Mindfulness en el Aula", instructor: "Lic. Ana Rivera", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 72, enrolledDate: "10/12/2025", hoursCompleted: "18", totalHours: "25" }
+            ];
             filterCourses('activos');
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('coursesContainer').innerHTML = '';
-            document.getElementById('emptyState').innerHTML = `
-                <div class="empty-state-icon">⚠️</div>
-                <h2>No se pudieron cargar los cursos</h2>
-                <p>Estás en modo producción pero no hay conexión al servidor.</p>
-                <a href="../index.html" class="btn-explore">Volver al inicio</a>
-            `;
-            document.getElementById('emptyState').style.display = 'block';
-        }
-    }
-
-    // ====== EL RESTO DE TUS FUNCIONES (filterCourses, displayCourses, toggleFavorite, etc.) ======
-    // (Pégalas aquí exactamente como en el código anterior que te pasé)
-
-    function filterCourses(filter, buttonElement) {
-        currentFilter = filter;
-        if (buttonElement) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            buttonElement.classList.add('active');
         }
 
-        let filtered = [];
-        if (filter === 'activos') {
-            filtered = allEnrollments.filter(e => e.progress < 100);
-        } else if (filter === 'completados') {
-            filtered = allEnrollments.filter(e => e.progress === 100);
-        } else if (filter === 'favoritos') {
-            filtered = allEnrollments.filter(e => favorites.includes(e.id));
-        } else {
-            filtered = allEnrollments;
+        async function loadEnrollments() {
+            let sessionResponse, enrollmentsResponse;
+            try {
+                sessionResponse = await fetch('../api/check_session.php', { credentials: 'same-origin' });
+                if (!sessionResponse.ok) throw new Error('No autenticado');
+
+                enrollmentsResponse = await fetch('../api/get_enrollments.php', { credentials: 'same-origin' });
+                if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
+
+                allEnrollments = await enrollmentsResponse.json();
+                filterCourses('activos');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('coursesContainer').innerHTML = '';
+                document.getElementById('emptyState').innerHTML = `
+                    <div class="empty-state-icon">⚠️</div>
+                    <h2>No se pudieron cargar los cursos</h2>
+                    <p>Por favor, vuelve al inicio e inicia sesión.</p>
+                    <a href="../index.html" class="btn-explore">Volver al inicio</a>
+                `;
+                document.getElementById('emptyState').style.display = 'block';
+            }
         }
 
-        displayCourses(filtered);
-    }
+        function filterCourses(filter, buttonElement) {
+            currentFilter = filter;
+            if (buttonElement) {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                buttonElement.classList.add('active');
+            }
 
-    function displayCourses(courses) {
-        const container = document.getElementById('coursesContainer');
-        const emptyState = document.getElementById('emptyState');
+            let filtered = [];
+            if (filter === 'activos') filtered = allEnrollments.filter(e => e.progress < 100);
+            else if (filter === 'completados') filtered = allEnrollments.filter(e => e.progress === 100);
+            else if (filter === 'favoritos') filtered = allEnrollments.filter(e => favorites.includes(e.id));
+            else filtered = allEnrollments;
 
-        if (courses.length === 0) {
-            container.style.display = 'none';
-            emptyState.style.display = 'block';
-
-            let message = 'No tienes cursos en esta categoría.';
-            if (currentFilter === 'favoritos') message = 'Aún no has marcado ningún curso como favorito ❤️';
-            else if (currentFilter === 'activos') message = '¡Inscríbete en un curso para comenzar!';
-            else if (currentFilter === 'completados') message = '¡Termina un curso para verlo aquí!';
-
-            emptyState.innerHTML = `
-                <div class="empty-state-icon">📖</div>
-                <h2>${message}</h2>
-                <p>Explora nuestra oferta educativa</p>
-                <a href="../index.html#cursos" class="btn-explore">Explorar Cursos</a>
-            `;
-            return;
+            displayCourses(filtered);
         }
 
-        container.style.display = 'grid';
-        emptyState.style.display = 'none';
+        function displayCourses(courses) {
+            const container = document.getElementById('coursesContainer');
+            const emptyState = document.getElementById('emptyState');
 
-        container.innerHTML = courses.map(course => {
-            const isFavorite = favorites.includes(course.id);
-            return `
-                <div class="course-card">
-                    <img src="${course.image}" alt="${course.title}" class="course-image">
-                    <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
-                            onclick="toggleFavorite(${course.id}, event)">
-                        ${isFavorite ? '❤️' : '🤍'}
-                    </button>
-                    <div class="course-body">
-                        <div class="course-header">
-                            <div>
-                                <h3 class="course-title">${course.title}</h3>
-                                <p class="course-instructor">por ${course.instructor}</p>
+            if (courses.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+
+                let message = 'No tienes cursos en esta categoría.';
+                if (currentFilter === 'favoritos') message = 'Aún no has marcado ningún curso como favorito ❤️';
+                else if (currentFilter === 'activos') message = '¡Inscríbete en un curso para comenzar!';
+                else if (currentFilter === 'completados') message = '¡Termina un curso para verlo aquí!';
+
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">📖</div>
+                    <h2>${message}</h2>
+                    <p>Explora nuestra oferta educativa</p>
+                    <a href="../index.html#cursos" class="btn-explore">Explorar Cursos</a>
+                `;
+                return;
+            }
+
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            container.innerHTML = courses.map(course => {
+                const isFavorite = favorites.includes(course.id);
+                return `
+                    <div class="course-card">
+                        <img src="${course.image}" alt="${course.title}" class="course-image">
+                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" onclick="toggleFavorite(${course.id}, event)">
+                            ${isFavorite ? '❤️' : '🤍'}
+                        </button>
+
+                        <div class="course-body">
+                            <div class="course-header">
+                                <div>
+                                    <h3 class="course-title">${course.title}</h3>
+                                    <p class="course-instructor">por ${course.instructor}</p>
+                                </div>
+                                ${course.progress === 100 ? '<span class="badge completed">✓ Completado</span>' : ''}
                             </div>
-                            ${course.progress === 100 ? '<span class="badge completed">✓ Completado</span>' : ''}
-                        </div>
-                        <div class="progress-section">
-                            <div class="progress-label">
-                                <span>Progreso</span>
-                                <span>${course.progress}%</span>
+
+                            <div class="progress-section">
+                                <div class="progress-label">
+                                    <span>Progreso</span>
+                                    <span>${course.progress}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${course.progress}%"></div>
+                                </div>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${course.progress}%"></div>
+
+                            <div class="course-stats">
+                                <div class="stat-item">📅 ${course.enrolledDate}</div>
+                                <div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</div>
                             </div>
-                        </div>
-                        <div class="course-stats">
-                            <div class="stat-item">📅 ${course.enrolledDate}</div>
-                            <div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</div>
-                        </div>
-                        <div class="course-actions">
-                            <button class="btn btn-primary" onclick="continueCourse(${course.enrollmentId})">
-                                ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
-                            </button>
-                            <button class="btn btn-secondary" onclick="viewDetails(${course.id})">
-                                Detalles
-                            </button>
+
+                            <div class="course-actions">
+                                <div class="course-actions-row">
+                                    <button class="btn btn-primary" onclick="continueCourse(${course.enrollmentId})">
+                                        ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="viewDetails(${course.id})">
+                                        Detalles
+                                    </button>
+                                </div>
+
+                                ${course.progress === 100 ? `
+                                    <button class="btn btn-certificate" onclick="downloadCertificate(${course.id}, '${course.title.replace(/'/g, "\\'")}')">
+                                        📜 Descargar Certificado
+                                    </button>
+                                ` : ''}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    function toggleFavorite(courseId, event) {
-        event.stopPropagation();
-        if (favorites.includes(courseId)) {
-            favorites = favorites.filter(id => id !== courseId);
-        } else {
-            favorites.push(courseId);
+                `;
+            }).join('');
         }
-        localStorage.setItem('contribuir_favorites', JSON.stringify(favorites));
 
-        const button = event.target;
-        button.innerHTML = favorites.includes(courseId) ? '❤️' : '🤍';
-        button.classList.toggle('favorited');
+        function toggleFavorite(courseId, event) {
+            event.stopPropagation();
+            if (favorites.includes(courseId)) {
+                favorites = favorites.filter(id => id !== courseId);
+            } else {
+                favorites.push(courseId);
+            }
+            localStorage.setItem('contribuir_favorites', JSON.stringify(favorites));
 
-        if (currentFilter === 'favoritos') {
-            filterCourses('favoritos');
+            const button = event.target;
+            button.innerHTML = favorites.includes(courseId) ? '❤️' : '🤍';
+            button.classList.toggle('favorited', favorites.includes(courseId));
+
+            if (currentFilter === 'favoritos') {
+                filterCourses('favoritos');
+            }
         }
-    }
 
-    function continueCourse(enrollmentId) {
-        alert(`🎓 Abriendo curso ${enrollmentId} (próximamente disponible)`);
-    }
+        function downloadCertificate(courseId, courseTitle) {
+            // Cambia esta ruta cuando tengas los certificados reales
+            const certificateUrl = '../certificados/certificado-ejemplo.pdf';
 
-    function viewDetails(courseId) {
-        alert(`📋 Detalles del curso ${courseId}`);
-    }
-</script>
+            const link = document.createElement('a');
+            link.href = certificateUrl;
+            link.download = `Certificado - ${courseTitle}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert(`🎉 ¡Descargando certificado de "${courseTitle}"!`);
+        }
+
+        function continueCourse(enrollmentId) {
+            alert(`🎓 Abriendo curso ${enrollmentId} (próximamente disponible)`);
+        }
+
+        function viewDetails(courseId) {
+            alert(`📋 Detalles del curso ${courseId}`);
+        }
+    </script>
 </body>
 </html>
