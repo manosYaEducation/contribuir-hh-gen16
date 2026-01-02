@@ -4,451 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análisis Socioemocional de la Docencia Contemporánea</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .hero {
-            position: relative;
-            height: 400px;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23667eea" width="1200" height="400"/><path fill="%23764ba2" opacity="0.3" d="M0,200 Q300,100 600,200 T1200,200 L1200,400 L0,400 Z"/></svg>');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px;
-        }
-
-        .hero-content {
-            color: white;
-            z-index: 1;
-        }
-
-        .back-btn {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(-5px);
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .instructor {
-            font-size: 18px;
-            opacity: 0.95;
-            margin-bottom: 20px;
-        }
-
-        .meta-info {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 25px;
-            backdrop-filter: blur(10px);
-        }
-
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 40px;
-            padding: 40px;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .section {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 16px;
-            transition: all 0.3s;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section p {
-            line-height: 1.8;
-            color: #4a5568;
-            font-size: 16px;
-        }
-
-        .modules {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .module {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .module:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.2);
-        }
-
-        .module-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .module-title {
-            font-weight: 600;
-            color: #2d3748;
-            font-size: 18px;
-        }
-
-        .module-duration {
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 16px;
-            border: 2px solid #e2e8f0;
-        }
-
-        .progress-circle {
-            width: 150px;
-            height: 150px;
-            margin: 20px auto;
-            position: relative;
-        }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s;
-            fill: transparent;
-            stroke: #667eea;
-            stroke-width: 8;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 32px;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .cta-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 15px;
-            background: white;
-            border-radius: 12px;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #718096;
-            margin-top: 5px;
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        @media (max-width: 968px) {
-            body {
-                padding: 0;
-            }
-
-            .container {
-                border-radius: 0;
-            }
-
-            .content-wrapper {
-                grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 25px;
-            }
-            
-            .hero {
-                height: auto;
-                min-height: 350px;
-                padding: 20px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-                line-height: 1.2;
-            }
-
-            .instructor {
-                font-size: 16px;
-            }
-
-            .back-btn {
-                top: 15px;
-                left: 15px;
-                padding: 10px 18px;
-                font-size: 14px;
-            }
-
-            .meta-info {
-                gap: 10px;
-            }
-
-            .meta-item {
-                padding: 8px 15px;
-                font-size: 14px;
-            }
-
-            .section {
-                padding: 20px;
-            }
-
-            .section h2 {
-                font-size: 20px;
-            }
-
-            .section p {
-                font-size: 15px;
-            }
-
-            .module {
-                padding: 15px;
-            }
-
-            .module-title {
-                font-size: 16px;
-            }
-
-            .module-duration {
-                font-size: 13px;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .stats {
-                gap: 10px;
-            }
-
-            .stat-item {
-                padding: 12px;
-            }
-
-            .stat-value {
-                font-size: 24px;
-            }
-
-            .cta-button {
-                padding: 15px;
-                font-size: 16px;
-            }
-
-            .progress-circle {
-                width: 120px;
-                height: 120px;
-            }
-
-            .progress-circle svg {
-                width: 120px;
-                height: 120px;
-            }
-
-            .progress-text {
-                font-size: 28px;
-            }
-
-            .objetivo-item {
-                padding: 12px;
-                font-size: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 24px;
-            }
-
-            .meta-info {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .meta-item {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .section h2 {
-                font-size: 18px;
-            }
-        }
-
-        .objetivos-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .objetivo-item {
-            display: flex;
-            align-items: start;
-            gap: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-        }
-
-        .check-icon {
-            width: 24px;
-            height: 24px;
-            background: #667eea;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/curso.css">
 </head>
 <body>
-    <div class="container">
-        <div class="hero">
-            <button class="back-btn" onclick="goBack()">← Volver</button>
-            <div class="hero-content">
-                <h1>Análisis Socioemocional de la Docencia Contemporánea</h1>
-                <p class="instructor">👨‍🏫 Dr. Francisco Conejo</p>
-                <div class="meta-info">
-                    <div class="meta-item">
-                        <span>📅</span>
-                        <span>Inicio: 24/10/2025</span>
-                    </div>
-                    <div class="meta-item">
-                        <span>⏱️</span>
-                        <span>28 horas totales</span>
-                    </div>
-                    <div class="meta-item">
-                        <span>🎓</span>
-                        <span>Certificado incluido</span>
-                    </div>
-                </div>
+   <div class="hero-content">
+    <h1>Análisis Socioemocional de la Docencia Contemporánea</h1>
+    
+    <!-- Perfil del profesor con foto y desplegable -->
+    <div class="professor-section">
+        <div class="professor-header">
+            <button class="professor-button" id="profToggle">
+                Dr. Francisco Conejo <span class="arrow">+</span>
+            </button>
+            <div class="professor-photo">
+                <img src="../photos/imagen1.png" alt="Dr. Francisco Conejo" class="prof-img">
             </div>
         </div>
+        
+        <div class="professor-bio-panel" id="profPanel">
+            <p>
+                Doctor en Psicología Educativa con más de 15 años de experiencia en formación docente. 
+                Especialista en inteligencia emocional y bienestar del educador. 
+                Ha capacitado a más de 5.000 profesores en América Latina.
+            </p>
+        </div>
+    </div>
+
+    <div class="meta-info">
+        <div class="meta-item">
+            <span>📅</span>
+            <span>Inicio: 24/10/2025</span>
+        </div>
+        <div class="meta-item">
+            <span>⏱️</span>
+            <span>28 horas totales</span>
+        </div>
+        <div class="meta-item">
+            <span>🎓</span>
+            <span>Certificado incluido</span>
+        </div>
+    </div>
+</div>
 
         <div class="content-wrapper">
             <div class="main-content">
@@ -582,6 +178,35 @@
         </div>
     </div>
 
+    <!-- FAQ Flotante -->
+    <div class="faq-floating">
+        <button class="faq-button" id="faqToggle">?</button>
+
+        <div class="faq-panel" id="faqPanel">
+            <h3>Preguntas Frecuentes</h3>
+
+            <div class="accordion-item">
+                <button class="accordion-button" data-target="preg1">
+                    ¿Hay certificado?
+                </button>
+                <div class="accordion-content" id="preg1">
+                    <p>Sí, al completar el curso recibirás un <strong>certificado digital oficial</strong> que acredita las 28 horas de formación. Podrás descargarlo inmediatamente y compartirlo en LinkedIn, tu CV o donde prefieras.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-button" data-target="preg2">
+                    ¿Cuánto tiempo dura el acceso?
+                </button>
+                <div class="accordion-content" id="preg2">
+                    <p>El acceso es <strong>de por vida</strong>. Una vez inscrito, podrás volver al curso, revisar videos, materiales y actualizaciones cuando quieras, sin límite de tiempo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-overlay" id="faqOverlay"></div>
+
     <script>
         function goBack() {
             alert('Volviendo a la lista de cursos...');
@@ -594,15 +219,17 @@
 
         function updateProgress(percent) {
             const circle = document.getElementById('progressCircle');
+            if (!circle) return;
             const text = document.querySelector('.progress-text');
             const circumference = 2 * Math.PI * 65;
             const offset = circumference - (percent / 100 * circumference);
             
             circle.style.strokeDashoffset = offset;
-            text.textContent = percent + '%';
+            if (text) text.textContent = percent + '%';
             
-            if (percent > 0) {
-                document.querySelector('.cta-button').textContent = 'Continuar Curso →';
+            const btn = document.querySelector('.cta-button');
+            if (btn && percent > 0) {
+                btn.textContent = 'Continuar Curso →';
             }
         }
 
@@ -610,9 +237,64 @@
             module.style.backgroundColor = module.style.backgroundColor === 'rgb(237, 242, 247)' ? 'white' : '#edf2f7';
         }
 
-        // Animación inicial
-        window.addEventListener('load', () => {
+        document.addEventListener('DOMContentLoaded', function () {
             updateProgress(0);
+
+            // FAQ
+            const faqToggle = document.getElementById('faqToggle');
+            const faqPanel = document.getElementById('faqPanel');
+            const faqOverlay = document.getElementById('faqOverlay');
+
+            if (faqToggle && faqPanel && faqOverlay) {
+                faqToggle.onclick = function (e) {
+                    e.stopPropagation();
+                    faqPanel.classList.toggle('open');
+                    faqOverlay.classList.toggle('open');
+                };
+
+                faqOverlay.onclick = function () {
+                    faqPanel.classList.remove('open');
+                    faqOverlay.classList.remove('open');
+                };
+
+                document.onclick = function (e) {
+                    if (!faqPanel.contains(e.target) && e.target !== faqToggle) {
+                        faqPanel.classList.remove('open');
+                        faqOverlay.classList.remove('open');
+                    }
+                };
+
+                document.querySelectorAll('.accordion-button').forEach(btn => {
+                    btn.onclick = function (e) {
+                        e.stopPropagation();
+                        const target = document.getElementById(this.dataset.target);
+                        if (target) {
+                            target.classList.toggle('open');
+                            this.classList.toggle('active');
+                        }
+                    };
+                });
+            }
+
+            // BOTÓN DEL PROFESOR
+            const profToggle = document.getElementById('profToggle');
+            const profPanel = document.getElementById('profPanel');
+
+            if (profToggle && profPanel) {
+                profToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    profPanel.classList.toggle('open');
+                    profToggle.classList.toggle('active');
+                });
+
+                // Cerrar al hacer clic fuera
+                document.addEventListener('click', function (e) {
+                    if (!profPanel.contains(e.target) && e.target !== profToggle) {
+                        profPanel.classList.remove('open');
+                        profToggle.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>
