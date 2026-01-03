@@ -789,7 +789,6 @@
             border: 1px solid #fbd38d;
         }
 
-        /* ----- ESTILOS PARA DRAG AND DROP ----- */
         .upload-area {
             border: 2px dashed #cbd5e0;
             border-radius: 12px;
@@ -846,7 +845,7 @@
             border-radius: 8px;
         }
 
-        /* --- Estilos para el Foro en Módulos  --- */
+        /*  Foro  */
         .module-footer {
             margin-top: 1.5rem;
             padding-top: 1rem;
@@ -953,6 +952,62 @@
             font-size: 0.85rem;
             padding: 0.5rem;
             font-style: italic;
+        }
+        .quiz-section {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            background: #fffaf0; 
+            border-radius: 0 0 12px 12px;
+            padding: 1rem;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #c05621; 
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quiz-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .lock-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+
+        .btn-manage-questions {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-manage-questions:hover {
+            background: #feebc8;
+            border-color: #f6ad55;
         }
     </style>
 </head>
@@ -1201,6 +1256,37 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="module-item">
+                                <div class="quiz-section">
+                                    <div class="quiz-header">
+                                        <div class="quiz-title">
+                                            📝 Evaluación del Módulo
+                                        </div>
+                                        <div class="lock-info">
+                                            <span>Bloquear progreso hasta aprobar</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-controls">
+                                        <div class="form-group">
+                                            <label class="form-label">Nombre del Quiz</label>
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nota de Aprobación (%)</label>
+                                            <input type="number" class="form-input" value="80" min="0" max="100">
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-manage-questions">
+                                        ⚙️ Configurar Preguntas y Respuestas
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="module-item">
@@ -1231,6 +1317,37 @@
                                 </div>
                                 <div class="qa-list">
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
+                                </div>
+                            </div>
+                                                        <div class="module-item">
+                                <div class="quiz-section">
+                                    <div class="quiz-header">
+                                        <div class="quiz-title">
+                                            📝 Evaluación del Módulo
+                                        </div>
+                                        <div class="lock-info">
+                                            <span>Bloquear progreso hasta aprobar</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-controls">
+                                        <div class="form-group">
+                                            <label class="form-label">Nombre del Quiz</label>
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nota de Aprobación (%)</label>
+                                            <input type="number" class="form-input" value="80" min="0" max="100">
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-manage-questions">
+                                        ⚙️ Configurar Preguntas y Respuestas
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1265,6 +1382,37 @@
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
                                 </div>
                             </div>
+                                                        <div class="module-item">
+                                <div class="quiz-section">
+                                    <div class="quiz-header">
+                                        <div class="quiz-title">
+                                            📝 Evaluación del Módulo
+                                        </div>
+                                        <div class="lock-info">
+                                            <span>Bloquear progreso hasta aprobar</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-controls">
+                                        <div class="form-group">
+                                            <label class="form-label">Nombre del Quiz</label>
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nota de Aprobación (%)</label>
+                                            <input type="number" class="form-input" value="80" min="0" max="100">
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-manage-questions">
+                                        ⚙️ Configurar Preguntas y Respuestas
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="module-item">
@@ -1295,6 +1443,37 @@
                                 </div>
                                 <div class="qa-list">
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
+                                </div>
+                            </div>
+                                                        <div class="module-item">
+                                <div class="quiz-section">
+                                    <div class="quiz-header">
+                                        <div class="quiz-title">
+                                            📝 Evaluación del Módulo
+                                        </div>
+                                        <div class="lock-info">
+                                            <span>Bloquear progreso hasta aprobar</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="quiz-controls">
+                                        <div class="form-group">
+                                            <label class="form-label">Nombre del Quiz</label>
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nota de Aprobación (%)</label>
+                                            <input type="number" class="form-input" value="80" min="0" max="100">
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-manage-questions">
+                                        ⚙️ Configurar Preguntas y Respuestas
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1650,7 +1829,6 @@
             const newModule = document.createElement('div');
             newModule.className = 'module-item';
             
-            // Modificado para incluir el foro vacío en nuevos módulos
             newModule.innerHTML = `
                 <div class="module-header">
                     <div style="display: flex; align-items: center; gap: 1rem;">
@@ -1669,18 +1847,33 @@
                 
                 <div class="module-footer">
                     <div class="qa-header">
-                        <div class="qa-title">
-                            💬 Foro de Dudas
-                            <span class="qa-badge" style="background: #edf2f7; color: #718096;">0 Nuevas</span>
+                        <div class="qa-title">💬 Foro de Dudas</div>
+                        <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="qa-list"><p class="no-questions">El foro está activo.</p></div>
+                </div>
+
+                <div class="quiz-section">
+                    <div class="quiz-header">
+                        <div class="quiz-title">📝 Evaluación del Módulo</div>
+                        <div class="lock-info">
+                            <span>Bloquear progreso</span>
+                            <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
                     </div>
-                    <div class="qa-list">
-                        <p class="no-questions">El foro está activo. Las preguntas aparecerán aquí.</p>
+                    <div class="quiz-controls">
+                        <div class="form-group">
+                            <label class="form-label">Nombre del Quiz</label>
+                            <input type="text" class="form-input" placeholder="Ej: Test de conocimientos">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Aprobación (%)</label>
+                            <input type="number" class="form-input" value="70">
+                        </div>
                     </div>
+                    <button class="btn-manage-questions" onclick="alert('Abriendo editor de preguntas...')">
+                        ⚙️ Configurar Preguntas y Respuestas
+                    </button>
                 </div>
             `;
             
