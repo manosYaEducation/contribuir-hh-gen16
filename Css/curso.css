@@ -519,3 +519,61 @@ body {
         font-size: 32px;
     }
 }
+
+/* ==================== VIDEO INTRODUCTORIO ==================== */
+.video-intro-section {
+    margin-bottom: 3rem;
+}
+
+.video-intro-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+    font-size: 1.8rem;
+}
+
+.video-intro-section .icon {
+    width: 28px;
+    height: 28px;
+    color: #667eea;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background: #000;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+    height: 0;
+}
+
+.video-wrapper iframe,
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .video-intro-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .video-container {
+        border-radius: 12px;
+    }
+}
