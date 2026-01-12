@@ -204,6 +204,9 @@
             font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-primary {
@@ -483,22 +486,20 @@
                                 <div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</div>
                             </div>
 
-                            <div class="course-actions">
-                                <div class="course-actions-row">
-                                    <button class="btn btn-primary" onclick="continueCourse(${course.enrollmentId})">
-                                        ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
-                                    </button>
-                                    <button class="btn btn-secondary" onclick="viewDetails(${course.id})">
-                                        Detalles
-                                    </button>
-                                </div>
-
-                                ${course.progress === 100 ? `
-                                    <button class="btn btn-certificate" onclick="downloadCertificate(${course.id}, '${course.title.replace(/'/g, "\\'")}')">
-                                        📜 Descargar Certificado
-                                    </button>
-                                ` : ''}
+                            <div class="course-actions-row">
+                                <a href="../ModeladoHTML/curso.html?id=${course.id}" class="btn btn-primary">   <!-- Cambiar URL para cuando apretemos continuar y nos mande a otra pantalla del curso  -->
+                                    ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
+                                </a>
+                                <a href="../ModeladoHTML/curso.html?id=${course.id}" class="btn btn-secondary">
+                                    Detalles
+                                </a>
                             </div>
+
+                            ${course.progress === 100 ? `
+                                <button class="btn btn-certificate" onclick="downloadCertificate(${course.id}, '${course.title.replace(/'/g, "\\'")}')">
+                                    📜 Descargar Certificado
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 `;
@@ -524,25 +525,14 @@
         }
 
         function downloadCertificate(courseId, courseTitle) {
-            // Cambia esta ruta cuando tengas los certificados reales
             const certificateUrl = '../certificados/certificado-ejemplo.pdf';
-
             const link = document.createElement('a');
             link.href = certificateUrl;
             link.download = `Certificado - ${courseTitle}.pdf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
             alert(`🎉 ¡Descargando certificado de "${courseTitle}"!`);
-        }
-
-        function continueCourse(enrollmentId) {
-            alert(`🎓 Abriendo curso ${enrollmentId} (próximamente disponible)`);
-        }
-
-        function viewDetails(courseId) {
-            alert(`📋 Detalles del curso ${courseId}`);
         }
     </script>
 </body>
