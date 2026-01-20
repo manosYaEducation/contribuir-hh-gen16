@@ -17,9 +17,15 @@
             min-height: 100vh;
         }
 
+        /* --- PALETA DE COLORES  --- */
+        /* Azul Principal: #1D3B55 */
+        /* Azul Secundario: #2C5270 */
+        /* Crema Acento: #FFF6C5 */
+        /* Rojo/Alerta: #e53e3e */
+
         .admin-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #1D3B55 0%, #2C5270 100%);
+            color: #FFF6C5;
             padding: 1.5rem 2rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
@@ -44,7 +50,7 @@
             background: rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
             border: none;
-            color: white;
+            color: #FFF6C5;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             cursor: pointer;
@@ -80,7 +86,7 @@
 
         .btn-preview {
             background: rgba(255,255,255,0.2);
-            color: white;
+            color: #FFF6C5;
             border: 2px solid rgba(255,255,255,0.3);
         }
 
@@ -90,7 +96,7 @@
 
         .btn-save {
             background: white;
-            color: #667eea;
+            color: #1D3B55; /* Texto azul */
         }
 
         .btn-save:hover {
@@ -147,7 +153,7 @@
         }
 
         .nav-item.active {
-            background: #667eea;
+            background: #1D3B55; 
             color: white;
         }
 
@@ -227,8 +233,8 @@
         .form-textarea:focus,
         .form-select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1D3B55; /* Focus azul */
+            box-shadow: 0 0 0 3px rgba(29, 59, 85, 0.1);
         }
 
         .form-textarea {
@@ -258,7 +264,7 @@
         }
 
         .image-upload:hover {
-            border-color: #667eea;
+            border-color: #1D3B55;
             background: #edf2f7;
         }
 
@@ -289,8 +295,8 @@
         }
 
         .module-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            border-color: #1D3B55; 
+            box-shadow: 0 4px 12px rgba(29, 59, 85, 0.1);
         }
 
         .module-header {
@@ -301,7 +307,7 @@
         }
 
         .module-number {
-            background: #667eea;
+            background: #1D3B55; 
             color: white;
             width: 32px;
             height: 32px;
@@ -339,7 +345,7 @@
             border: 2px dashed #cbd5e0;
             border-radius: 8px;
             cursor: pointer;
-            color: #667eea;
+            color: #1D3B55; 
             font-weight: 600;
             transition: all 0.3s;
             display: flex;
@@ -350,7 +356,7 @@
 
         .btn-add:hover {
             background: #edf2f7;
-            border-color: #667eea;
+            border-color: #1D3B55;
         }
 
         .stats-grid {
@@ -361,11 +367,11 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1D3B55 0%, #2C5270 100%);
             color: white;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(29, 59, 85, 0.3);
         }
 
         .stat-label {
@@ -417,7 +423,7 @@
         }
 
         input:checked + .slider {
-            background-color: #667eea;
+            background-color: #1D3B55;
         }
 
         input:checked + .slider:before {
@@ -553,7 +559,7 @@
             .form-input,
             .form-textarea,
             .form-select {
-                font-size: 16px; /* Evita zoom en iOS */
+                font-size: 16px;
             }
 
             .module-item {
@@ -753,7 +759,7 @@
         }
 
         .tag {
-            background: #667eea;
+            background: #1D3B55; 
             color: white;
             padding: 0.5rem 0.75rem;
             border-radius: 20px;
@@ -802,7 +808,7 @@
         }
 
         .upload-area:hover {
-            border-color: #667eea;
+            border-color: #1D3B55;
             background: #ebf4ff;
         }
 
@@ -818,7 +824,7 @@
         }
 
         .browse-btn {
-            color: #667eea;
+            color: #1D3B55;
             font-weight: 600;
             text-decoration: underline;
         }
@@ -845,7 +851,7 @@
             border-radius: 8px;
         }
 
-        /*  Foro  */
+        /* Foro  */
         .module-footer {
             margin-top: 1.5rem;
             padding-top: 1rem;
@@ -870,7 +876,7 @@
 
         .qa-badge {
             background: #ebf8ff;
-            color: #3182ce;
+            color: #2C5270;
             padding: 0.2rem 0.6rem;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -933,7 +939,7 @@
         }
 
         .btn-reply {
-            color: #667eea;
+            color: #1D3B55;
             font-weight: 600;
             font-size: 0.75rem;
             border: none;
@@ -957,7 +963,7 @@
             margin-top: 1.5rem;
             padding-top: 1rem;
             border-top: 1px solid #e2e8f0;
-            background: #fffaf0; 
+            background: #FFF6C5;
             border-radius: 0 0 12px 12px;
             padding: 1rem;
         }
@@ -972,7 +978,7 @@
         .quiz-title {
             font-size: 0.95rem;
             font-weight: 600;
-            color: #c05621; 
+            color: #1D3B55;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -1319,7 +1325,7 @@
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
                                 </div>
                             </div>
-                                                        <div class="module-item">
+                            <div class="module-item">
                                 <div class="quiz-section">
                                     <div class="quiz-header">
                                         <div class="quiz-title">
@@ -1337,7 +1343,7 @@
                                     <div class="quiz-controls">
                                         <div class="form-group">
                                             <label class="form-label">Nombre del Quiz</label>
-                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 2">
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Nota de Aprobación (%)</label>
@@ -1382,7 +1388,7 @@
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
                                 </div>
                             </div>
-                                                        <div class="module-item">
+                            <div class="module-item">
                                 <div class="quiz-section">
                                     <div class="quiz-header">
                                         <div class="quiz-title">
@@ -1400,7 +1406,7 @@
                                     <div class="quiz-controls">
                                         <div class="form-group">
                                             <label class="form-label">Nombre del Quiz</label>
-                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 3">
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Nota de Aprobación (%)</label>
@@ -1445,7 +1451,7 @@
                                     <p class="no-questions">No hay preguntas recientes en este módulo.</p>
                                 </div>
                             </div>
-                                                        <div class="module-item">
+                            <div class="module-item">
                                 <div class="quiz-section">
                                     <div class="quiz-header">
                                         <div class="quiz-title">
@@ -1463,7 +1469,7 @@
                                     <div class="quiz-controls">
                                         <div class="form-group">
                                             <label class="form-label">Nombre del Quiz</label>
-                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 1">
+                                            <input type="text" class="form-input" value="Examen Parcial - Módulo 4">
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Nota de Aprobación (%)</label>
@@ -1709,14 +1715,14 @@
                             <div class="form-group">
                                 <label class="form-label">Progreso Promedio</label>
                                 <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; text-align: center;">
-                                    <div style="font-size: 2.5rem; font-weight: 700; color: #667eea;">45%</div>
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #1D3B55;">45%</div>
                                     <div style="color: #718096; font-size: 0.9rem; margin-top: 0.5rem;">De todos los estudiantes</div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Tiempo Promedio</label>
                                 <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; text-align: center;">
-                                    <div style="font-size: 2.5rem; font-weight: 700; color: #667eea;">12.5h</div>
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #1D3B55;">12.5h</div>
                                     <div style="color: #718096; font-size: 0.9rem; margin-top: 0.5rem;">Dedicadas al curso</div>
                                 </div>
                             </div>
