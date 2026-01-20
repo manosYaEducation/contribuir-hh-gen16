@@ -86,6 +86,16 @@
                             </iframe>
                         </div>
                     </div>
+
+                    <!-- BOTÓN de pagar debnajo del video  -->
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <a href="Pagos.html" 
+                           class="cta-button" 
+                           style="display: inline-block; padding: 1rem 3rem; font-size: 1.3rem;">
+                           Pagar
+                        </a>
+                    </div>
+
                 </div>
                 <div class="section">
                     <h2>
@@ -128,28 +138,40 @@
                                 <span class="module-title">Módulo 1: Fundamentos de la Inteligencia Emocional</span>
                                 <span class="module-duration">⏱️ 6h</span>
                             </div>
-                            <p class="module-duration">Teorías, modelos y aplicaciones en el contexto educativo</p>
+                            <p class="module-description">Teorías, modelos y aplicaciones en el contexto educativo</p>
+                            <div class="module-details" style="display: none; padding: 1rem; background: #f9fafb; border-top: 1px solid #e2e8f0;">
+                                <p>En este módulo explorarás los pilares de la inteligencia emocional según modelos como el de Goleman y Mayer-Salovey. Aprenderás a identificar emociones en el aula, analizar su impacto en el aprendizaje y aplicar conceptos básicos en escenarios educativos reales. Incluye videos teóricos, lecturas clave y ejercicios de reflexión inicial.</p>
+                            </div>
                         </div>
                         <div class="module" onclick="toggleModule(this)">
                             <div class="module-header">
                                 <span class="module-title">Módulo 2: Autoconocimiento y Autorregulación</span>
                                 <span class="module-duration">⏱️ 7h</span>
                             </div>
-                            <p class="module-duration">Desarrolla tu conciencia emocional y gestión personal</p>
+                            <p class="module-description">Desarrolla tu conciencia emocional y gestión personal</p>
+                            <div class="module-details" style="display: none; padding: 1rem; background: #f9fafb; border-top: 1px solid #e2e8f0;">
+                                <p>Aquí profundizarás en técnicas de autoconocimiento como diarios emocionales y tests de IE. Aprenderás estrategias para regular emociones bajo estrés docente, como mindfulness y respiración consciente. Incluye casos prácticos de burnout y cómo prevenirlo, con actividades interactivas y autoevaluaciones.</p>
+                            </div>
                         </div>
                         <div class="module" onclick="toggleModule(this)">
                             <div class="module-header">
                                 <span class="module-title">Módulo 3: Empatía y Habilidades Sociales</span>
                                 <span class="module-duration">⏱️ 8h</span>
                             </div>
-                            <p class="module-duration">Construcción de relaciones significativas en el aula</p>
+                            <p class="module-description">Construcción de relaciones significativas en el aula</p>
+                            <div class="module-details" style="display: none; padding: 1rem; background: #f9fafb; border-top: 1px solid #e2e8f0;">
+                                <p>Este módulo se centra en desarrollar empatía activa y comunicación no verbal. Explorarás dinámicas de grupo, resolución de conflictos emocionales y cómo fomentar la colaboración entre estudiantes. Incluye role-playing, análisis de videos de aulas reales y herramientas para mejorar interacciones con colegas y padres.</p>
+                            </div>
                         </div>
                         <div class="module" onclick="toggleModule(this)">
                             <div class="module-header">
                                 <span class="module-title">Módulo 4: Aplicaciones Prácticas y Casos</span>
                                 <span class="module-duration">⏱️ 7h</span>
                             </div>
-                            <p class="module-duration">Estrategias concretas para transformar tu práctica docente</p>
+                            <p class="module-description">Estrategias concretas para transformar tu práctica docente</p>
+                            <div class="module-details" style="display: none; padding: 1rem; background: #f9fafb; border-top: 1px solid #e2e8f0;">
+                                <p>Integrarás todo lo aprendido en casos reales: diseño de lecciones emocionales, manejo de crisis en el aula y evaluación de ambientes socioemocionales. Incluye proyectos finales, foros de discusión y recursos descargables para implementar inmediatamente en tu docencia.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,6 +187,16 @@
                         </svg>
                         <div class="progress-text">0%</div>
                     </div>
+
+                    <!-- BOTÓN de pagar debajo del progreso del curso -->
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <a href="Pagos.html" 
+                           class="cta-button" 
+                           style="display: block; margin: 0 auto; max-width: 220px;">
+                           Pagar
+                        </a>
+                    </div>
+
                     <button class="cta-button" onclick="startCourse()">Continuar Curso →</button>
                 </div>
 
@@ -258,7 +290,14 @@
         }
 
         function toggleModule(module) {
+            // Mantengo el cambio de color original
             module.style.backgroundColor = module.style.backgroundColor === 'rgb(237, 242, 247)' ? 'white' : '#edf2f7';
+            
+            // Agrego toggle para detalles
+            const details = module.querySelector('.module-details');
+            if (details) {
+                details.style.display = details.style.display === 'block' ? 'none' : 'block';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function () {

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar - Análisis Socioemocional de la Docencia Contemporánea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4b9ba1be0e.js" crossorigin="anonymous"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 480px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #009ee3, #0077b6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+        .product {
+            text-align: center;
+            padding: 25px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .product h2 {
+            font-size: 1.4rem;
+            margin: 10px 0;
+        }
+        .product p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #047857;
+            margin: 15px 0;
+        }
+        .content {
+            padding: 25px;
+        }
+        .methods-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .method-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .method-btn {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fdfdfe;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .method-btn:hover {
+            border-color: #009ee3;
+            background: #f0f9ff;
+        }
+        .method-btn.active {
+            border-color: #009ee3;
+            background: #f0f9ff;
+            box-shadow: 0 0 0 4px rgba(0,158,227,0.1);
+        }
+        .method-icon {
+            font-size: 1.8rem;
+            width: 50px;
+            text-align: center;
+        }
+        .method-text {
+            flex: 1;
+        }
+        .method-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .method-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+        .details.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .row {
+            display: flex;
+            gap: 12px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .pay-btn {
+            width: 100%;
+            padding: 16px;
+            background: #009ee3;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .pay-btn:hover {
+            background: #0077b6;
+        }
+        .security {
+            text-align: center;
+            margin-top: 25px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f1f5f9;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Pagar con Mercado Pago</h1>
+            <p>Transacción 100% segura</p>
+        </div>
+
+        <div class="product">
+            <h2>Análisis Socioemocional de la Docencia Contemporánea</h2>
+            <p>28 horas • Certificado incluido • Acceso de por vida</p>
+            <div class="price">$24.900 ARS</div>
+        </div>
+
+        <div class="content">
+            <h3 class="methods-title">¿Cómo querés pagar?</h3>
+
+            <div class="method-list">
+                <div class="method-btn active" data-method="card">
+                    <div class="method-icon">💳</div>
+                    <div class="method-text">
+                        <div class="method-title">Tarjeta de crédito o débito</div>
+                        <div class="method-desc">Visa, Mastercard, Amex, Naranja y más</div>
+                    </div>
+                </div>
+
+                <div class="method-btn" data-method="saldo">
+                    <div class="method-icon">💰</div>
+                    <div class="method-text">
+                        <div class="method-title">Dinero en Mercado Pago</div>
+                        <div class="method-desc">Usá tu saldo disponible</div>
+                    </div>
+                </div>
+
+                <div class="method-btn" data-method="transfer">
+                    <div class="method-icon">🏦</div>
+                    <div class="method-text">
+                        <div class="method-title">Transferencia bancaria</div>
+                        <div class="method-desc">CBU / CVU</div>
+                    </div>
+                </div>
+
+                <div class="method-btn" data-method="efectivo">
+                    <div class="method-icon">💵</div>
+                    <div class="method-text">
+                        <div class="method-title">Efectivo</div>
+                        <div class="method-desc">Rapipago, Pago Fácil, etc.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="details" class="details active">
+                <!-- Formulario de tarjeta (se muestra por defecto) -->
+                <div id="card-form">
+                    <div class="form-group">
+                        <label>Número de tarjeta</label>
+                        <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del titular</label>
+                        <input type="text" placeholder="Como figura en la tarjeta">
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Vencimiento</label>
+                            <input type="text" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group">
+                            <label>CVC</label>
+                            <input type="text" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                    <button class="pay-btn" onclick="pagar()">
+                        Pagar $24.900
+                    </button>
+                </div>
+            </div>
+
+            <div class="security">
+                <i class="fas fa-lock"></i> Pago protegido • Tus datos están encriptados • Garantizado por Mercado Pago
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="#" style="color: #009ee3; text-decoration: none;">Volver al curso</a> • 
+            <a href="#" style="color: #009ee3; text-decoration: none;">Preguntas frecuentes</a>
+        </div>
+    </div>
+
+    <script>
+        // Cambiar método de pago
+        document.querySelectorAll('.method-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const method = this.getAttribute('data-method');
+                const details = document.getElementById('details');
+                
+                if (method === 'card') {
+                    details.innerHTML = `
+                        <div id="card-form">
+                            <div class="form-group">
+                                <label>Número de tarjeta</label>
+                                <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre del titular</label>
+                                <input type="text" placeholder="Como figura en la tarjeta">
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label>Vencimiento</label>
+                                    <input type="text" placeholder="MM/AA">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVC</label>
+                                    <input type="text" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                            <button class="pay-btn" onclick="pagar()">Pagar $24.900</button>
+                        </div>`;
+                } else if (method === 'saldo') {
+                    details.innerHTML = `<p style="text-align:center;"><strong>Tenés saldo suficiente.</strong><br>Usaremos el dinero de tu cuenta Mercado Pago.</p>
+                        <button class="pay-btn" onclick="pagar()">Pagar con saldo</button>`;
+                } else if (method === 'transfer') {
+                    details.innerHTML = `<p style="text-align:center;"><strong>Transferencia bancaria</strong><br>Hacé la transferencia a:<br><br><b>CBU:</b> 0000003100059842410033<br><b>Titular:</b> Agustín Colombo<br><b>Concepto:</b> Curso Socioemocional</p>
+                        <button class="pay-btn" onclick="pagar()">Ya transferí</button>`;
+                } else if (method === 'efectivo') {
+                    details.innerHTML = `<p style="text-align:center;"><strong>Pago en efectivo</strong><br>Generaremos un código para que pagues en Rapipago o Pago Fácil en los próximos 30 minutos.</p>
+                        <button class="pay-btn" onclick="pagar()">Generar código de pago</button>`;
+                }
+                details.classList.add('active');
+            });
+        });
+
+        // Simulación de pago
+        function pagar() {
+            alert('Redirigiendo al checkout de Mercado Pago...)');
+            
+        }
+
+        // Formatear número de tarjeta con espacios
+        document.addEventListener('input', function(e) {
+            if (e.target.placeholder.includes('1234')) {
+                let v = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let matches = v.match(/\d{4,16}/g);
+                let match = matches && matches[0] || '';
+                let parts = [];
+                for (let i=0; i<match.length; i+=4) {
+                    parts.push(match.substring(i, i+4));
+                }
+                if (parts.length) {
+                    e.target.value = parts.join(' ');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
