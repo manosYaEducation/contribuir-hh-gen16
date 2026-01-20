@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg,#1e3e5a 0%, #fdf4ae 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -84,19 +84,19 @@ body {
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 6px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    border: 6px solid #1e3e5a;
+    box-shadow: 0 12px 40px #fdf4ae ;
 }
 
 .professor-button {
     background: none;
     border: none;
-    color: white;
+    color: #1e2021;
     font-size: 28px;
     font-weight: 600;
     cursor: pointer;
     padding: 15px 30px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 8px #fdf4ae ;
     transition: all 0.3s ease;
 }
 
@@ -114,6 +114,7 @@ body {
 
 .professor-button.active .arrow {
     transform: rotate(45deg);
+   
 }
 
 .professor-bio-panel {
@@ -129,10 +130,10 @@ body {
 }
 
 .professor-bio-panel p {
-    color: white;
+    color: #275c77;
     font-size: 18px;
     line-height: 1.8;
-    background: rgba(255, 255, 255, 0.15);
+    background:#fdf4ae ;
     backdrop-filter: blur(15px);
     padding: 35px;
     border-radius: 20px;
@@ -158,7 +159,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(255,255,255,0.25);
+    background:#1e3e5a ;
     padding: 14px 32px;
     border-radius: 30px;
     backdrop-filter: blur(12px);
@@ -179,7 +180,7 @@ body {
 }
 
 .section {
-    background: #f8f9fa;
+    background:#fdf4ae;
     padding: 30px;
     border-radius: 16px;
     transition: all 0.3s;
@@ -191,7 +192,7 @@ body {
 }
 
 .section h2 {
-    color: #667eea;
+    color:#1e2021  ;
     margin-bottom: 20px;
     font-size: 24px;
     display: flex;
@@ -201,7 +202,7 @@ body {
 
 .section p {
     line-height: 1.8;
-    color: #4a5568;
+    color: #1e3e5a ;
     font-size: 16px;
 }
 
@@ -212,10 +213,10 @@ body {
 }
 
 .module {
-    background: white;
+    background: #fdf4ae ;
     padding: 20px;
     border-radius: 12px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #1e3e5a;
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -234,12 +235,12 @@ body {
 
 .module-title {
     font-weight: 600;
-    color: #2d3748;
+    color: #2d3748;   /*perfect*/
     font-size: 18px;
 }
 
 .module-duration {
-    color: #718096;
+    color:#1e3e5a;
     font-size: 14px;
 }
 
@@ -250,10 +251,10 @@ body {
 }
 
 .card {
-    background: #f8f9fa;
+    background: #fdf4ae;
     padding: 25px;
     border-radius: 16px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #1e3e5a;   /*poner ese borde en la otra parte */
 }
 
 .progress-circle {
@@ -270,7 +271,7 @@ body {
 .progress-ring-circle {
     transition: stroke-dashoffset 0.5s;
     fill: transparent;
-    stroke: #667eea;
+    stroke: #1e3e5a;
     stroke-width: 8;
 }
 
@@ -281,13 +282,13 @@ body {
     transform: translate(-50%, -50%);
     font-size: 32px;
     font-weight: bold;
-    color: #667eea;
+    color: #1e3e5a;
 }
 
 .cta-button {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1e3e5a);
     color: white;
     border: none;
     border-radius: 12px;
@@ -313,20 +314,20 @@ body {
 .stat-item {
     text-align: center;
     padding: 15px;
-    background: white;
+    background: #1e3e5a;
     border-radius: 12px;
 }
 
 .stat-value {
     font-size: 28px;
     font-weight: bold;
-    color: #667eea;
+    color: white;
     display: block;
 }
 
 .stat-label {
     font-size: 14px;
-    color: #718096;
+    color: white;
     margin-top: 5px;
 }
 
@@ -347,14 +348,14 @@ body {
     align-items: start;
     gap: 15px;
     padding: 15px;
-    background: white;
+    background: #fdf4ae;
     border-radius: 10px;
 }
 
 .check-icon {
     width: 24px;
     height: 24px;
-    background: #667eea;
+    background: #1e3e5a;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -376,8 +377,8 @@ body {
 .faq-button {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #1e3e5a );
+    color: WHITE;   
     border: none;
     border-radius: 50%;
     font-size: 36px;
@@ -401,8 +402,8 @@ body {
     bottom: 80px;
     right: 0;
     width: 340px;
-    background: #f8f9fa;
-    border: 2px solid #e2e8f0;
+    background: #1e3e5a;
+    border: 2px solid #fdf4ae  ; /* ESTA PATRTE ES ÑA DE PREGUNTAS FREEVCUENTES CAMBIAR A AMARILLO SI QUEDA FEO*/
     border-radius: 16px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
     padding: 24px;
@@ -418,13 +419,12 @@ body {
 .faq-panel h3 {
     margin: 0 0 20px 0;
     text-align: center;
-    color: #667eea;
-    font-size: 19px;
+    color: white; 
     font-weight: 600;
 }
 
 .accordion-item {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid white;
     margin-bottom: 16px;
     padding-bottom: 12px;
 }
@@ -443,7 +443,7 @@ body {
     padding: 14px 0;
     font-weight: 600;
     font-size: 16px;
-    color: #2d3748;
+    color: white;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -452,14 +452,14 @@ body {
 }
 
 .accordion-button:hover {
-    color: #667eea;
+    color: #fdf4ae ;
 }
 
 .accordion-button::after {
     content: "+";
     font-size: 24px;
     font-weight: bold;
-    color: #667eea;
+    color: white;
     transition: transform 0.3s;
 }
 
