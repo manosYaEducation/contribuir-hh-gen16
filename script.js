@@ -271,6 +271,10 @@ async function enrollCourse(id) {
         return;
     }
 
+    // Si está logueado, lo mandamos a la carpeta ModeladoHTML pasando el ID por la URL
+    window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+}
+
     try {
         const formData = new FormData();
         formData.append('course_id', id);
@@ -295,7 +299,7 @@ async function enrollCourse(id) {
         alert('Error de conexión al inscribirse');
         console.error('Error:', error);
     }
-}
+
 
 function sendMessage(event) {
     event.preventDefault();
