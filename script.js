@@ -268,9 +268,12 @@ async function enrollCourse(id) {
     if (!isLoggedIn) {
         alert('Debes iniciar sesión para inscribirte.');
         openModal('loginModal');
-        return;
-    }
-
+       }
+   else {
+        window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+           }
+    return;
+    
     try {
         const response = await fetch('../tu_archivo_php.php', {
             method: 'POST',
