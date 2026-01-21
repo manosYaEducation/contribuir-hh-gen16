@@ -42,9 +42,12 @@ $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
 
 if ($checkResult->num_rows > 0) {
-    http_response_code(409);
-    echo json_encode(['error' => 'Ya estás inscrito en este curso']);
+    // Cerramos la sentencia para liberar memoria
     $checkStmt->close();
+    
+    // Redirigimos directamente al HTML
+    // Asegurate de que la ruta sea correcta desde donde está el archivo PHP
+    header("Location: ../ModeladoHTML/curso.html?id=" . $id);
     exit();
 }
 $checkStmt->close();
