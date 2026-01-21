@@ -271,8 +271,34 @@ async function enrollCourse(id) {
         return;
     }
 
-    // Si está logueado, lo mandamos a la carpeta ModeladoHTML pasando el ID por la URL
-    window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+    try {
+        // Aquí es donde llamas a tu PHP
+        const response = await fetch('../tu_archivo_php.php', {
+            method: 'POST',
+            body: JSON.stringify({ id: id })
+        });
+
+        if (response.status === 409) {
+            // Si el PHP dice que ya estás inscrito, ¡igual te mando al curso!
+            console.log('Ya estabas inscrito, redirigiendo...');
+            window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+            return; 
+        }
+
+        if (response.ok) {
+            // Si la inscripción fue exitosa (primera vez)
+            alert('¡Inscripción exitosa!');
+            window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+        } else {
+            const errorData = await response.json();
+            alert('Error: ' + errorData.error);
+        }
+
+    } catch (error) {
+        console.error('Error en la petición:', error);
+        // Incluso si falla la red, podrías intentar redirigir igual
+        window.location.href = `../ModeladoHTML/curso.html?id=${id}`;
+    }
 }
 
     try {
