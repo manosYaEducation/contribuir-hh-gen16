@@ -9,6 +9,8 @@ body {
     background: linear-gradient(135deg,#1e3e5a 0%, #fdf4ae 100%);
     min-height: 100vh;
     padding: 20px;
+    
+    
 }
 
 .container {
@@ -18,6 +20,7 @@ body {
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    
 }
 
 .hero {
@@ -29,6 +32,7 @@ body {
     display: flex;
     align-items: flex-end;
     padding: 40px;
+    
 }
 
 .hero-content {
@@ -36,6 +40,7 @@ body {
     z-index: 1;
     text-align: center;
     width: 100%;
+    
 }
 
 .back-btn {
@@ -51,11 +56,13 @@ body {
     cursor: pointer;
     font-size: 16px;
     transition: all 0.3s;
+     
 }
 
 .back-btn:hover {
     background: rgba(255,255,255,0.3);
     transform: translateX(-5px);
+    
 }
 
 .hero h1 {
@@ -63,6 +70,7 @@ body {
     margin: 0 0 60px 0;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
     line-height: 1.2;
+    
 }
 
 /* ==================== PERFIL DEL PROFESOR - FINAL PROLIJO ==================== */
@@ -73,6 +81,7 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 0 60px 0;
+    
 }
 
 .professor-photo {
@@ -153,6 +162,7 @@ body {
     gap: 60px;
     flex-wrap: wrap;
     margin-top: 30px;
+    
 }
 
 .meta-item {
@@ -164,13 +174,17 @@ body {
     border-radius: 30px;
     backdrop-filter: blur(12px);
     font-size: 17px;
+    
 }
 
 .content-wrapper {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: block;
+    /*grid-template-columns: 2fr 1fr;*/
     gap: 40px;
     padding: 40px;
+    
+    
+    
 }
 
 .main-content {
@@ -245,9 +259,10 @@ body {
 }
 
 .sidebar {
-    display: flex;
+    display: block;
     flex-direction: column;
     gap: 25px;
+    align-items: center;   /* ver que onda si lo sacamos ---------------------*/
 }
 
 .card {
@@ -341,6 +356,7 @@ body {
     flex-direction: column;
     gap: 15px;
     margin-top: 15px;
+    
 }
 
 .objetivo-item {
