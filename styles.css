@@ -1,8 +1,8 @@
 /* ===== VARIABLES Y RESET ===== */
 :root {
-    --color-primary: #b45309;
-    --color-primary-dark: #92400e;
-    --color-secondary: #15803d;
+    --color-primary: #054581f8;
+    --color-primary-dark: #1d3d59;
+    --color-secondary: #fdf4a0;
     --color-stone-800: #292524;
     --color-stone-700: #44403c;
     --color-stone-600: #57534e;
@@ -379,7 +379,7 @@ header {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    background: linear-gradient(90deg, #054581f8,#d8cd6e);
     width: 85%;
 }
 
@@ -490,7 +490,7 @@ header {
 }
 
 .highlight-secondary {
-    color: var(--color-secondary);
+    color: #d8cd6e;
 }
 
 /* ===== VISION SECTION ===== */
