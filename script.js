@@ -241,24 +241,30 @@ function renderCourses() {
 function createCourseCard(course) {
     const card = document.createElement('div');
     card.className = 'course-card';
-    const formattedPrice = course.price.toLocaleString('es-CL');
+    const formattedPrice = Number(course.price).toLocaleString('es-CL');
+
+    
     card.innerHTML = `
         <img src="${course.image}" alt="${course.title}" class="course-image">
         <div class="course-body">
             <span class="course-category">${course.category}</span>
             <h3 class="course-title">${course.title}</h3>
             <div class="course-instructor">
-                <img src="${course.avatar}" alt="${course.instructor}" class="instructor-avatar">
+                <img src="${course.avatar || 'assets/default-avatar.png'}" alt="${course.instructor}" class="instructor-avatar">
                 <div class="instructor-info"><div class="instructor-name">${course.instructor}</div></div>
             </div>
             <div class="course-rating">
-                <span class="rating-stars">⭐ ${course.rating}</span>
-                <span>👥 ${course.students} estudiantes</span>
+                <span class="rating-stars">⭐ ${course.rating || 5.0}</span>
+                <span>👥 ${course.students || 0} estudiantes</span>
             </div>
             <p class="course-description">${course.description}</p>
             <div class="course-footer">
                 <div class="course-price">$${formattedPrice}</div>
-                <div class="course-actions"><button class="btn-course" onclick="enrollCourse(${course.id})">Comenzar →</button></div>
+                <div class="course-actions">
+                    <a href="pages/curso.html?id=${course.id}" class="btn-course" style="text-decoration:none; display:inline-block; text-align:center;">
+                        Comenzar →
+                    </a>
+                </div>
             </div>
         </div>`;
     return card;
