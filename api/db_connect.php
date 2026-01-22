@@ -1,7 +1,7 @@
 <?php
 // Reemplaza con tus propios datos de la base de datos de Hostinger
 $servername = "localhost"; // Generalmente es localhost en Hostinger
-$username = "";
+$username = "root";
 $password = "";
 $dbname = "u125784517_contribuir_db";
 
