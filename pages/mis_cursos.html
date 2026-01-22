@@ -381,7 +381,7 @@
         function useMockData() {
             allEnrollments = [
                 { id: 1, enrollmentId: 101, title: "Metodologías Innovadoras: De la Teoría a la Práctica", instructor: "Prof. Mauricio Paredes", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 0, enrolledDate: "05/11/2025", hoursCompleted: "0", totalHours: "30" },
-                { id: 2, enrollmentId: 102, title: "Análisis Socioemocional de la Docencia Contemporánea", instructor: "Dr. Francisco Conejo", image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 45, enrolledDate: "24/10/2025", hoursCompleted: "12", totalHours: "28" },
+                { id: 2, enrollmentId: 102, title: "Primera Formación de Artistas Educadores", instructor: "Dr. Francisco Conejo", image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 45, enrolledDate: "24/10/2025", hoursCompleted: "12", totalHours: "28" },
                 { id: 3, enrollmentId: 103, title: "Educación Consciente para Docentes", instructor: "Dra. María García López", image: "https://images.unsplash.com/photo-1529390079861-591de3544d49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 100, enrolledDate: "19/10/2025", hoursCompleted: "20", totalHours: "20" },
                 { id: 4, enrollmentId: 104, title: "Mindfulness en el Aula", instructor: "Lic. Ana Rivera", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 72, enrolledDate: "10/12/2025", hoursCompleted: "18", totalHours: "25" }
             ];
@@ -487,10 +487,10 @@
                             </div>
 
                             <div class="course-actions-row">
-                                <a href="../ModeladoHTML/curso.html?id=${course.id}" class="btn btn-primary">   <!-- Cambiar URL para cuando apretemos continuar y nos mande a otra pantalla del curso  -->
+                                <a href="../pages/curso.html?id=${course.id}" class="btn btn-primary">   <!-- Cambiar URL para cuando apretemos continuar y nos mande a otra pantalla del curso  -->
                                     ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
                                 </a>
-                                <a href="../ModeladoHTML/curso.html?id=${course.id}" class="btn btn-secondary">
+                                <a href="../pages/curso.html?id=${course.id}" class="btn btn-secondary">
                                     Detalles
                                 </a>
                             </div>
