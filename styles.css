@@ -74,6 +74,14 @@ header {
     transition: transform 0.3s ease;
 }
 
+.logo-icon { /* Icono de la Landing Page */
+  width: 36px;    
+  height: auto;   
+  max-height: 36px; 
+    border-radius: 50%;
+  object-fit: cover;  
+}
+
 .logo:hover {
     transform: scale(1.05);
 }

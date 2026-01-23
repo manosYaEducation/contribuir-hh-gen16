@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Con Tribu Ir</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header id="header">
         <div class="container">
             <div class="header-content">
                 <div class="logo" onclick="scrollToSection('inicio')">
-                    <span>🐜</span>
+                    <img src="photos/LogoOficial.png" alt="Logo Con Tribu Ir" class="logo-icon">
                     <span>Con Tribu Ir</span>
                 </div>
 
@@ -22,22 +24,22 @@
                 </nav>
 
                 <div class="header-buttons">
-                <button class="btn btn-secondary" id="loginBtn" onclick="openModal('loginModal')">
-                    Iniciar Sesión
-                </button>
-                <button class="btn btn-primary" id="registerBtn" onclick="openModal('registerModal')">
-                    Unirse
-                </button>
-                <div id="userSection" class="user-section hidden">
-                    <span id="userName" class="user-name"></span>
-                    <button class="btn btn-secondary" onclick="goToMyCourses()" style="margin-left: 0.5rem;">
-                        📚 Mis Cursos
+                    <button class="btn btn-secondary" id="loginBtn" onclick="openModal('loginModal')">
+                        Iniciar Sesión
                     </button>
-                    <button class="btn btn-secondary" onclick="logout()" style="margin-left: 0.5rem;">
-                        Salir
+                    <button class="btn btn-primary" id="registerBtn" onclick="openModal('registerModal')">
+                        Unirse
                     </button>
+                    <div id="userSection" class="user-section hidden">
+                        <span id="userName" class="user-name"></span>
+                        <button class="btn btn-secondary" onclick="goToMyCourses()" style="margin-left: 0.5rem;">
+                            📚 Mis Cursos
+                        </button>
+                        <button class="btn btn-secondary" onclick="logout()" style="margin-left: 0.5rem;">
+                            Salir
+                        </button>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </header>
@@ -53,7 +55,7 @@
                     <h1>Transforma el futuro con <span class="gradient-text">educación consciente</span></h1>
 
                     <p class="hero-description">
-                        Impulsa procesos educativos, socioemocionales y culturales que promuevan el bienestar, 
+                        Impulsa procesos educativos, socioemocionales y culturales que promuevan el bienestar,
                         la inclusión y el crecimiento personal a través de experiencias virtuales transformadoras.
                     </p>
 
@@ -114,25 +116,26 @@
             <div class="section-header">
                 <h2 class="section-title">Quiénes Somos</h2>
                 <p class="section-description">
-                    Somos una organización comprometida con la transformación educativa y social, 
+                    Somos una organización comprometida con la transformación educativa y social,
                     trabajando como hormigas para construir comunidades más conscientes y resilientes.
                 </p>
             </div>
 
             <div class="about-grid">
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&h=400&fit=crop" alt="Comunidad educativa">
+                    <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&h=400&fit=crop"
+                        alt="Comunidad educativa">
                 </div>
                 <div class="about-text">
                     <h1>Con Tribu Ir</h1>
                     <p>
-                        Con Tribu Ir nace desde la necesidad de crear espacios educativos que verdaderamente 
-                        transformen vidas. Como las hormigas, trabajamos en comunidad, cada uno aportando 
+                        Con Tribu Ir nace desde la necesidad de crear espacios educativos que verdaderamente
+                        transformen vidas. Como las hormigas, trabajamos en comunidad, cada uno aportando
                         sus fortalezas para construir algo más grande que nosotros mismos.
                     </p>
                     <p>
-                        Nuestro enfoque se centra en el desarrollo integral de las personas, 
-                        promoviendo el bienestar socioemocional, la inclusión y el crecimiento personal 
+                        Nuestro enfoque se centra en el desarrollo integral de las personas,
+                        promoviendo el bienestar socioemocional, la inclusión y el crecimiento personal
                         a través de metodologías innovadoras y experiencias transformadoras.
                     </p>
                 </div>
@@ -149,10 +152,11 @@
             <div class="mission-content">
                 <div class="mission-emoji">🌱</div>
                 <p class="mission-text">
-                    Impulsar procesos educativos, socioemocionales y culturales que promuevan el 
-                    <span class="highlight highlight-primary">bienestar, la inclusión y el crecimiento personal y colectivo</span>, 
-                    a través de experiencias en establecimientos, programas, cursos, diplomados y formaciones 
-                    <span class="highlight highlight-secondary">accesibles y de calidad</span>, 
+                    Impulsar procesos educativos, socioemocionales y culturales que promuevan el
+                    <span class="highlight highlight-primary">bienestar, la inclusión y el crecimiento personal y
+                        colectivo</span>,
+                    a través de experiencias en establecimientos, programas, cursos, diplomados y formaciones
+                    <span class="highlight highlight-secondary">accesibles y de calidad</span>,
                     que dejen huella en las personas y en sus comunidades.
                 </p>
             </div>
@@ -168,11 +172,12 @@
             <div class="vision-content">
                 <div class="vision-emoji">🌍</div>
                 <p class="vision-text">
-                    Ser un <span class="highlight highlight-secondary">referente nacional e internacional</span> en 
-                    educación y transformación social, reconocidos por nuestro 
-                    <span class="highlight highlight-primary">compromiso humano, nuestro enfoque innovador</span> y 
-                    nuestra capacidad de construir <span class="highlight highlight-secondary">comunidades más conscientes, 
-                    inclusivas y resilientes</span>, donde cada persona encuentre herramientas para desarrollar su 
+                    Ser un <span class="highlight highlight-secondary">referente nacional e internacional</span> en
+                    educación y transformación social, reconocidos por nuestro
+                    <span class="highlight highlight-primary">compromiso humano, nuestro enfoque innovador</span> y
+                    nuestra capacidad de construir <span class="highlight highlight-secondary">comunidades más
+                        conscientes,
+                        inclusivas y resilientes</span>, donde cada persona encuentre herramientas para desarrollar su
                     potencial y contribuir al bien común.
                 </p>
             </div>
@@ -190,7 +195,8 @@
 
             <div class="filters">
                 <div class="search-box">
-                    <input type="text" id="searchCourses" class="search-input" placeholder="Buscar cursos..." onkeyup="filterCourses()">
+                    <input type="text" id="searchCourses" class="search-input" placeholder="Buscar cursos..."
+                        onkeyup="filterCourses()">
                 </div>
                 <div class="category-filters" id="categoryFilters"></div>
             </div>
@@ -259,10 +265,12 @@
                     <input type="email" id="loginEmail" name="email" class="form-input" placeholder="Tu email" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="loginPassword" name="password" class="form-input" placeholder="Tu contraseña" required>
+                    <input type="password" id="loginPassword" name="password" class="form-input"
+                        placeholder="Tu contraseña" required>
                 </div>
                 <button type="submit" class="btn-submit">Ingresar</button>
-                <p class="modal-switch">¿No tienes cuenta? <a onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a></p>
+                <p class="modal-switch">¿No tienes cuenta? <a
+                        onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a></p>
             </form>
         </div>
     </div>
@@ -272,47 +280,31 @@
             <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
             <form id="registerForm">
                 <h3>Crear una Cuenta</h3>
-                
+
                 <div class="form-group">
-                    <input type="text" 
-                           id="registerName" 
-                           name="name" 
-                           class="form-input" 
-                           placeholder="Tu nombre" 
-                           required>
+                    <input type="text" id="registerName" name="name" class="form-input" placeholder="Tu nombre"
+                        required>
                 </div>
-                
+
                 <div class="form-group">
-                    <input type="email" 
-                           id="registerEmail" 
-                           name="email" 
-                           class="form-input" 
-                           placeholder="Tu email" 
-                           required>
+                    <input type="email" id="registerEmail" name="email" class="form-input" placeholder="Tu email"
+                        required>
                 </div>
-                
+
                 <div class="form-group">
-                    <input type="password" 
-                           id="registerPassword" 
-                           name="password" 
-                           class="form-input" 
-                           placeholder="Crea una contraseña" 
-                           required>
+                    <input type="password" id="registerPassword" name="password" class="form-input"
+                        placeholder="Crea una contraseña" required>
                 </div>
-                
+
                 <div class="form-group">
-                    <input type="password" 
-                           id="registerConfirmPassword" 
-                           name="confirmPassword" 
-                           class="form-input" 
-                           placeholder="Confirma tu contraseña" 
-                           required>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" class="form-input"
+                        placeholder="Confirma tu contraseña" required>
                 </div>
-                
+
                 <button type="submit" class="btn-submit">Registrarse</button>
-                
+
                 <p class="modal-switch">
-                    ¿Ya tienes cuenta? 
+                    ¿Ya tienes cuenta?
                     <a onclick="switchToModal('registerModal', 'loginModal')">Inicia sesión</a>
                 </p>
             </form>
@@ -341,4 +333,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
