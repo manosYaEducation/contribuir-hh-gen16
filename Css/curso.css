@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg,#1e3e5a 0%, #fdf4ae 100%);
+    background: linear-gradient(135deg,#1e3e5a 0%, #fdf195 100%);
     min-height: 100vh;
     padding: 20px;
     
@@ -94,18 +94,18 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 6px solid #1e3e5a;
-    box-shadow: 0 12px 40px #fdf4ae ;
+    box-shadow: 0 6px 20px #f8f5dd ;
 }
 
 .professor-button {
     background: none;
     border: none;
-    color: #1e2021;
+    color: #ffffff;
     font-size: 28px;
     font-weight: 600;
     cursor: pointer;
     padding: 15px 30px;
-    text-shadow: 0 2px 8px #fdf4ae ;
+    text-shadow: 0 2px 8px #263247 ;
     transition: all 0.3s ease;
 }
 
@@ -194,7 +194,7 @@ body {
 }
 
 .section {
-    background:#fdf4ae;
+    background:#fff9cc;
     padding: 30px;
     border-radius: 16px;
     transition: all 0.3s;
@@ -266,7 +266,7 @@ body {
 }
 
 .card {
-    background: #fdf4ae;
+    background: #fff9cc;
     padding: 25px;
     border-radius: 16px;
     border: 2px solid #1e3e5a;   /*poner ese borde en la otra parte */
