@@ -40,6 +40,7 @@ body {
     z-index: 1;
     text-align: center;
     width: 100%;
+    text-shadow: #1d3d59 1px 0 10px;
     
 }
 
@@ -142,7 +143,7 @@ body {
     color: #275c77;
     font-size: 18px;
     line-height: 1.8;
-    background:#fdf4ae ;
+    background:#fffbdc ;
     backdrop-filter: blur(15px);
     padding: 35px;
     border-radius: 20px;
@@ -194,7 +195,7 @@ body {
 }
 
 .section {
-    background:#fff9cc;
+    background:#fffbdc;
     padding: 30px;
     border-radius: 16px;
     transition: all 0.3s;
@@ -227,7 +228,7 @@ body {
 }
 
 .module {
-    background: #fdf4ae ;
+    background: #fffbdc ;
     padding: 20px;
     border-radius: 12px;
     border-left: 4px solid #1e3e5a;
@@ -266,7 +267,7 @@ body {
 }
 
 .card {
-    background: #fff9cc;
+    background: #fffbdc;
     padding: 25px;
     border-radius: 16px;
     border: 2px solid #1e3e5a;   /*poner ese borde en la otra parte */
@@ -364,7 +365,7 @@ body {
     align-items: start;
     gap: 15px;
     padding: 15px;
-    background: #fdf4ae;
+    background: #ffefc2;
     border-radius: 10px;
 }
 
