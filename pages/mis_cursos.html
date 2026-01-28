@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #1d3d59 1%, #fdf4a0 99%);
             min-height: 100vh;
             padding: 2rem;
         }
@@ -113,7 +113,7 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #1d3d59 10%, #fdf4a0 45%);
         }
 
         .course-body {
@@ -163,7 +163,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #054581f8 0%, #d8cd6e 70%);
             border-radius: 4px;
             transition: width 0.3s ease;
         }
@@ -210,7 +210,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #24378d 0%, #24378d 100%);
             color: white;
         }
 
@@ -263,7 +263,7 @@
         .btn-explore {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1d3d59 0%, #d8cd6e 100%);
             color: white;
             text-decoration: none;
             border-radius: 6px;
@@ -382,7 +382,9 @@
             allEnrollments = [
                 { id: 1, enrollmentId: 101, title: "Metodologías Innovadoras: De la Teoría a la Práctica", instructor: "Prof. Mauricio Paredes", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 0, enrolledDate: "05/11/2025", hoursCompleted: "0", totalHours: "30" },
                 { id: 2, enrollmentId: 102, title: "Formación de Artistas Educadores", instructor: "Con Tribu Ir", image: "https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp", progress: 45, enrolledDate: "24/10/2025", hoursCompleted: "12", totalHours: "28" },
-                { id: 3, enrollmentId: 104, title: "Mindfulness en el Aula", instructor: "Lic. Ana Rivera", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 72, enrolledDate: "10/12/2025", hoursCompleted: "18", totalHours: "25" }            ];
+                { id: 3, enrollmentId: 104, title: "Mindfulness en el Aula", instructor: "Lic. Ana Rivera", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 72, enrolledDate: "10/12/2025", hoursCompleted: "18", totalHours: "25" }
+            ];
+
             filterCourses('activos');
         }
 
