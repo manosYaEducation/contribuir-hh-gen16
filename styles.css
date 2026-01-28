@@ -1,8 +1,8 @@
 /* ===== VARIABLES Y RESET ===== */
 :root {
-    --color-primary: #b45309;
-    --color-primary-dark: #92400e;
-    --color-secondary: #15803d;
+    --color-primary: #054581f8;
+    --color-primary-dark: #1d3d59;
+    --color-secondary: #fdf4a0;
     --color-stone-800: #292524;
     --color-stone-700: #44403c;
     --color-stone-600: #57534e;
@@ -72,6 +72,14 @@ header {
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.3s ease;
+}
+
+.logo-icon { /* Icono de la Landing Page */
+  width: 36px;    
+  height: auto;   
+  max-height: 36px; 
+    border-radius: 50%;
+  object-fit: cover;  
 }
 
 .logo:hover {
@@ -379,7 +387,7 @@ header {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    background: linear-gradient(90deg, #054581f8,#d8cd6e);
     width: 85%;
 }
 
@@ -407,7 +415,8 @@ header {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    color: var(--color-stone-800);
+    color: #d8bf6e;
+    -webkit-text-stroke: 1px #2d3a49;
 }
 
 .section-description {
@@ -455,7 +464,7 @@ header {
 
 /* ===== MISSION SECTION ===== */
 .section-mission {
-    background: linear-gradient(135deg, var(--color-amber-100) 0%, #fed7aa 100%);
+    background: linear-gradient(135deg, #1d3d59 0%, #1d3d59 100%);
 }
 
 .mission-content {
@@ -490,12 +499,18 @@ header {
 }
 
 .highlight-secondary {
-    color: var(--color-secondary);
+    color: #d8cd6e;
 }
 
 /* ===== VISION SECTION ===== */
 .section-vision {
-    background: linear-gradient(135deg, var(--color-green-50) 0%, var(--color-green-100) 100%);
+    background: linear-gradient(
+  180deg,
+  #8b763b 0%,
+  #d8cd6e 50%,
+  #fdf4a0 100%
+);
+    
 }
 
 .vision-content {
@@ -733,7 +748,7 @@ header {
 
 /* ===== CONTACT SECTION ===== */
 .section-contact {
-    background: var(--color-white);
+    background: #f1f1f1;
 }
 
 .contact-grid {
