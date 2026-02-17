@@ -6,19 +6,33 @@ var coursesData = []; // Variable para almacenar los cursos
 
 /* ===== INICIALIZACION ===== */
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('- Iniciando aplicación...');
     checkSessionStatus();
     init();
    
     // Conectar los formularios a las funciones de JS
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-    document.getElementById('registerForm').addEventListener('submit', handleRegister);
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
+    if (registerForm) registerForm.addEventListener('submit', handleRegister);
 });
 
 async function init() {
-    await loadCoursesData();
-    renderCourses();
-    renderCategories();
-    setupScrollListener();
+    try {
+        await loadCoursesData();
+        console.log('Total de cursos en catálogo:', coursesData.length);
+        
+        if (coursesData.length === 0) {
+            console.warn('No hay cursos en la base de datos');
+        }
+        
+        renderCourses();
+        renderCategories();
+        setupScrollListener();
+    } catch (error) {
+        console.error('Error en inicialización:', error);
+    }
 }
 
 /* ===== FUNCIONES DE MODAL ===== */
@@ -48,6 +62,7 @@ async function loadCoursesData() {
     try {
         const response = await fetch('api/get_courses.php');
         coursesData = await response.json();
+        console.log('Cursos cargados en index:', coursesData.length, coursesData);
     } catch (error) {
         console.error('Error al cargar los datos de los cursos:', error);
         coursesData = [];
@@ -230,6 +245,8 @@ function renderCourses() {
         const matchCategory = selectedCategory === 'Todas' || course.category === selectedCategory;
         return matchSearch && matchCategory;
     });
+
+    console.log(`🔍 Filtro: "${selectedCategory}", Busca: "${searchValue}", Resultados: ${filtered.length}/${coursesData.length}`);
 
     if (filtered.length === 0) {
         grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;"><h3>No se encontraron cursos</h3></div>';

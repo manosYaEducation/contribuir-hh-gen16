@@ -343,9 +343,9 @@
             <h1>📚 Mis Cursos</h1>
             <p>Gestiona tus inscripciones y continúa aprendiendo</p>
             <div class="tabs">
-                <button class="tab-btn active" onclick="filterCourses('activos', this)">En Progreso</button>
+                <button class="tab-btn" onclick="filterCourses('activos', this)">En Progreso</button>
                 <button class="tab-btn" onclick="filterCourses('completados', this)">Completados</button>
-                <button class="tab-btn" onclick="filterCourses('todos', this)">Todos</button>
+                <button class="tab-btn active" onclick="filterCourses('todos', this)">Todos</button>
                 <button class="tab-btn" onclick="filterCourses('favoritos', this)">Favoritos ❤️</button>
             </div>
         </div>
@@ -366,27 +366,27 @@
 
     <script>
         let allEnrollments = [];
-        let currentFilter = 'activos';
+        let currentFilter = 'todos';
         let favorites = JSON.parse(localStorage.getItem('contribuir_favorites') || '[]');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.log('🔧 Modo prueba local activado');
-                useMockData();
-            } else {
-                loadEnrollments();
+        // Función para convertir rutas relativas a absolutas
+        function fixImagePath(path) {
+            if (!path) return '/photos/default.png';
+            // Si ya es una ruta absoluta o URL, devolverla sin cambios
+            if (path.startsWith('/') || path.startsWith('http')) {
+                return path;
             }
-        });
-
-        function useMockData() {
-            allEnrollments = [
-                { id: 1, enrollmentId: 101, title: "Metodologías Innovadoras: De la Teoría a la Práctica", instructor: "Prof. Mauricio Paredes", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 0, enrolledDate: "05/11/2025", hoursCompleted: "0", totalHours: "30" },
-                { id: 2, enrollmentId: 102, title: "Formación de Artistas Educadores", instructor: "Con Tribu Ir", image: "https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp", progress: 45, enrolledDate: "24/10/2025", hoursCompleted: "12", totalHours: "28" },
-                { id: 3, enrollmentId: 104, title: "Mindfulness en el Aula", instructor: "Lic. Ana Rivera", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80", progress: 72, enrolledDate: "10/12/2025", hoursCompleted: "18", totalHours: "25" }
-            ];
-
-            filterCourses('activos');
+            // Si contiene ../, devolverla sin cambios
+            if (path.includes('../')) {
+                return path;
+            }
+            // Convertir a ruta absoluta
+            return '/' + path;
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEnrollments();
+        });
 
         async function loadEnrollments() {
             let sessionResponse, enrollmentsResponse;
@@ -398,13 +398,16 @@
                 if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
 
                 allEnrollments = await enrollmentsResponse.json();
-                filterCourses('activos');
+                console.log('✅ Total de cursos cargados:', allEnrollments.length);
+                console.log('📋 Datos completos:', allEnrollments);
+                filterCourses('todos');
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('coursesContainer').innerHTML = '';
                 document.getElementById('emptyState').innerHTML = `
-                    <div class="empty-state-icon">⚠️</div>
-                    <h2>No se pudieron cargar los cursos</h2>
+                    <div class="empty-state-icon">ERROR</div>
+                    <h2>Error al cargar tus cursos</h2>
+                    <p>Error: ${error.message}</p>
                     <p>Por favor, vuelve al inicio e inicia sesión.</p>
                     <a href="../index.html" class="btn-explore">Volver al inicio</a>
                 `;
@@ -438,8 +441,9 @@
 
                 let message = 'No tienes cursos en esta categoría.';
                 if (currentFilter === 'favoritos') message = 'Aún no has marcado ningún curso como favorito ❤️';
-                else if (currentFilter === 'activos') message = '¡Inscríbete en un curso para comenzar!';
+                else if (currentFilter === 'activos') message = '✨ ¡No hay cursos en progreso! Todos completados o sin empezar.';
                 else if (currentFilter === 'completados') message = '¡Termina un curso para verlo aquí!';
+                else if (currentFilter === 'todos' && allEnrollments.length === 0) message = '📖 No tienes ningún curso aún. ¡Inscríbete en uno!';
 
                 emptyState.innerHTML = `
                     <div class="empty-state-icon">📖</div>
@@ -452,12 +456,14 @@
 
             container.style.display = 'grid';
             emptyState.style.display = 'none';
+            console.log(`Mostrando ${courses.length} curso(s) con filtro: ${currentFilter}`);
 
             container.innerHTML = courses.map(course => {
                 const isFavorite = favorites.includes(course.id);
+                const imageSrc = course.image.startsWith('http') || course.image.startsWith('/') ? course.image : '../' + course.image;
                 return `
                     <div class="course-card">
-                        <img src="${course.image}" alt="${course.title}" class="course-image">
+                        <img src="${imageSrc}" alt="${course.title}" class="course-image" onerror="this.onerror=null;this.src='../photos/LogoOficial.png';">
                         <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" onclick="toggleFavorite(${course.id}, event)">
                             ${isFavorite ? '❤️' : '🤍'}
                         </button>
@@ -483,7 +489,7 @@
 
                             <div class="course-stats">
                                 <div class="stat-item">📅 ${course.enrolledDate}</div>
-                                <div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' + course.totalHours + 'h' : ''}</div>
+                                <!--<div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' +course.totalHours+'h' : ''}</div>-->
                             </div>
 
                             <div class="course-actions-row">

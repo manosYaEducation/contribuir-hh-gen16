@@ -39,11 +39,18 @@ $query = "
         IFNULL(e.progress, 0) as progress,
         e.enrolled_date as enrolledDate,
         IFNULL(e.hours_completed, 0) as hoursCompleted,
+        IFNULL(e.is_completed, 0) as isCompleted,
+        e.certificate_url as certificateUrl,
         c.id,
         c.title,
         c.instructor,
+        c.avatar,
         c.image,
-        IFNULL(c.duration, 0) as totalHours
+        c.category,
+        c.price,
+        c.rating,
+        c.students,
+        IFNULL(c.duration, '0') as totalHours
     FROM enrollments e
     JOIN courses c ON e.course_id = c.id
     WHERE e.user_id = ?
@@ -71,7 +78,14 @@ while ($row = $result->fetch_assoc()) {
     // Convertir valores a números
     $row['progress'] = (int)$row['progress'];
     $row['hoursCompleted'] = (int)$row['hoursCompleted'];
-    $row['totalHours'] = (int)$row['totalHours'];
+    $row['isCompleted'] = (int)$row['isCompleted'];
+    $row['price'] = (int)$row['price'];
+    $row['rating'] = (float)$row['rating'];
+    $row['students'] = (int)$row['students'];
+    
+    // Extraer horas del texto de duración (ej: "28 horas" -> 28)
+    preg_match('/\d+/', $row['totalHours'], $matches);
+    $row['totalHours'] = isset($matches[0]) ? (int)$matches[0] : 0;
     
     $enrollments[] = $row;
 }

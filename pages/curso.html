@@ -8,21 +8,21 @@
 </head>
 <body>
    <div class="hero-content">
-    <h1>Primera Formación de Artistas Educadores</h1>
+    <h1 id="course-title">Primera Formación de Artistas Educadores</h1>
     
     <!-- Perfil del profesor con foto y desplegable -->
     <div class="professor-section">
         <div class="professor-header">
             <button class="professor-button" id="profToggle">
-                CREO de Creer y Crear y Corporación Con Tribu Ir<span class="arrow">+</span>
+                <span id="professor-name">CREO de Creer y Crear y Corporación Con Tribu Ir</span><span class="arrow">+</span>
             </button>
             <div class="professor-photo">
-                <img src="../photos/contribuir.jpg" alt="Dr. Francisco Conejo" class="prof-img">
+                <img id="professor-img" src="../photos/contribuir.jpg" alt="Profesor" class="prof-img">
             </div>
         </div>
         
         <div class="professor-bio-panel" id="profPanel">
-            <p>
+            <p id="professor-bio">
                 ONG conformada por un equipo multidisciplinario de profesionales apasionados por la educación, salud mental, inclusión y bienestar integral.
             </p>
         </div>
@@ -31,15 +31,15 @@
     <div class="meta-info">
         <div class="meta-item">
             <span>📅</span>
-            <span>Inicio: 22/01/2026</span>
+            <span id="course-duration">Duración: --</span>
         </div>
         <div class="meta-item">
-            <span>⏱️</span>
-            <span>12 horas totales</span>
+            <span>👥</span>
+            <span id="course-students">Estudiantes: --</span>
         </div>
         <div class="meta-item">
-            <span>🎓</span>
-            <span>Certificado incluido</span>
+            <span>⭐</span>
+            <span id="course-rating">Calificación: --</span>
         </div>
     </div>
 </div>
@@ -53,8 +53,8 @@
                         </svg>
                         Descripción del Curso
                     </h2>
-                    <p>
-                        Este curso es una iniciativa pionera en Chile impulsada por CREO de Creer y Crear, Con Tribu Ir y la Red de Artistas Educadores de Chile (RAECH). Su propósito es profesionalizar y fortalecer el rol del "Artista Educador", integrando el arte no solo como una técnica, sino como una herramienta pedagógica para la educación emocional y la transformación social. El programa combina modelos teóricos, herramientas de gestión práctica (como formalización y planificación) y enfoques inclusivos (DUA y neurociencias) para preparar a los artistas en el desarrollo de experiencias educativas significativas en contextos escolares, culturales y psicosociales.
+                    <p id="course-description">
+                        Descripción cargando...
                     </p>
                     <!--
                 </div>
@@ -195,11 +195,9 @@
 
                     <!-- BOTÓN de pagar debajo del progreso del curso -->
                     <div style="text-align: center; margin: 1.5rem 0;">
-                        <a href="Pagos.html" 
-                           class="cta-button" 
-                           style="display: block; margin: 0 auto; max-width: 220px;">
-                           Pagar
-                        </a>
+                        <button id="btn-enroll-action" class="cta-button" style="display: block; margin: 0 auto; max-width: 220px;">
+                            Suscribir al Curso
+                        </button>
                     </div> 
 
                      <!--<button class="cta-button" onclick="startCourse()">Continuar Curso →</button>-->
@@ -386,18 +384,34 @@
                 
                 if (response.ok) {
                     const courseData = await response.json();
-                    // Actualizar título en pantalla
-                    const titleElement = document.getElementById('course-title-display');
-                    if (titleElement) titleElement.textContent = courseData.title;
                     
-                    // Actualizar precio si tienes un elemento con id="course-price"
-                    // const priceElement = document.getElementById('course-price');
-                    // if (priceElement) priceElement.textContent = '$' + courseData.price;
+                    // Actualizar título
+                    document.getElementById('course-title').textContent = courseData.title;
+                    document.title = courseData.title;
+                    
+                    // Actualizar profesor/instructor
+                    document.getElementById('professor-name').textContent = courseData.instructor || 'Instructor';
+                    if (courseData.avatar) {
+                        document.getElementById('professor-img').src = courseData.avatar;
+                    }
+                    
+                    // Actualizar descripción
+                    document.getElementById('course-description').textContent = courseData.description || 'Descripción no disponible';
+                    
+                    // Actualizar meta información
+                    document.getElementById('course-duration').textContent = 'Duración: ' + (courseData.duration || '-- horas');
+                    document.getElementById('course-students').textContent = 'Estudiantes: ' + (courseData.students || '--');
+                    document.getElementById('course-rating').textContent = 'Calificación: ' + (courseData.rating || '--') + ' ⭐';
+                    
+                    // Guardar datos para usar en la inscripción
+                    window.courseData = courseData;
                 } else {
                     console.error("El curso no existe en la base de datos");
+                    document.getElementById('course-description').textContent = 'No se pudo cargar el curso';
                 }
             } catch (error) {
                 console.error("Error cargando detalles:", error);
+                document.getElementById('course-description').textContent = 'Error al cargar el curso';
             }
 
             // 3. Conectar el botón de inscripción
@@ -430,9 +444,9 @@
 
                 // MANEJO DE RESPUESTAS
                 if (response.ok) {
-                    // CASO ÉXITO: Redirigir a Pagos
-                    // Asumimos que Pagos.html está en la misma carpeta 'pages'
-                    window.location.href = 'Pagos.html'; 
+                    // CASO ÉXITO: Inscripción completada
+                    alert('¡Felicidades! Te has inscrito correctamente en el curso.');
+                    window.location.href = 'mis_cursos.html'; 
                     
                 } else if (response.status === 401) {
                     // CASO NO LOGUEADO
