@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primera Formación de Artistas Educadores</title>
     <link rel="stylesheet" href="../css/curso2.css">
+    <style>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -115,6 +127,7 @@
                 </div>
             </div>
             
+            <!--Seccion de modulos del curso-->
             <div class="section">
                 <h2>
                     <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
@@ -123,48 +136,8 @@
                     </svg>
                     Módulos del Curso
                 </h2>
-                <div class="modules">
-                    
-                    <div class="module" onclick="toggleModule(this)">
-                        <div class="module-header">
-                            <span class="module-title">Módulo 1: El Rol del Artista Educador y Habilidades Socioemocionales</span>
-                            <span class="module-duration">⏱️ 6h</span>
-                        </div>
-                        <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
-                            <p>Este módulo sienta las bases filosóficas y prácticas del rol. Se explora la importancia del arte en la educación desde una mirada antroposófica y emocional, destacando cómo la belleza y la emoción son puertas al conocimiento. Se enfoca intensamente en el "ser" del educador, entregando herramientas para el autocuidado, la proactividad y habilidades blandas esenciales como la comunicación asertiva, la escucha activa y la resolución colaborativa de conflictos dentro del aula.</p>
-                        </div>
-                    </div>
-
-                    <div class="module" onclick="toggleModule(this)">
-                        <div class="module-header">
-                            <span class="module-title">Módulo 2: Gestión, Identidad y Formalización</span>
-                            <span class="module-duration">⏱️ 7h</span>
-                        </div>
-                        <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
-                            <p>Este módulo aborda la dimensión profesional y administrativa. Enseña a gestionar el recurso más valioso, el tiempo, mediante técnicas como la Matriz de Eisenhower y el método Pomodoro. Además, profundiza en la construcción de la identidad profesional y guía paso a paso en la formalización del emprendimiento: diferencias entre persona natural y jurídica, tipos de sociedades (EIRL, SpA), inicio de actividades en el SII y acceso a fondos concursables, permitiendo al artista operar legalmente y con estabilidad.</p>
-                        </div>
-                    </div>
-
-                    <div class="module" onclick="toggleModule(this)">
-                        <div class="module-header">
-                            <span class="module-title">Módulo 3: Diseño de Talleres, Metodologías y Evaluación</span>
-                            <span class="module-duration">⏱️ 8h</span>
-                        </div>
-                        <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
-                            <p>Aquí se entra en la didáctica pura. Se enseña a estructurar talleres efectivos definiendo propósitos claros, ejes temáticos y lenguajes artísticos. Se promueve una estructura flexible que equilibre la técnica con la experiencia emocional. También se aborda la evaluación desde una perspectiva formativa y creativa, alejándose de lo tradicional para valorar el proceso y la evolución del participante mediante la retroalimentación constructiva y la metacognición.</p>
-                        </div>
-                    </div>
-
-                    <div class="module" onclick="toggleModule(this)">
-                        <div class="module-header">
-                            <span class="module-title">Módulo 4: Inclusión, Neurociencias y Proyección Profesional</span>
-                            <span class="module-duration">⏱️ 7h</span>
-                        </div>
-                        <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
-                            <p>El módulo final conecta la práctica artística con la ciencia y la ética social. Analiza el tránsito desde la exclusión hacia la inclusión, presentando el Diseño Universal para el Aprendizaje (DUA) como marco para atender la diversidad. Se respalda la efectividad del arte con evidencia neurocientífica (activación de redes cerebrales, dopamina y neuronas espejo). Finalmente, cierra con la proyección profesional: cómo construir una propuesta de valor, "vender" proyectos a instituciones educativas y adaptar el lenguaje para lograr impacto y financiamiento.</p>
-                        </div>
-                    </div>
-
+                <div class="modules" id="modules-container">
+                    <!-- Los módulos se cargarán aquí dinámicamente -->
                 </div>
             </div>
         </div>
@@ -246,6 +219,158 @@
         }
     }
 
+    function toggleExtra(event) {
+        event.stopPropagation();
+        const extraContent = event.target.parentElement.querySelector('.extra-content');
+        if (extraContent) {
+            const isOpen = extraContent.style.display === 'block';
+            extraContent.style.display = isOpen ? 'none' : 'block';
+            event.target.textContent = isOpen ? 'Ver más' : 'Ver menos';
+        }
+    }
+
+    function openLessonModal(event) {
+        event.stopPropagation();
+        const extraContainer = event.target.parentElement;
+        const content = extraContainer.querySelector('.extra-content').innerHTML;
+        const title = extraContainer.closest('.module').querySelector('.module-title').textContent;
+        
+        const modal = document.createElement('div');
+        modal.className = 'lesson-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        `;
+        
+        modal.innerHTML = `
+            <div style="
+                background-color: white;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                max-width: 95%;
+                max-height: 95vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+                animation: slideUp 0.3s ease-out;
+            ">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0;">
+                    <h2 style="margin: 0; color: #1e3e5a; flex: 1;">${title}</h2>
+                    <button onclick="this.closest('.lesson-modal').remove()" style="
+                        background-color: #e2e8f0;
+                        border: none;
+                        border-radius: 0.375rem;
+                        width: 2rem;
+                        height: 2rem;
+                        cursor: pointer;
+                        font-size: 1.5rem;
+                        color: #4a5568;
+                    ">×</button>
+                </div>
+                <div style="color: #4a5568; line-height: 1.6;">
+                    ${content}
+                </div>
+            </div>
+        `;
+        
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        };
+        
+        document.body.appendChild(modal);
+    }
+
+    function getYoutubeEmbedUrl(url) {
+        if (!url) return null;
+        
+        // Si ya está en formato embed, devolverla tal cual
+        if (url.includes('/embed/')) {
+            return url;
+        }
+        
+        // Extraer ID de YouTube de diferentes formatos
+        let videoId = null;
+        
+        // Formato: https://www.youtube.com/watch?v=ID
+        const match1 = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        if (match1) videoId = match1[1];
+        
+        // Formato: https://youtube.com/embed/ID
+        const match2 = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
+        if (match2) videoId = match2[1];
+        
+        // Si encontramos el ID, devolver URL de embed
+        if (videoId) {
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+        
+        // Si no es YouTube, devolver URL tal cual
+        return url;
+    }
+
+    async function loadCourseLessons(courseId) {
+        try {
+            const response = await fetch(`../api/get_lessons.php?course_id=${courseId}`);
+            if (response.ok) {
+                const lessons = await response.json();
+                const container = document.getElementById('modules-container');
+                container.innerHTML = '';
+                
+                if (lessons.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No hay lecciones aún</p>';
+                } else {
+                    lessons.forEach((lesson, index) => {
+                        const moduleDiv = document.createElement('div');
+                        moduleDiv.className = 'module';
+                        moduleDiv.onclick = function() { toggleModule(this); };
+                        
+                        let extraContent = '';
+                        if (lesson.content || lesson.video_url) {
+                            const embedUrl = getYoutubeEmbedUrl(lesson.video_url);
+                            extraContent = `
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f0f4f8;">
+                                    <button style="background-color: #4299e1; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.875rem;" onclick="openLessonModal(event)">Ver más</button>
+                                    <div class="extra-content" style="display: none; margin-top: 1rem;">
+                                        ${lesson.content ? `<div style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.375rem; background-color: #f7fafc; margin-bottom: 1rem;"><h4 style="margin-top: 0; color: #1e3e5a;">Contenido:</h4><p>${lesson.content}</p></div>` : ''}
+                                        ${embedUrl ? `<div style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.375rem; background-color: #f7fafc;"><h4 style="margin-top: 0; color: #1e3e5a;"></h4><div style="display: flex; justify-content: center;"><iframe width="889" height="500" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>` : ''}
+                                    </div> 
+                                </div>
+                            `;
+                        }
+                        
+                        moduleDiv.innerHTML = `
+                            <div class="module-header">
+                                <span class="module-title">${lesson.title}</span>
+                            </div>
+                            <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
+                                <p>${lesson.description}</p>
+                                ${extraContent}
+                            </div>
+                        `;
+                        
+                        container.appendChild(moduleDiv);
+                    });
+                }
+            } else {
+                console.error("Error al cargar las lecciones");
+                document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
+            }
+        } catch (error) {
+            console.error("Error cargando lecciones:", error);
+            document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
+        }
+    }
+
+
     document.addEventListener('DOMContentLoaded', async function () {
         // Obtener ID del curso desde URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -284,6 +409,9 @@
                     document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
                     
                     window.courseData = courseData;
+                    
+                    // Cargar las lecciones/módulos del curso
+                    loadCourseLessons(courseId);
                 } else {
                     console.error("El curso no existe en la base de datos");
                 }
