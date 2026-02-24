@@ -1,0 +1,200 @@
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    color: #334155;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 480px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #009ee3, #0077b6);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+.product {
+    text-align: center;
+    padding: 25px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.product h2 {
+    font-size: 1.4rem;
+    margin: 10px 0;
+}
+
+.product p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #047857;
+    margin: 15px 0;
+}
+
+.content {
+    padding: 25px;
+}
+
+.methods-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.method-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.method-btn {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fdfdfe;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.method-btn:hover {
+    border-color: #009ee3;
+    background: #f0f9ff;
+}
+
+.method-btn.active {
+    border-color: #009ee3;
+    background: #f0f9ff;
+    box-shadow: 0 0 0 4px rgba(0,158,227,0.1);
+}
+
+.method-icon {
+    font-size: 1.8rem;
+    width: 50px;
+    text-align: center;
+}
+
+.method-text {
+    flex: 1;
+}
+
+.method-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.method-desc {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.details {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    display: none;
+}
+
+.details.active {
+    display: block;
+    animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+}
+
+.row .form-group {
+    flex: 1;
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 16px;
+    background: #009ee3;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.pay-btn:hover {
+    background: #0077b6;
+}
+
+.security {
+    text-align: center;
+    margin-top: 25px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: #f1f5f9;
+    font-size: 0.9rem;
+    color: #64748b;
+}
