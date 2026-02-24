@@ -7,13 +7,28 @@ header('Content-Type: application/json');
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id > 0) {
-    // 2. Preparar la consulta para buscar ESE curso específico
-    $stmt = $conn->prepare("SELECT * FROM courses WHERE id = ?");
+    // 2. Preparar la consulta para buscar ESE curso específico con sus detalles
+    $stmt = $conn->prepare("
+        SELECT c.*, 
+               d.learning_objectives, 
+               d.requirements, 
+               d.intro_video
+        FROM courses c
+        LEFT JOIN detail_courses d ON c.id = d.course_id
+        WHERE c.id = ?
+    ");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
+        // Parsear JSON en los campos si existen
+        if ($row['learning_objectives']) {
+            $row['learning_objectives'] = json_decode($row['learning_objectives'], true);
+        }
+        if ($row['requirements']) {
+            $row['requirements'] = json_decode($row['requirements'], true);
+        }
         // Devolver los datos del curso encontrado
         echo json_encode($row);
     } else {

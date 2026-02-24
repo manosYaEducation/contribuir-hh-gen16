@@ -103,23 +103,8 @@
                         </svg>
                         Objetivos de Aprendizaje
                     </h2>
-                    <div class="objetivos-list">
-                        <div class="objetivo-item">
-                            <div class="check-icon">✓</div>
-                            <span>Integrar el arte y la emoción como vehículos de aprendizaje</span>
-                        </div>
-                        <div class="objetivo-item">
-                            <div class="check-icon">✓</div>
-                            <span>Desarrollar habilidades socioemocionales y comunicativas</span>
-                        </div>
-                        <div class="objetivo-item">
-                            <div class="check-icon">✓</div>
-                            <span>Profesionalizar la gestión del artista educador</span>
-                        </div>
-                        <div class="objetivo-item">
-                            <div class="check-icon">✓</div>
-                            <span>Aplicar estrategias de inclusión y neuroeducación</span>
-                        </div>
+                    <div class="objetivos-list" id="learning-objectives-list">
+                        <p style="color: #a0aec0;">Cargando objetivos...</p>
                     </div>
                 </div>
                <!--
@@ -227,10 +212,8 @@
 
                 <div class="card">
                     <h3 style="color: #2d3748; margin-bottom: 15px;">Requisitos</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Experiencia docente (deseable)</li>
-                        <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Interés en desarrollo personal</li>
-                        <li style="padding: 10px 0; color: #4a5568;">✓ Compromiso de 5-7 hrs/semana</li>
+                    <ul id="requirements-list" style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; color: #a0aec0;">Cargando requisitos...</li>
                     </ul>
                 </div>
             </div>
@@ -402,6 +385,30 @@
                     document.getElementById('course-duration').textContent = 'Duración: ' + (courseData.duration || '-- horas');
                     document.getElementById('course-students').textContent = 'Estudiantes: ' + (courseData.students || '--');
                     document.getElementById('course-rating').textContent = 'Calificación: ' + (courseData.rating || '--') + ' ⭐';
+                    
+                    // Cargar Objetivos de Aprendizaje desde la BDD
+                    const objectivesList = document.getElementById('learning-objectives-list');
+                    if (courseData.learning_objectives && Array.isArray(courseData.learning_objectives)) {
+                        objectivesList.innerHTML = courseData.learning_objectives.map(obj => 
+                            `<div class="objetivo-item">
+                                <div class="check-icon">✓</div>
+                                <span>${obj}</span>
+                            </div>`
+                        ).join('');
+                    } else {
+                        objectivesList.innerHTML = '<p style="color: #a0aec0;">No hay objetivos disponibles</p>';
+                    }
+                    
+                    // Cargar Requisitos desde la BDD
+                    const requirementsList = document.getElementById('requirements-list');
+                    if (courseData.requirements && Array.isArray(courseData.requirements)) {
+                        const requirementsHTML = courseData.requirements.map((req, idx, arr) => 
+                            `<li style="padding: 10px 0; color: #4a5568; ${idx < arr.length - 1 ? 'border-bottom: 1px solid #e2e8f0;' : ''}">✓ ${req}</li>`
+                        ).join('');
+                        requirementsList.innerHTML = requirementsHTML;
+                    } else {
+                        requirementsList.innerHTML = '<li style="padding: 10px 0; color: #a0aec0;">No hay requisitos disponibles</li>';
+                    }
                     
                     // Guardar datos para usar en la inscripción
                     window.courseData = courseData;

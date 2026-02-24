@@ -76,7 +76,7 @@
                 </p>
             </div>
 
-            <div class="section video-intro-section">
+            <div class="section video-intro-section" id="video-section" style="display: none;">
                 <h2>
                     <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 12l-6-4v8l6-4z"/>
@@ -84,19 +84,11 @@
                     </svg>   
                     Video Introductorio del Curso
                 </h2>
-                <p style="margin-bottom: 1.5rem; color: #4a5568;">
-                    CREO de Creer y Crear y Corporación Con Tribu Ir te dan la bienvenida.
+                <p style="margin-bottom: 1.5rem; color: #4a5568;" id="video-description">
+                    Cargando...
                 </p> 
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <iframe 
-                            src="https://www.youtube.com/embed/u_Ij1Kkd9Q0" 
-                            title="Video introductorio"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
+                <div class="video-container" id="video-container">
+                    <p style="text-align: center; color: #718096;">No hay video disponible</p>
                 </div>
             </div>
 
@@ -107,23 +99,8 @@
                     </svg>
                     Objetivos de Aprendizaje
                 </h2>
-                <div class="objetivos-list">
-                    <div class="objetivo-item">
-                        <div class="check-icon">✓</div>
-                        <span>Integrar el arte y la emoción como vehículos de aprendizaje</span>
-                    </div>
-                    <div class="objetivo-item">
-                        <div class="check-icon">✓</div>
-                        <span>Desarrollar habilidades socioemocionales y comunicativas</span>
-                    </div>
-                    <div class="objetivo-item">
-                        <div class="check-icon">✓</div>
-                        <span>Profesionalizar la gestión del artista educador</span>
-                    </div>
-                    <div class="objetivo-item">
-                        <div class="check-icon">✓</div>
-                        <span>Aplicar estrategias de inclusión y neuroeducación</span>
-                    </div>
+                <div class="objetivos-list" id="learning-objectives-list">
+                    <p style="color: #a0aec0;">Cargando objetivos...</p>
                 </div>
             </div>
             
@@ -178,10 +155,8 @@
 
             <div class="card">
                 <h3 style="color: #1e3e5a; margin-bottom: 15px;">Requisitos</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Experiencia docente (deseable)</li>
-                    <li style="padding: 10px 0; color: #4a5568; border-bottom: 1px solid #e2e8f0;">✓ Interés en desarrollo personal</li>
-                    <li style="padding: 10px 0; color: #4a5568;">✓ Compromiso de 5-7 hrs/semana</li>
+                <ul id="requirements-list" style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; color: #a0aec0;">Cargando requisitos...</li>
                 </ul>
             </div>
 
@@ -407,6 +382,63 @@
                     document.getElementById('stat-price').textContent = '$' + (courseData.price || '--');
                     document.getElementById('stat-students').textContent = courseData.students || '--';
                     document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
+                    
+                    // Cargar el video introductorio desde la BDD
+                    const videoSection = document.getElementById('video-section');
+                    const videoContainer = document.getElementById('video-container');
+                    const videoDescription = document.getElementById('video-description');
+                    
+                    if (courseData.intro_video) {
+                        // Función para convertir URL de YouTube a formato embed
+                        function getYoutubeEmbedUrl(url) {
+                            if (!url) return null;
+                            if (url.includes('/embed/')) return url;
+                            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                            if (match) return `https://www.youtube.com/embed/${match[1]}`;
+                            return url;
+                        }
+                        
+                        const embedUrl = getYoutubeEmbedUrl(courseData.intro_video);
+                        if (embedUrl) {
+                            videoContainer.innerHTML = `
+                                <div class="video-wrapper">
+                                    <iframe 
+                                        src="${embedUrl}" 
+                                        title="Video introductorio del curso"
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            `;
+                            videoDescription.textContent = courseData.instructor || 'Te da la bienvenida';
+                            videoSection.style.display = 'block';
+                        }
+                    }
+                    
+                    // Cargar Objetivos de Aprendizaje desde la BDD
+                    const objectivesList = document.getElementById('learning-objectives-list');
+                    if (courseData.learning_objectives && Array.isArray(courseData.learning_objectives)) {
+                        objectivesList.innerHTML = courseData.learning_objectives.map(obj => 
+                            `<div class="objetivo-item">
+                                <div class="check-icon">✓</div>
+                                <span>${obj}</span>
+                            </div>`
+                        ).join('');
+                    } else {
+                        objectivesList.innerHTML = '<p style="color: #a0aec0;">No hay objetivos disponibles</p>';
+                    }
+                    
+                    // Cargar Requisitos desde la BDD
+                    const requirementsList = document.getElementById('requirements-list');
+                    if (courseData.requirements && Array.isArray(courseData.requirements)) {
+                        const requirementsHTML = courseData.requirements.map((req, idx, arr) => 
+                            `<li style="padding: 10px 0; color: #4a5568; ${idx < arr.length - 1 ? 'border-bottom: 1px solid #e2e8f0;' : ''}">✓ ${req}</li>`
+                        ).join('');
+                        requirementsList.innerHTML = requirementsHTML;
+                    } else {
+                        requirementsList.innerHTML = '<li style="padding: 10px 0; color: #a0aec0;">No hay requisitos disponibles</li>';
+                    }
                     
                     window.courseData = courseData;
                     
