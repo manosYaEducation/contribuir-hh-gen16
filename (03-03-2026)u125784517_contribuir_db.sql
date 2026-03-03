@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `courses` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `instructor` varchar(100) DEFAULT NULL,
+  `instructor_id` int(11) NOT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
@@ -45,13 +45,9 @@ CREATE TABLE `courses` (
 -- Volcado de datos para la tabla `courses`
 --
 
-INSERT INTO `courses` (`id`, `title`, `instructor`, `avatar`, `category`, `price`, `rating`, `students`, `duration`, `image`, `description`) VALUES
-(1, 'Formación de Artistas Educadores', 'Con Tribu Ir', 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Administración Educativa', 20000, 4.9, 204, '28 horas', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop', 'Somos una iniciativa pionera en Chile impulsada por CREO de Creer y Crear, Con Tribu Ir y la Red de Artistas Educadores de Chile (RAECH). Su propósito es profesionalizar y fortalecer el rol del \"Artista Educador\", integrando el arte no solo como una técnica, sino como una herramienta pedagógica para la educación emocional y la transformación social. El programa combina modelos teóricos, herramientas de gestión práctica (como formalización y planificación) y enfoques inclusivos (DUA y neurociencias) para preparar a los artistas en el desarrollo de experiencias educativas significativas en contextos escolares, culturales y psicosociales.'),
-(2, 'Trabajo Colaborativo en I+D Aumentado con IA', 'Alpha Docere', 'photos/LogoAlphadocere.png', 'Innovación y Tecnología', 0, 4.8, 121, '4 semanas', 'photos/LogoAlphadocere.png', 'Curso online de 4 semanas enfocado en aprender a trabajar colaborativamente en entornos de investigación y desarrollo (I+D) utilizando inteligencia artificial como apoyo. Los participantes aprenderán a transformar ideas en problemas estructurados, formular hipótesis, documentar de manera clara, iterar con feedback y definir un camino personal dentro del ecosistema de innovación. No se requiere experiencia técnica previa.'),
-(3, 'Fotografía Profesional con Cámara y Móvil', 'Carlos Rivas', 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Fotografía', 52000, 4.7, 200, '12 horas', 'photos/LogoOficial.png', 'Aprende composición, iluminación y edición para obtener fotos de calidad profesional con cualquier dispositivo.'),
-(5, 'Yoga y Bienestar Integral', 'Fernanda López', 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Salud', 30000, 4.9, 152, '8 horas', 'photos/LogoOficial.png', 'Rutinas de yoga, respiración y relajación para mejorar tu salud física y mental.'),
-(6, 'Inglés Conversacional Intensivo', 'John Peterson', 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Idiomas', 70000, 4.4, 98, '20 horas', 'photos/LogoOficial.png', 'Desarrolla fluidez en inglés con ejercicios prácticos de conversación en situaciones reales.'),
-(7, 'Excel Avanzado para el Trabajo', 'Ricardo Muñoz', 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Ofimática', 40000, 4.6, 261, '14 horas', 'photos/LogoOficial.png', 'Funciones avanzadas, tablas dinámicas y automatización para mejorar tu productividad laboral.');
+INSERT INTO `courses` (`id`, `title`, `instructor_id`, `avatar`, `category`, `price`, `rating`, `students`, `duration`, `image`, `description`) VALUES
+(1, 'Formación de Artistas Educadores', 1, 'https://i.ibb.co/84Kf9Rd0/552183644-17852106906549939-7631989156897828754-n.webp', 'Administración Educativa', 20000, 4.9, 204, '28 horas', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop', 'Somos una iniciativa pionera en Chile impulsada por CREO de Creer y Crear, Con Tribu Ir y la Red de Artistas Educadores de Chile (RAECH). Su propósito es profesionalizar y fortalecer el rol del \"Artista Educador\", integrando el arte no solo como una técnica, sino como una herramienta pedagógica para la educación emocional y la transformación social. El programa combina modelos teóricos, herramientas de gestión práctica (como formalización y planificación) y enfoques inclusivos (DUA y neurociencias) para preparar a los artistas en el desarrollo de experiencias educativas significativas en contextos escolares, culturales y psicosociales.'),
+(2, 'Trabajo Colaborativo en I+D Aumentado con IA', 2, 'photos/LogoAlphadocere.png', 'Innovación y Tecnología', 0, 4.8, 121, '4 semanas', 'photos/LogoAlphadocere.png', 'Curso online de 4 semanas enfocado en aprender a trabajar colaborativamente en entornos de investigación y desarrollo (I+D) utilizando inteligencia artificial como apoyo. Los participantes aprenderán a transformar ideas en problemas estructurados, formular hipótesis, documentar de manera clara, iterar con feedback y definir un camino personal dentro del ecosistema de innovación. No se requiere experiencia técnica previa.');
 
 -- --------------------------------------------------------
 
@@ -100,8 +96,8 @@ CREATE TABLE `enrollments` (
 
 INSERT INTO `enrollments` (`id`, `user_id`, `course_id`, `progress`, `hours_completed`, `enrolled_date`, `completed_date`, `is_completed`, `certificate_issued`, `certificate_url`) VALUES
 (8, 5, 1, 15, 3, '2026-02-10 17:20:00', NULL, 0, 0, NULL),
-(13, 5, 2, 0, 0, '2026-02-16 22:14:24', NULL, 0, 0, NULL),
-(20, 5, 6, 0, 0, '2026-02-20 15:45:17', NULL, 0, 0, NULL);
+(13, 5, 2, 0, 0, '2026-02-16 22:14:24', NULL, 0, 0, NULL);
+
 
 -- --------------------------------------------------------
 

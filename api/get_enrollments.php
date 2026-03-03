@@ -43,7 +43,7 @@ $query = "
         e.certificate_url as certificateUrl,
         c.id,
         c.title,
-        c.instructor,
+        u.name as instructor,
         c.avatar,
         c.image,
         c.category,
@@ -53,6 +53,7 @@ $query = "
         IFNULL(c.duration, '0') as totalHours
     FROM enrollments e
     JOIN courses c ON e.course_id = c.id
+    LEFT JOIN users u ON c.instructor_id = u.id
     WHERE e.user_id = ?
     ORDER BY e.enrolled_date DESC
 ";

@@ -4,10 +4,10 @@ require 'db_connect.php';
 header('Content-Type: application/json');
 
 // Validar que todos los campos requeridos estén presentes
-$required_fields = ['title', 'category', 'instructor', 'rating', 'price', 'totalHours', 'level', 'description', 'image', 'avatar'];
+$required_fields = ['title', 'category', 'instructor_id', 'rating', 'price', 'duration', 'description', 'image', 'avatar'];
 
 foreach ($required_fields as $field) {
-    if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
+    if (!isset($_POST[$field]) || (is_string($_POST[$field]) && empty(trim($_POST[$field])))) {
         http_response_code(400);
         echo json_encode(['error' => "El campo '$field' es requerido"]);
         exit();
@@ -17,11 +17,10 @@ foreach ($required_fields as $field) {
 // Obtener y limpiar datos
 $title = trim($_POST['title']);
 $category = trim($_POST['category']);
-$instructor = trim($_POST['instructor']);
+$instructor_id = (int)$_POST['instructor_id'];
 $rating = (float)$_POST['rating'];
-$price = (float)$_POST['price'];
-$totalHours = (int)$_POST['totalHours'];
-$level = trim($_POST['level']);
+$price = (int)$_POST['price'];
+$duration = trim($_POST['duration']);
 $description = trim($_POST['description']);
 $image = trim($_POST['image']);
 $avatar = trim($_POST['avatar']);
@@ -40,9 +39,9 @@ if ($price < 0) {
     exit();
 }
 
-if ($totalHours <= 0) {
+if (empty($duration) || strlen($duration) < 2) {
     http_response_code(400);
-    echo json_encode(['error' => 'Las horas deben ser mayores a 0']);
+    echo json_encode(['error' => 'La duración no puede estar vacía']);
     exit();
 }
 
@@ -88,8 +87,8 @@ $checkStmt->close();
 // Insertar curso
 $stmt = $conn->prepare(
     "INSERT INTO courses 
-    (title, description, category, instructor, rating, students, price, image, avatar, total_hours, level) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    (title, description, category, instructor_id, rating, students, price, image, avatar, duration) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 );
 
 if (!$stmt) {
@@ -99,18 +98,17 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssdidssi",
+    "sssiidisss",
     $title,
     $description,
     $category,
-    $instructor,
+    $instructor_id,
     $rating,
     $students,
     $price,
     $image,
     $avatar,
-    $totalHours,
-    $level
+    $duration
 );
 
 if ($stmt->execute()) {
@@ -123,7 +121,7 @@ if ($stmt->execute()) {
             'id' => $courseId,
             'title' => $title,
             'category' => $category,
-            'instructor' => $instructor
+            'instructor_id' => $instructor_id
         ]
     ]);
 } else {
