@@ -101,6 +101,7 @@ async function handleRegister(event) {
 async function handleLogin(event) {
     event.preventDefault();
     const form = document.getElementById('loginForm');
+    const submitBtn = form.querySelector('button[type="submit"]'); // ← queda esta
     const formData = new FormData(form);
 
     try {
@@ -116,6 +117,28 @@ async function handleLogin(event) {
             updateUserUI();
             closeModal('loginModal');
             form.reset();
+        } else if (response.status === 429) {
+            const segundosRestantes = result.retry_after || 900;
+            // const submitBtn = ...  ← SACAR ESTA LÍNEA
+            const rateLimitMsg = document.getElementById('loginRateLimitMsg');
+            const countdownEl = document.getElementById('loginCountdown');
+
+            if (submitBtn) submitBtn.disabled = true;
+            rateLimitMsg.style.display = 'block';
+
+            let segundos = segundosRestantes;
+            const intervalo = setInterval(() => {
+                const minutos = Math.floor(segundos / 60);
+                const segs = segundos % 60;
+                countdownEl.textContent = `${minutos}:${segs.toString().padStart(2, '0')}`;
+
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    rateLimitMsg.style.display = 'none';
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+                segundos--;
+            }, 1000);
         } else {
             alert(result.message);
         }
@@ -124,7 +147,6 @@ async function handleLogin(event) {
         console.error('Error en el login:', error);
     }
 }
-
 async function checkSessionStatus() {
     try {
         const response = await fetch('api/check_session.php');
