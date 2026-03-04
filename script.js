@@ -142,6 +142,7 @@ async function checkSessionStatus() {
 }
 
 async function logout() {
+    closeUserDropdown();
     try {
         await fetch('api/logout.php');
     } catch (error) {
@@ -172,6 +173,7 @@ function updateUserUI() {
 
 /* ===== FUNCIÓN PARA IR A MIS CURSOS ===== */
 function goToMyCourses() {
+    closeUserDropdown();
     console.log('goToMyCourses llamada');
     console.log('isLoggedIn:', isLoggedIn);
     
@@ -325,3 +327,38 @@ function sendMessage(event) {
     event.target.reset();
     alert('¡Gracias por tu mensaje! Nos pondremos en contacto pronto.');
 }
+
+/* Menu desplegable */
+function toggleUserDropdown() {
+    const btn = document.getElementById('userDropdownBtn');
+    const menu = document.getElementById('userDropdownMenu');
+    
+    btn.classList.toggle('active');
+    menu.classList.toggle('show');
+}
+
+function closeUserDropdown() {
+    const btn = document.getElementById('userDropdownBtn');
+    const menu = document.getElementById('userDropdownMenu');
+    
+    btn.classList.remove('active');
+    menu.classList.remove('show');
+}
+
+// Cerrar dropdown cuando se hace click fuera
+document.addEventListener('click', function(event) {
+    const userSection = document.getElementById('userSection');
+    const userDropdown = document.querySelector('.user-dropdown');
+    
+    if (userSection && !userSection.classList.contains('hidden')) {
+        if (userDropdown && !userDropdown.contains(event.target)) {
+            closeUserDropdown();
+        }
+    }
+});
+
+function openCoursePanel() {
+    closeUserDropdown();
+    window.location.href = 'ModeladoHTML/admin_course_config.html';
+}
+

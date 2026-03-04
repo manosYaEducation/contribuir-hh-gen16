@@ -31,13 +31,24 @@
                         Unirse
                     </button>
                     <div id="userSection" class="user-section hidden">
-                        <span id="userName" class="user-name"></span>
+                        <div class="user-dropdown">
+                            <button class="user-dropdown-btn" id="userDropdownBtn" onclick="toggleUserDropdown()">
+                                <span id="userName" class="user-name"></span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                            <div id="userDropdownMenu" class="user-dropdown-menu">
+                                <!--
+                                <a class="dropdown-option" onclick="openProfile()">👤 Perfil</a>
+                                <a class="dropdown-option" onclick="openAdminPanel()">⚙️ Panel de administración</a>
+                                -->
+                                <a class="dropdown-option" onclick="openCoursePanel()">Panel creacion curso</a>
+                                <a class="dropdown-option logout-option" onclick="logout()">Cerrar sesión</a>
+                            </div>
+                        </div>
                         <button class="btn btn-secondary" onclick="goToMyCourses()" style="margin-left: 0.5rem;">
                             📚 Mis Cursos
                         </button>
-                        <button class="btn btn-secondary" onclick="logout()" style="margin-left: 0.5rem;">
-                            Salir
-                        </button>
+                        
                     </div>
                 </div>
             </div>
