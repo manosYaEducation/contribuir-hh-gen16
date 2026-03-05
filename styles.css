@@ -179,6 +179,89 @@ header {
     color: var(--color-stone-700);
 }
 
+/* ===== USER DROPDOWN ===== */
+.user-dropdown {
+    position: relative;
+}
+
+.user-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-stone-300);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    color: var(--color-stone-700);
+}
+
+.user-dropdown-btn:hover {
+    background: var(--color-stone-50);
+    border-color: var(--color-stone-400);
+}
+
+.dropdown-arrow {
+    font-size: 0.625rem;
+    transition: transform 0.3s ease;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 220px;
+    background: var(--color-white);
+    border: 1px solid var(--color-stone-300);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.user-dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-option {
+    padding: 0.75rem 1.25rem;
+    color: var(--color-stone-700);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    display: block;
+}
+
+.dropdown-option:hover {
+    background: var(--color-stone-50);
+    color: var(--color-primary);
+    padding-left: 1.5rem;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--color-stone-200);
+    margin: 0.5rem 0;
+}
+
+.dropdown-option.logout-option {
+    color: #d84f4f;
+}
+
+.dropdown-option.logout-option:hover {
+    background: #fef3c7;
+    color: #d84f4f;
+    padding-left: 1.5rem;
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     background: linear-gradient(135deg, var(--color-amber-100) 0%, #f5f5f4 50%, var(--color-green-50) 100%);
