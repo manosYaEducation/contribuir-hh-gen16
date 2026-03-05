@@ -24,7 +24,10 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $clientIp = getClientIp(); // ← NUEVO
 checkRateLimit($conn, $clientIp, $email); // ← NUEVO
 
-$stmt = $conn->prepare("SELECT id, name, email, password_hash FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT u.id, u.name, u.email, u.password_hash, r.name AS role_name
+                        FROM users u
+                        INNER JOIN roles r ON u.role_id = r.id
+                        WHERE u.email = ?");
 if (!$stmt) {
     http_response_code(500);
     echo json_encode(['message' => 'Error de preparación: ' . $conn->error]);
@@ -61,13 +64,16 @@ clearFailedAttempts($conn, $clientIp, $email); // ← NUEVO
 $_SESSION['user_id']    = $user['id'];
 $_SESSION['user_name']  = $user['name'];
 $_SESSION['user_email'] = $user['email'];
+$_SESSION['user_role']  = $user['role_name']; 
 
 http_response_code(200);
 echo json_encode([
     'message' => '¡Sesión iniciada correctamente!',
     'name'    => $user['name'],
-    'email'   => $user['email']
-]);
+    'email'   => $user['email'],
+     'role' => $user['role_name']
+    ]);
+
 
 $conn->close();
 ?>
