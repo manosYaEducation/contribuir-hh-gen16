@@ -13,7 +13,9 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
     http_response_code(200); // Código 200 OK
     echo json_encode([
         'loggedIn' => true,
-        'name' => $_SESSION['user_name'] // Devolvemos el nombre para mostrarlo en la UI.
+        'user_id' => $_SESSION['user_id'],
+        'name' => $_SESSION['user_name'],
+        'email' => $_SESSION['user_email'] ?? null
     ]);
 } else {
     // Si no existen, no hay sesión activa.
