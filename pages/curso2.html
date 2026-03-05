@@ -349,7 +349,10 @@
                     
                     // Actualizar información en la tarjeta lateral
                     document.getElementById('stat-duration').textContent = courseData.duration || '--';
-                    document.getElementById('stat-price').textContent = '$' + (courseData.price || '--');
+                    // PW-11: Mostrar "Gratuito" si el precio es 0
+                    document.getElementById('stat-price').textContent = courseData.price === 0 
+                        ? 'Gratuito' 
+                        : '$' + courseData.price;
                     document.getElementById('stat-students').textContent = courseData.students || '--';
                     document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
                     

@@ -260,7 +260,10 @@ function renderCourses() {
 function createCourseCard(course) {
     const card = document.createElement('div');
     card.className = 'course-card';
-    const formattedPrice = Number(course.price).toLocaleString('es-CL');
+    // PW-11: Mostrar "Curso Gratuito" si el precio es 0
+    const priceDisplay = course.price === 0 
+        ? 'Curso Gratuito' 
+        : '$' + Number(course.price).toLocaleString('es-CL');
 
     
     card.innerHTML = `
@@ -278,7 +281,7 @@ function createCourseCard(course) {
             </div>
             <p class="course-description">${course.description}</p>
             <div class="course-footer">
-                <div class="course-price">$${formattedPrice}</div>
+                <div class="course-price">${priceDisplay}</div>
                 <div class="course-actions">
                     <a href="pages/curso.html?id=${course.id}" class="btn-course" style="text-decoration:none; display:inline-block; text-align:center;">
                         Comenzar →
