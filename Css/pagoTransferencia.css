@@ -1,0 +1,284 @@
+/* css/pagoTransferencia.css */
+
+:root {
+    --bg-color: #f4f3ef;
+    --text-main: #1d1d1f;
+    --text-muted: #86868b;
+    --border-color: #e5e5ea;
+    --card-bg: #ffffff;
+    --green-whatsapp: #25d366;
+    --black: #000000;
+}
+
+.payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    /* hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.payment-modal-overlay.active {
+    display: flex;
+}
+
+.payment-modal {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    /* Para prevenir que exceda pantalla */
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.modal-header {
+    padding: 2rem;
+    text-align: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #eeebe3;
+    color: #8c8a82;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.badge-dot {
+    margin-right: 6px;
+    font-size: 10px;
+}
+
+.modal-header h1 {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    color: var(--text-main);
+}
+
+.modal-header h1 .highlight {
+    color: var(--text-muted);
+}
+
+.modal-header p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+hr.divider {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 0;
+}
+
+.modal-section {
+    padding: 1.5rem 2rem;
+    background-color: transparent !important;
+    /* overrides any conflicting background */
+    box-shadow: none !important;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.step-number {
+    background-color: var(--black);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+    margin-right: 10px;
+}
+
+.data-box {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-row.no-border {
+    border-bottom: none;
+}
+
+.data-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.data-value {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: "Courier New", Courier, monospace;
+    flex: 2;
+    text-align: right;
+    margin-right: 1rem;
+}
+
+.btn-copy {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-copy:hover {
+    background-color: #f4f3ef;
+}
+
+.btn-copy.copied {
+    background-color: #e6f4ea;
+    color: #1e8e3e;
+    border-color: #1e8e3e;
+}
+
+.btn-copy-all {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.btn-copy-all:hover {
+    color: var(--text-main);
+}
+
+.btn-copy-all.copied {
+    color: #1e8e3e;
+}
+
+.amount-box {
+    background-color: #f8f6f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amount-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.amount-value {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.btn-whatsapp {
+    background-color: var(--green-whatsapp);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 0.5rem;
+}
+
+.btn-whatsapp:hover {
+    background-color: #20b858;
+}
+
+.btn-whatsapp i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.sm-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.company-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-main);
+}
+
+.footer-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}

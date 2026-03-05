@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primera Formación de Artistas Educadores</title>
     <link rel="stylesheet" href="../css/curso.css">
+    <!-- CSS del Modal de Transferencia -->
+    <link rel="stylesheet" href="../css/pagoTransferencia.css">
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
 <body>
@@ -187,9 +191,9 @@
                     </div> -->
 
                 <!-- BOTÓN de pagar debajo del progreso del curso -->
-                <div style="text-align: center; margin: 1.5rem 0;">
+                <div style="text-align: center; margin: 1.5rem 0; padding: 0 10px;">
                     <button id="btn-enroll-action" class="cta-button"
-                        style="display: block; margin: 0 auto; max-width: 220px;">
+                        style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto; width: 100%;">
                         Suscribir al Curso
                     </button>
                 </div>
@@ -278,6 +282,88 @@
     </div>
 
     <div class="faq-overlay" id="faqOverlay"></div>
+
+    <!-- Modal de Pago por Transferencia -->
+    <div class="payment-modal-overlay" id="payment-modal-overlay">
+        <div class="payment-modal">
+            <button class="modal-close-btn" onclick="closePaymentModal()">&times;</button>
+            <div class="modal-header">
+                <span class="badge"><span class="badge-dot">●</span> PAGO MANUAL</span>
+                <h1>Pago por <span class="highlight">transferencia bancaria</span></h1>
+                <p>Realiza la transferencia con los datos de abajo y contáctanos por WhatsApp para confirmar.</p>
+            </div>
+
+            <hr class="divider">
+
+            <div class="modal-section">
+                <div class="section-title">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div style="display: flex; align-items: center;">
+                            <span class="step-number">1</span> DATOS BANCARIOS
+                        </div>
+                        <button class="btn-copy-all" onclick="copyAllBankData(this)"><i class="ph ph-copy"></i> Copiar
+                            Todos</button>
+                    </div>
+                </div>
+
+                <div class="data-box">
+                    <div class="data-row">
+                        <span class="data-label">Banco</span>
+                        <span class="data-value">Ejemplo Banco Nacional</span>
+                        <button class="btn-copy" onclick="copyModalText('Ejemplo Banco Nacional', this)">Copiar</button>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Tipo de cuenta</span>
+                        <span class="data-value">Ejemplo Cuenta<br>Corriente</span>
+                        <button class="btn-copy"
+                            onclick="copyModalText('Ejemplo Cuenta Corriente', this)">Copiar</button>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">N° de cuenta</span>
+                        <span class="data-value">Ejemplo 0123456789</span>
+                        <button class="btn-copy" onclick="copyModalText('Ejemplo 0123456789', this)">Copiar</button>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">RUT</span>
+                        <span class="data-value">Ejemplo 12.345.678-9</span>
+                        <button class="btn-copy" onclick="copyModalText('Ejemplo 12.345.678-9', this)">Copiar</button>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Titular</span>
+                        <span class="data-value">Ejemplo Empresa SpA</span>
+                        <button class="btn-copy" onclick="copyModalText('Ejemplo Empresa SpA', this)">Copiar</button>
+                    </div>
+                    <div class="data-row no-border">
+                        <span class="data-label">Email</span>
+                        <span class="data-value">ejemplo@correo.com</span>
+                        <button class="btn-copy" onclick="copyModalText('ejemplo@correo.com', this)">Copiar</button>
+                    </div>
+                </div>
+
+                <div class="amount-box">
+                    <span class="amount-label">Monto a transferir</span>
+                    <span class="amount-value" id="modal-course-price">$99.990</span>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="modal-section">
+                <div class="section-title">
+                    <span class="step-number">2</span> CONFIRMA TU PAGO
+                </div>
+                <button class="btn-whatsapp" onclick="confirmModalWhatsapp()">
+                    <i class="ph-fill ph-whatsapp-logo"></i> Confirmar pago por WhatsApp
+                </button>
+                <p class="text-center sm-text">Te responderemos en menos de 24 horas hábiles</p>
+            </div>
+
+            <div class="modal-footer">
+                <span class="company-name">Con Tribu Ir</span>
+                <span class="footer-note">Pago 100% seguro</span>
+            </div>
+        </div>
+    </div>
 
     <script>
         function goBack() {
@@ -457,7 +543,41 @@
                 enrollBtn.onclick = handleEnrollmentAndPay;
             }
 
-            // 4. Cargar Reseñas
+            // 4. Verificar si el usuario ya está inscrito (cambiar botón)
+            try {
+                const enrollmentResponse = await fetch('../api/get_enrollments.php');
+                if (enrollmentResponse.ok) {
+                    const enrollments = await enrollmentResponse.json();
+                    // get_enrollments.php devuelve 'id' como el ID del curso
+                    const isEnrolled = enrollments.some(e => e.id == courseId);
+
+                    if (isEnrolled && enrollBtn) {
+                        enrollBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"></path></svg> Ya Inscrito';
+                        // Reemplazar la acción del botón para que no abra el modal, sino redirija
+                        enrollBtn.onclick = function () {
+                            window.location.href = 'mis_cursos.html';
+                        };
+                        enrollBtn.style.backgroundColor = '#48bb78'; // Color verde para indicar éxito
+                        enrollBtn.style.borderColor = '#48bb78';
+
+                        // Agregar un subtítulo sutil abajo del botón
+                        if (!document.getElementById('enrolled-subtext')) {
+                            const subText = document.createElement('p');
+                            subText.id = 'enrolled-subtext';
+                            subText.textContent = "Haz clic para ir a tu panel de cursos";
+                            subText.style.fontSize = "0.85rem";
+                            subText.style.color = "#718096";
+                            subText.style.marginTop = "8px";
+                            subText.style.marginBottom = "0";
+                            enrollBtn.parentNode.appendChild(subText);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.log("No se pudo verificar la inscripción:", err);
+            }
+
+            // 5. Cargar Reseñas
             loadReviews(courseId);
         });
 
@@ -497,11 +617,21 @@
             }
         }
 
-        // Función principal: Inscribir y redirigir al Pago
+        // Funciones del Modal de Pago e Inscripción
         async function handleEnrollmentAndPay() {
             const btn = document.getElementById('btn-enroll-action');
 
-            // Efecto visual de carga
+            // Si el curso tiene precio mayor a 0, abrimos el modal
+            if (window.courseData && window.courseData.price && parseFloat(window.courseData.price) > 0) {
+                const modalOverlay = document.getElementById('payment-modal-overlay');
+                if (modalOverlay) {
+                    document.getElementById('modal-course-price').textContent = "$" + parseInt(window.courseData.price).toLocaleString('es-CL');
+                    modalOverlay.classList.add('active');
+                }
+                return;
+            }
+
+            // Si es gratis o no tiene precio, hacemos el flujo directo de inscripción
             const originalText = btn.textContent;
             btn.disabled = true;
             btn.textContent = "Procesando...";
@@ -510,7 +640,7 @@
             formData.append('course_id', courseId);
 
             try {
-                // PETICIÓN AL BACKEND (Nota el ../api/)
+                // Inscribir curso gratuito directamente usando la API
                 const response = await fetch('../api/enroll_course.php', {
                     method: 'POST',
                     body: formData
@@ -518,35 +648,95 @@
 
                 const result = await response.json();
 
-                // MANEJO DE RESPUESTAS
                 if (response.ok) {
-                    // CASO ÉXITO: Inscripción completada
-                    alert('¡Felicidades! Te has inscrito correctamente en el curso.');
+                    alert('¡Felicidades! Te has inscrito correctamente en este curso gratuito.');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
                     window.location.href = 'mis_cursos.html';
-
                 } else if (response.status === 401) {
-                    // CASO NO LOGUEADO
-                    alert('Para inscribirte, primero debes iniciar sesión.');
+                    alert('Para inscribirte en cursos gratuitos, primero debes iniciar sesión.');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
                     window.location.href = '../index.html'; // Mandar al login
-
                 } else if (response.status === 409) {
-                    // CASO YA INSCRITO
                     alert('¡Ya estás inscrito en este curso!');
-                    // Si ya está inscrito, lo mandamos directo al contenido o a mis cursos
+                    btn.disabled = false;
+                    btn.textContent = "Ya Inscrito";
                     window.location.href = 'mis_cursos.html';
-
                 } else {
-                    // OTROS ERRORES
                     alert('Error: ' + (result.error || 'No se pudo procesar la inscripción'));
                     btn.disabled = false;
                     btn.textContent = originalText;
                 }
             } catch (error) {
-                console.error(error);
-                alert('Error de conexión con el servidor. Verifica que XAMPP esté corriendo.');
+                console.error("Error en la inscripción automática:", error);
+                alert('Error de conexión con el servidor. Por favor intenta más tarde.');
                 btn.disabled = false;
                 btn.textContent = originalText;
             }
+        }
+
+        function closePaymentModal() {
+            const modalOverlay = document.getElementById('payment-modal-overlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        }
+
+        // Cierra dando clic en el overlay (fuera de la caja modal)
+        document.addEventListener('click', function (e) {
+            const modalOverlay = document.getElementById('payment-modal-overlay');
+            if (e.target === modalOverlay) {
+                closePaymentModal();
+            }
+        });
+
+        // Copiar textos de la caja modal
+        function copyModalText(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = "Copiado";
+                btnElement.classList.add("copied");
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.classList.remove("copied");
+                }, 2000);
+            }).catch(err => {
+                console.error("Error al copiar texto: ", err);
+                alert("Error al copiar al portapapeles.");
+            });
+        }
+
+        // Copiar todos los datos bancarios
+        function copyAllBankData(btnElement) {
+            const allData = `Banco: Ejemplo Banco Nacional
+Tipo de cuenta: Ejemplo Cuenta Corriente
+N° de cuenta: Ejemplo 0123456789
+RUT: Ejemplo 12.345.678-9
+Titular: Ejemplo Empresa SpA
+Email: ejemplo@correo.com`;
+
+            navigator.clipboard.writeText(allData).then(() => {
+                const originalText = btnElement.innerHTML;
+                btnElement.innerHTML = `<i class="ph-fill ph-check-circle"></i> Copiados`;
+                btnElement.classList.add("copied");
+                setTimeout(() => {
+                    btnElement.innerHTML = originalText;
+                    btnElement.classList.remove("copied");
+                }, 2000);
+            }).catch(err => {
+                console.error("Error al copiar texto: ", err);
+                alert("Error al copiar al portapapeles.");
+            });
+        }
+
+        // Accionar whatsapp de confirmación
+        function confirmModalWhatsapp() {
+            let courseName = window.courseData ? window.courseData.title : "curso seleccionado";
+            const phoneNumber = "56973410397"; // Reemplazar con el número de teléfono real
+            const message = `Hola, quiero confirmar mi pago por transferencia para el curso: ${courseName} (ID: ${courseId}). Adjunto mi comprobante de pago.`;
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
     </script>
 
