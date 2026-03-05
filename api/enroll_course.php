@@ -1,78 +1,91 @@
 <?php
-session_start();
+// api/delete_course.php
+// Elimina un curso y su detalle asociado (courses + detail_courses)
+
 require 'db_connect.php';
+require 'auth_check.php';
 
 header('Content-Type: application/json');
 
-// Verificar autenticación
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['error' => 'No autenticado']);
+// Solo aceptar método DELETE
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Método no permitido. Usar DELETE.']);
     exit();
 }
 
-$userId = $_SESSION['user_id'];
-$courseId = isset($_POST['course_id']) ? (int)$_POST['course_id'] : 0;
+// Leer el ID desde la URL: api/delete_course.php?id=5
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Validar curso
-if (!$courseId) {
+if ($id <= 0) {
     http_response_code(400);
     echo json_encode(['error' => 'ID de curso inválido']);
     exit();
 }
 
-// Verificar si el curso existe
-$courseCheck = $conn->prepare("SELECT id FROM courses WHERE id = ?");
-$courseCheck->bind_param("i", $courseId);
-$courseCheck->execute();
-$courseResult = $courseCheck->get_result();
+// Verificar autenticación + ownership (admin puede cualquiera, instructor solo los suyos)
+requireCourseOwnership($conn, $id);
 
-if ($courseResult->num_rows === 0) {
-    http_response_code(404);
-    echo json_encode(['error' => 'El curso no existe']);
-    $courseCheck->close();
+// Verificar que el curso existe
+$checkStmt = $conn->prepare("SELECT id, title FROM courses WHERE id = ?");
+if (!$checkStmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Error de preparación: ' . $conn->error]);
     exit();
 }
-$courseCheck->close();
-
-// Verificar si ya está inscrito
-$checkStmt = $conn->prepare("SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?");
-$checkStmt->bind_param("ii", $userId, $courseId);
+$checkStmt->bind_param("i", $id);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
 
-if ($checkResult->num_rows > 0) {
-    http_response_code(409);
-    echo json_encode(['error' => 'Ya estás inscrito en este curso']);
+if ($checkResult->num_rows === 0) {
+    http_response_code(404);
+    echo json_encode(['error' => 'Curso no encontrado']);
     $checkStmt->close();
+    $conn->close();
     exit();
 }
+
+$course = $checkResult->fetch_assoc();
 $checkStmt->close();
 
-// Inscribir al usuario
-$stmt = $conn->prepare("INSERT INTO enrollments (user_id, course_id, progress, hours_completed) VALUES (?, ?, 0, 0)");
-$stmt->bind_param("ii", $userId, $courseId);
+// Transacción para borrar en ambas tablas
+$conn->begin_transaction();
 
-if ($stmt->execute()) {
-    $enrollmentId = $stmt->insert_id;
-    
-    // Actualizar cantidad de estudiantes en el curso
-    $updateStmt = $conn->prepare("UPDATE courses SET students = students + 1 WHERE id = ?");
-    $updateStmt->bind_param("i", $courseId);
-    $updateStmt->execute();
-    $updateStmt->close();
-    
-    http_response_code(201);
+try {
+    // Borrar detalle primero (tabla hija)
+    $deleteDetail = $conn->prepare("DELETE FROM detail_courses WHERE course_id = ?");
+    if (!$deleteDetail) {
+        throw new Exception('Error preparando borrado de detalle: ' . $conn->error);
+    }
+    $deleteDetail->bind_param("i", $id);
+    $deleteDetail->execute();
+    $deleteDetail->close();
+
+    // Borrar el curso (tabla padre)
+    $deleteCourse = $conn->prepare("DELETE FROM courses WHERE id = ?");
+    if (!$deleteCourse) {
+        throw new Exception('Error preparando borrado de curso: ' . $conn->error);
+    }
+    $deleteCourse->bind_param("i", $id);
+    $deleteCourse->execute();
+
+    if ($deleteCourse->affected_rows === 0) {
+        throw new Exception('No se pudo eliminar el curso');
+    }
+    $deleteCourse->close();
+
+    $conn->commit();
+
+    http_response_code(200);
     echo json_encode([
-        'message' => '¡Inscripción exitosa!',
-        'enrollmentId' => $enrollmentId,
-        'success' => true
+        'message'   => "Curso '{$course['title']}' eliminado correctamente",
+        'deletedId' => $id
     ]);
-} else {
+
+} catch (Exception $e) {
+    $conn->rollback();
     http_response_code(500);
-    echo json_encode(['error' => 'Error al inscribirse: ' . $stmt->error]);
+    echo json_encode(['error' => 'Error al eliminar: ' . $e->getMessage()]);
 }
 
-$stmt->close();
 $conn->close();
-?>
