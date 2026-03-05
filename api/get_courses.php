@@ -8,7 +8,7 @@ require 'db_connect.php';
 $courses = [];
 
 // SIEMPRE obtener todos los cursos disponibles, sin importar si está autenticado
-$sql = "SELECT id, title, instructor, avatar, category, price, rating, students, duration, image, description FROM courses ORDER BY id ASC";
+$sql = "SELECT c.id, c.title, u.name as instructor, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description FROM courses c LEFT JOIN users u ON c.instructor_id = u.id ORDER BY c.id ASC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

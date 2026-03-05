@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración del Curso - Panel Administrador</title>
+    <style>
+        /* ==================== VARIABLES DE COLOR ==================== */
+        :root {
+            --primary-color: #1e3e5a;
+            --primary-dark: #152c40;
+            --accent-color: #fdf4ae;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --gray-light: #f7fafc;
+            --border-color: #e2e8f0;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #e53e3e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            background-attachment: fixed;
+        }
+
+        /* ==================== HEADER ==================== */
+        .admin-header {
+            background: rgba(30, 62, 90, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(-3px);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-preview {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-preview:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .btn-save {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: 1px solid transparent;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: #fff;
+        }
+
+        .btn-save:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* ==================== LAYOUT & CONTENEDORES ==================== */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .config-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .sidebar-nav {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 6rem;
+            border-top: 4px solid var(--primary-color);
+            height: fit-content;
+        }
+
+        .nav-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-light);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(30, 62, 90, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .main-config {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .config-section {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .config-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .section-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* ==================== FORMULARIOS ==================== */
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 62, 90, 0.1);
+        }
+
+        .form-input.error,
+        .form-textarea.error {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+            color: var(--danger);
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* INPUTS ESPECIALES */
+        .price-input-group {
+            position: relative;
+        }
+
+        .currency-prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .price-input-group input {
+            padding-left: 2.5rem;
+        }
+
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            min-height: 50px;
+            background: #fff;
+        }
+
+        .tag-input:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 62, 90, 0.1);
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        /* ==================== TAGS DE OBJETIVOS Y REQUISITOS ==================== */
+        .items-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--gray-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-height: 50px;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-tag {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 2px 6px rgba(30, 62, 90, 0.2);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .item-tag-text {
+            flex: 1;
+        }
+
+        .item-remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+
+        .item-remove:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .items-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        .items-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 62, 90, 0.1);
+        }
+
+        .items-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .video-upload {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--gray-light);
+        }
+
+        .video-upload:hover {
+            border-color: var(--primary-color);
+            background: #ebf4ff;
+        }
+
+        .video-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #a0aec0;
+        }
+
+        .video-preview {
+            margin-top: 1rem;
+            background: black;
+            border-radius: 8px;
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+        }
+
+        .video-preview[src] {
+            display: block;
+        }
+
+        .video-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #ebf4ff;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-info-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .video-remove {
+            padding: 0.5rem 1rem;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .video-remove:hover {
+            background: #c53030;
+        }
+
+        /* ==================== SUBIDA DE IMÁGENES ==================== */
+        .image-upload {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--gray-light);
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary-color);
+            background: #ebf4ff;
+        }
+
+        .image-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #a0aec0;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            background: var(--gray-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #ebf4ff;
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #a0aec0;
+        }
+
+        .browse-btn {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* ==================== MÓDULOS ==================== */
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .module-item {
+            background: var(--gray-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border-left: 5px solid var(--border-color);
+        }
+
+        .module-item:hover {
+            border-left-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .module-header-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .module-number {
+            background: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(30, 62, 90, 0.3);
+        }
+
+        .module-title-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .module-title-input:focus {
+            outline: 1px solid var(--primary-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 18px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: white;
+            color: var(--primary-color);
+            border-color: #e2e8f0;
+        }
+
+        .icon-btn.delete:hover {
+            color: var(--danger);
+            background: #fff5f5;
+            border-color: #feb2b2;
+        }
+
+        .module-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .module-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 1.5rem;
+            background: var(--gray-light);
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-add:hover {
+            background: #ebf4ff;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== TOGGLE SWITCH ==================== */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* ==================== ALERTAS ==================== */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            color: #22543d;
+            border: 1px solid #c6f6d5;
+        }
+
+        .alert-warning {
+            background: #fffaf0;
+            color: #744210;
+            border: 1px solid #fbd38d;
+        }
+
+        .alert-error {
+            background: #fff5f5;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+
+        /* ==================== STATS ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(30, 62, 90, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .config-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-nav {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 0.5rem;
+                padding: 1rem;
+                top: auto;
+            }
+
+            .nav-title {
+                grid-column: 1 / -1;
+            }
+
+            .nav-item {
+                padding: 0.75rem;
+                font-size: 13px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+
+            .config-section {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .module-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .module-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-nav {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-item {
+                justify-content: flex-start;
+            }
+
+            .btn-add {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="header-content">
+            <div class="header-title">
+                <button class="back-btn" onclick="goBack()">
+                    ← Volver
+                </button>
+                <div>
+                    <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Configura todos los detalles del curso</h1>
+                
+                </div>
+            </div>
+            <div class="header-actions">
+                <!--
+                <button class="btn btn-preview" onclick="previewCourse()">
+                    👁️ Vista Previa
+                </button>-->
+                <button class="btn btn-save" id="saveCourseBtn" onclick="saveCourse()">
+                    💾 Guardar Curso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="config-layout">
+            <nav class="sidebar-nav">
+                <div class="nav-title">Secciones</div>
+                <div class="nav-item active" onclick="switchSection(this, 'general')">
+                    <span class="nav-icon">📝</span>
+                    <span>General</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'content')">
+                    <span class="nav-icon">📚</span>
+                    <span>Contenido</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'modules')">
+                    <span class="nav-icon">📋</span>
+                    <span>Módulos</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'pricing')">
+                    <span class="nav-icon">💰</span>
+                    <span>Precio y acceso</span>
+                </div>
+                <div class="nav-item" onclick="switchSection(this, 'settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Configuración</span>
+                </div>
+                
+            </nav>
+
+            <div class="main-config">
+                <!-- SECCIÓN GENERAL -->
+                <div class="config-section active" id="section-general">
+                    <div class="section-header">
+                        <h2 class="section-title">Información General</h2>
+                        <p class="section-description">Configura los datos básicos del curso</p>
+                    </div>
+
+                    <form id="courseForm" class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Título del Curso <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="courseTitle" name="courseTitle" maxlength="80" placeholder="Ej: Introducción a la Programación" required>
+                            <span class="form-help">El título debe ser claro y descriptivo (máx. 80 caracteres)</span>
+                            <span class="error-message" id="error-courseTitle">El título es requerido</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Descripción <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="shortDescription" name="shortDescription" maxlength="200" required></textarea>
+                            <span class="form-help">Máximo 200 caracteres</span>
+                            <span class="error-message" id="error-shortDescription">La descripción es requerida</span>
+                        </div>
+
+                    
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Instructor <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-input" id="instructor" name="instructor" placeholder="Nombre del instructor" required>
+                                <span class="error-message" id="error-instructor">El instructor es requerido</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Categoría <span class="required">*</span>
+                                </label>
+                                <!--Categorias que se les agregan a los cursos-->
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="educacion">Educación</option>
+                                    <option value="bienestar">Bienestar</option>
+                                    <option value="tecnologia">Tecnología</option>
+                                    <option value="negocios">Negocios</option>
+                                    <option value="salud">Salud</option>
+                                    <option value="idiomas">Idiomas</option>
+                                </select>
+                                <span class="error-message" id="error-category">La categoría es requerida</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" >
+                                Imagen de Portada del Curso 
+                            </label>
+                            <div class="image-upload" onclick="document.getElementById('courseImage').click()">
+                                <div class="image-upload-icon" >🖼️</div>
+                                <p><strong>Haz clic para subir una imagen</strong></p>
+                                
+                                <p style="font-size: 0.85rem; color: #718096; margin-top: 0.5rem;">O arrastra y suelta</p>
+                                <p style="font-size: 0.85rem; color: #718096; margin-top: 0.5rem;">(o se usara la imagen por defecto)</p>
+                               
+                            </div>
+                            <input type="file" id="courseImage" name="courseImage" style="display: none;" accept="image/jpeg,image/png,image/webp" onchange="previewImage(event)">
+                            <img id="imagePreview" class="image-preview" alt="Vista previa" style="display: none;">
+                            
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SECCIÓN CONTENIDO -->
+                <div class="config-section" id="section-content">
+                    <div class="section-header">
+                        <h2 class="section-title">Contenido del Curso</h2>
+                        <p class="section-description">Define objetivos, requisitos, duración y video de introducción</p>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="form-group">
+                            <label class="form-label">Duración Total (horas)
+                                <span class="required">*</span>
+                            </label>
+                            <input type="number" class="form-input" id="duration" name="duration" min="1" placeholder="Ej: 40">
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-grid">
+                        <!-- Video de Introducción -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Video de introduccion al curso
+                            </label>
+                            <input type="text" class="form-input" id="introVideoUrl" name="introVideoUrl" placeholder="Ej: https://www.youtube.com/" required>
+                            <span class="form-help">Pega un link de YouTube</span>
+                            <span class="error-message" id="error-introVideoUrl">El video de introducción es requerido</span>
+                        </div>
+
+                        <!-- Objetivos de Aprendizaje -->
+                        <div class="form-group">
+                            <label class="form-label">Objetivos de Aprendizaje</label>
+                            <input type="text" class="items-input" id="objectivesInput" placeholder="Escribe un objetivo y presiona Enter para agregarlo" onkeypress="handleItemInput(event, 'objectives')">
+                            <span class="form-help">Presiona Enter para agregar cada objetivo</span>
+                            <div class="items-list" id="objectivesList"></div>
+                        </div>
+
+                        <!-- Requisitos Previos -->
+                        <div class="form-group">
+                            <label class="form-label">Requisitos Previos</label>
+                            <input type="text" class="items-input" id="requirementsInput" placeholder="Escribe un requisito y presiona Enter para agregarlo" onkeypress="handleItemInput(event, 'requirements')">
+                            <span class="form-help">Presiona Enter para agregar cada requisito</span>
+                            <div class="items-list" id="requirementsList"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- SECCIÓN MÓDULOS -->
+                <div class="config-section" id="section-modules">
+                    <div class="section-header">
+                        <h2 class="section-title">Módulos del Curso</h2>
+                        <p class="section-description">Organiza el contenido en módulos y lecciones</p>
+                    </div>
+                    
+                    <div class="modules-list" id="modulesList">
+                        
+
+                        <button type="button" class="btn-add" onclick="addModule()">
+                            + Agregar Nuevo Módulo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN PRECIO Y ACCESO-->
+                <div class="config-section" id="section-pricing">
+                    <div class="section-header">
+                        <h2 class="section-title">Precio y Acceso</h2>
+                        <p class="section-description">Configura el precio y las opciones de inscripción</p>
+                    </div>
+                    
+
+                    <div class="form-grid">
+                        <div class="two-col">
+                            <div class="form-group">
+                                <label class="form-label">Precio del Curso <span class="required">*</span></label>
+                                <div class="price-input-group">
+                                    <span class="currency-prefix">$</span>
+                                    <input type="number" class="form-input" id="price" name="price" min="0" placeholder="0">
+                                </div>
+                                <span class="form-help">Precio en pesos chilenos (CLP)</span>
+                            </div>
+                            <!--
+                            <div class="form-group">
+                                <label class="form-label">Precio con Descuento</label>
+                                <div class="price-input-group">
+                                    <span class="currency-prefix">$</span>
+                                    <input type="number" class="form-input" id="discountPrice" name="discountPrice" min="0" placeholder="0">
+                                </div>
+                                <span class="form-help">Opcional - Muestra precio rebajado</span>
+                            </div>
+                            -->
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="isFree" name="isFree" onchange="toggleFreeMode(this)">
+                                    <span class="slider"></span>
+                                </label>
+                                Curso Gratuito
+                            </label>
+                            <p class="form-help">Marcar para hacer el curso gratuito</p>
+                        </div>
+
+
+                        <div class="section-header">
+                            
+                            <!-- Link GoogleDrive u otro repositorio -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                 Link de recursos extra para los estudiantes
+                                </label>
+                                <input type="text" class="form-input" id="recursosUrl" name="recursosUrl" placeholder="Googldrive, Onedrive, etc" >
+                            </div>
+                        </div>
+                        <p class="section-description">Sube materiales complementarios para los estudiantes</p>
+                        
+                        
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CONFIGURACIÓN -->
+                <div class="config-section" id="section-settings">
+                    <div class="section-header">
+                        <h2 class="section-title">Configuración Avanzada</h2>
+                        <p class="section-description">Opciones adicionales del curso</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Publicar Curso
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="isPublished" name="isPublished" unchecked>
+                                    <span class="slider"></span>
+                                </label>
+                            </label>
+                            <p class="form-help">Los estudiantes pueden ver e inscribirse</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Certificado al Finalizar
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="hasCertificate" name="hasCertificate" unchecked>
+                                    <span class="slider"></span>
+                                </label>
+                            </label>
+                            <p class="form-help">Genera certificado automáticamente al completar</p>
+                        </div>
+
+                        
+
+                        
+
+                        
+                    </div>
+
+                    
+
+                    
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // FUNCIONES DE NAVEGACIÓN Y SECCIONES
+        // ============================================
+        function switchSection(element, sectionId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            document.querySelectorAll('.config-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.getElementById('section-' + sectionId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            if (confirm('¿Estás seguro de salir? Los cambios no guardados se perderán.')) {
+                // window.location.href = 'admin-courses.html';
+                alert('Cancelando creación de curso...');
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE IMAGEN
+        // ============================================
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('La imagen no debe superar 5MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE MÓDULOS
+        // ============================================
+        function addModule() {
+            const modulesList = document.getElementById('modulesList');
+            const modules = document.querySelectorAll('.module-item');
+            const moduleCount = modules.length + 1;
+            const btnAdd = document.querySelector('.btn-add');
+
+            const newModule = document.createElement('div');
+            newModule.className = 'module-item';
+            newModule.setAttribute('data-module-id', moduleCount);
+
+            newModule.innerHTML = `
+                <div class="module-header">
+                    <div class="module-header-info">
+                        <div class="module-number">${moduleCount}</div>
+                        <input type="text" class="module-title-input" placeholder="Título del módulo">
+                    </div>
+                    <div class="module-actions">
+                        <button type="button" class="icon-btn delete" title="Eliminar" onclick="removeModule(this)">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Duración de la Lección (Horas) <span class="required">*</span>
+                    </label>
+                    <input type="number" class="form-input" min="1" placeholder="Ej: 2" required>
+                    <span class="form-help">Duración en Horas</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        Descripción <span class="required">*</span>
+                    </label>
+                    <textarea class="form-textarea" maxlength="200" required></textarea>
+                    <span class="form-help">Máximo 200 caracteres</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Contenido <span class="required">*</span>
+                    </label>
+                    <textarea class="form-textarea" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Complemento del módulo
+                    </label>
+                    <input type="text" class="form-input" placeholder="Ej: https://www.youtube.com/ o https://docs.google.com/document/" required>
+                    <span class="form-help">Pega un link de un archivo o un video</span>
+                </div>
+            `;
+
+            modulesList.insertBefore(newModule, btnAdd);
+            newModule.querySelector('.module-title-input').focus();
+        }
+
+        function removeModule(button) {
+            if (confirm('¿Estás seguro de eliminar este módulo?')) {
+                const moduleItem = button.closest('.module-item');
+                moduleItem.style.transform = 'translateX(-100%)';
+                moduleItem.style.opacity = '0';
+                setTimeout(() => {
+                    moduleItem.remove();
+                    updateModuleNumbers();
+                }, 300);
+            }
+        }
+
+        function updateModuleNumbers() {
+            document.querySelectorAll('.module-number').forEach((number, index) => {
+                number.textContent = index + 1;
+            });
+        }
+
+        // ============================================
+        // FUNCIONES DE PRECIO
+        // ============================================
+        function toggleFreeMode(checkbox) {
+            const priceInputs = document.querySelectorAll('.price-input-group input');
+            const priceGroup = document.querySelector('[id="price"]').parentElement.parentElement;
+            
+            priceInputs.forEach(input => {
+                input.disabled = checkbox.checked;
+                if (checkbox.checked) {
+                    input.style.opacity = '0.5';
+                } else {
+                    input.style.opacity = '1';
+                }
+            });
+        }
+
+        // ============================================
+        // FUNCIONES DE CARGA DE ARCHIVOS
+        // ============================================
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.currentTarget.style.borderColor = '#1e3e5a';
+            event.currentTarget.style.background = '#ebf4ff';
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const files = event.dataTransfer.files;
+            document.getElementById('resource-files').files = files;
+            // Aquí puedes procesar los archivos
+        }
+
+        // ============================================
+        // FUNCIONES DE VALIDACIÓN Y GUARDADO
+        // ============================================
+        function validateForm() {
+            const requiredFields = [
+                'courseTitle',
+                'shortDescription',
+                'fullDescription',
+                'instructor',
+                'category',
+                'courseImage',
+                'startDate'
+            ];
+
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(`error-${fieldId}`);
+
+                if (fieldId === 'courseImage') {
+                    if (!field.files.length) {
+                        if (errorElement) {
+                            errorElement.classList.add('show');
+                            field.classList.add('error');
+                        }
+                        isValid = false;
+                    } else {
+                        if (errorElement) {
+                            errorElement.classList.remove('show');
+                        }
+                        field.classList.remove('error');
+                    }
+                } else if (!field.value.trim()) {
+                    if (errorElement) {
+                        errorElement.classList.add('show');
+                    }
+                    field.classList.add('error');
+                    isValid = false;
+                } else {
+                    if (errorElement) {
+                        errorElement.classList.remove('show');
+                    }
+                    field.classList.remove('error');
+                }
+            });
+
+            return isValid;
+        }
+
+        function saveCourse() {
+            if (!validateForm()) {
+                alert('Por favor completa todos los campos requeridos');
+                return;
+            }
+
+            const btn = document.getElementById('saveCourseBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Guardando...';
+            btn.disabled = true;
+
+            // Simular guardado
+            setTimeout(() => {
+                btn.innerHTML = '✓ Guardado';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    alert('✓ Curso guardado exitosamente');
+                }, 1500);
+            }, 1500);
+
+            // Aquí iría la llamada al API
+            console.log('Guardando curso...');
+        }
+
+        function previewCourse() {
+            if (!validateForm()) {
+                alert('Por favor completa los campos básicos primero');
+                return;
+            }
+            alert('Abriendo vista previa del curso...');
+            // window.open('course-preview.html', '_blank');
+        }
+
+        // ============================================
+        // FUNCIONES DE ARCHIVOS Y ITEMS
+        // ============================================
+        let objectivesData = [];
+        let requirementsData = [];
+
+        function handleItemInput(event, type) {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+
+            const input = event.target;
+            const itemText = input.value.trim();
+
+            if (!itemText) {
+                alert('Por favor escribe algo antes de presionar Enter');
+                return;
+            }
+
+            if (type === 'objectives') {
+                objectivesData.push(itemText);
+                renderObjectives();
+            } else if (type === 'requirements') {
+                requirementsData.push(itemText);
+                renderRequirements();
+            }
+
+            input.value = '';
+            input.focus();
+        }
+
+        function renderObjectives() {
+            const container = document.getElementById('objectivesList');
+            container.innerHTML = '';
+            objectivesData.forEach((objective, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'item-tag';
+                tag.innerHTML = `
+                    <span class="item-tag-text">✓ ${objective}</span>
+                    <span class="item-remove" onclick="removeObjective(${index})" title="Eliminar">×</span>
+                `;
+                container.appendChild(tag);
+            });
+        }
+
+        function renderRequirements() {
+            const container = document.getElementById('requirementsList');
+            container.innerHTML = '';
+            requirementsData.forEach((requirement, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'item-tag';
+                tag.innerHTML = `
+                    <span class="item-tag-text">✓ ${requirement}</span>
+                    <span class="item-remove" onclick="removeRequirement(${index})" title="Eliminar">×</span>
+                `;
+                container.appendChild(tag);
+            });
+        }
+
+        function removeObjective(index) {
+            objectivesData.splice(index, 1);
+            renderObjectives();
+        }
+
+        function removeRequirement(index) {
+            requirementsData.splice(index, 1);
+            renderRequirements();
+        }
+
+        function previewVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const maxSize = 100 * 1024 * 1024; // 100MB
+                if (file.size > maxSize) {
+                    alert('El video no debe superar 100MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('videoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+
+                    const videoUpload = document.getElementById('videoUpload');
+                    videoUpload.style.display = 'none';
+
+                    const videoInfo = document.getElementById('videoInfo');
+                    videoInfo.style.display = 'flex';
+                    videoInfo.innerHTML = `
+                        <span class="video-info-text">📹 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                        <button type="button" class="video-remove" onclick="removeVideo()">Eliminar Video</button>
+                    `;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeVideo() {
+            document.getElementById('introVideo').value = '';
+            document.getElementById('videoPreview').style.display = 'none';
+            document.getElementById('videoInfo').style.display = 'none';
+            document.getElementById('videoUpload').style.display = 'block';
+        }
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar elementos
+            document.getElementById('drop-zone').addEventListener('click', function() {
+                document.getElementById('resource-files').click();
+            });
+
+            // Establecer fecha de inicio a hoy
+            const today = new Date().toISOString().split('T')[0];
+            const startDateInput = document.getElementById('startDate');
+            if (startDateInput) {
+                startDateInput.value = today;
+            }
+        });
+    </script>
+</body>
+</html>
