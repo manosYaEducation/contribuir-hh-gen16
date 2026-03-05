@@ -17,6 +17,7 @@
                 <button class="tab-btn" onclick="filterCourses('activos', this)">En Progreso</button>
                 <button class="tab-btn" onclick="filterCourses('completados', this)">Completados</button>
                 <button class="tab-btn active" onclick="filterCourses('todos', this)">Todos</button>
+                <button class="tab-btn" onclick="filterCourses('publicados', this)">Publicados 📝</button>
                 <button class="tab-btn" onclick="filterCourses('favoritos', this)">Favoritos ❤️</button>
             </div>
         </div>
@@ -37,7 +38,9 @@
 
     <script>
         let allEnrollments = [];
+        let allCourses = [];
         let currentFilter = 'todos';
+        let currentUserId = null;
         let favorites = JSON.parse(localStorage.getItem('contribuir_favorites') || '[]');
 
         // Función para convertir rutas relativas a absolutas
@@ -60,17 +63,34 @@
         });
 
         async function loadEnrollments() {
-            let sessionResponse, enrollmentsResponse;
+            let sessionResponse, enrollmentsResponse, coursesResponse;
             try {
                 sessionResponse = await fetch('../api/check_session.php', { credentials: 'same-origin' });
                 if (!sessionResponse.ok) throw new Error('No autenticado');
+                
+                const sessionData = await sessionResponse.json();
+                currentUserId = sessionData.user_id;
 
                 enrollmentsResponse = await fetch('../api/get_enrollments.php', { credentials: 'same-origin' });
                 if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
+                
+                coursesResponse = await fetch('../api/get_courses.php', { credentials: 'same-origin' });
+                if (!coursesResponse.ok) throw new Error('Error al cargar todos los cursos');
 
                 allEnrollments = await enrollmentsResponse.json();
-                console.log('✅ Total de cursos cargados:', allEnrollments.length);
-                console.log('📋 Datos completos:', allEnrollments);
+                allCourses = await coursesResponse.json();
+                
+                // Enriquecer allCourses con campos faltantes para que tenga el mismo formato que allEnrollments
+                allCourses = allCourses.map(course => ({
+                    ...course,
+                    progress: course.progress || 0,
+                    enrolledDate: course.created_at || course.enrolledDate || 'No disponible'
+                }));
+                
+                console.log('✅ Total de cursos inscritos:', allEnrollments.length);
+                console.log('✅ Total de todos los cursos:', allCourses.length);
+                console.log('👤 ID del usuario logeado:', currentUserId);
+                console.log('📋 Todos los cursos:', allCourses);
                 filterCourses('todos');
             } catch (error) {
                 console.error('Error:', error);
@@ -97,6 +117,10 @@
             if (filter === 'activos') filtered = allEnrollments.filter(e => e.progress < 100);
             else if (filter === 'completados') filtered = allEnrollments.filter(e => e.progress === 100);
             else if (filter === 'favoritos') filtered = allEnrollments.filter(e => favorites.includes(e.id));
+            else if (filter === 'publicados') {
+                filtered = allCourses.filter(c => parseInt(c.instructor) === parseInt(currentUserId));
+                console.log('🔍 Filtrando publicados - ID usuario:', currentUserId, 'Resultados:', filtered);
+            }
             else filtered = allEnrollments;
 
             displayCourses(filtered);
@@ -114,6 +138,7 @@
                 if (currentFilter === 'favoritos') message = 'Aún no has marcado ningún curso como favorito ❤️';
                 else if (currentFilter === 'activos') message = '✨ ¡No hay cursos en progreso! Todos completados o sin empezar.';
                 else if (currentFilter === 'completados') message = '¡Termina un curso para verlo aquí!';
+                else if (currentFilter === 'publicados') message = '📝 Aún no has publicado ningún curso como instructor.';
                 else if (currentFilter === 'todos' && allEnrollments.length === 0) message = '📖 No tienes ningún curso aún. ¡Inscríbete en uno!';
 
                 emptyState.innerHTML = `
@@ -132,6 +157,8 @@
             container.innerHTML = courses.map(course => {
                 const isFavorite = favorites.includes(course.id);
                 const imageSrc = course.image.startsWith('http') || course.image.startsWith('/') ? course.image : '../' + course.image;
+                const isPublished = currentFilter === 'publicados';
+                
                 return `
                     <div class="course-card">
                         <img src="${imageSrc}" alt="${course.title}" class="course-image" onerror="this.onerror=null;this.src='../photos/LogoOficial.png';">
@@ -145,34 +172,41 @@
                                     <h3 class="course-title">${course.title}</h3>
                                     <p class="course-instructor">por ${course.instructor}</p>
                                 </div>
-                                ${course.progress === 100 ? '<span class="badge completed">✓ Completado</span>' : ''}
+                                ${!isPublished && course.progress === 100 ? '<span class="badge completed">✓ Completado</span>' : ''}
                             </div>
 
-                            <div class="progress-section">
-                                <div class="progress-label">
-                                    <span>Progreso</span>
-                                    <span>${course.progress}%</span>
+                            ${!isPublished ? `
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso</span>
+                                        <span>${course.progress}%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${course.progress}%"></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${course.progress}%"></div>
-                                </div>
-                            </div>
 
-                            <div class="course-stats">
-                                <div class="stat-item">📅 ${course.enrolledDate}</div>
-                                <!--<div class="stat-item">⏱️ ${course.hoursCompleted}h${course.totalHours ? '/' +course.totalHours+'h' : ''}</div>-->
-                            </div>
+                                <div class="course-stats">
+                                    <div class="stat-item">📅 ${course.enrolledDate}</div>
+                                </div>
+                            ` : ''}
 
                             <div class="course-actions-row">
-                                <a href="../pages/curso2.html?id=${course.id}" class="btn btn-primary">   <!-- Cambiar URL para cuando apretemos continuar y nos mande a otra pantalla del curso  -->
-                                    ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
-                                </a>
+                                ${isPublished ? `
+                                    <button onclick="editarCurso(${course.id})" class="btn btn-secondary">
+                                        Editar Curso
+                                    </button>
+                                ` : `
+                                    <a href="../pages/curso2.html?id=${course.id}" class="btn btn-primary">
+                                        ${course.progress === 100 ? 'Revisar' : 'Continuar'} →
+                                    </a>
+                                `}
                                 <a href="../pages/curso2.html?id=${course.id}" class="btn btn-secondary">
                                     Detalles
                                 </a>
                             </div>
 
-                            ${course.progress === 100 ? `
+                            ${!isPublished && course.progress === 100 ? `
                                 <button class="btn btn-certificate" onclick="downloadCertificate(${course.id}, '${course.title.replace(/'/g, "\\'")}')">
                                     📜 Descargar Certificado
                                 </button>
@@ -199,6 +233,10 @@
             if (currentFilter === 'favoritos') {
                 filterCourses('favoritos');
             }
+        }
+
+        function editarCurso(courseId) {
+            window.location.href = `../ModeladoHTML/admin_course_config.html?id=${courseId}`;
         }
 
         function downloadCertificate(courseId, courseTitle) {
