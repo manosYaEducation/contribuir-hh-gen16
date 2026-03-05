@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -18,270 +20,352 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container"> 
+    <div class="container">
 
-    <div class="hero">
-        <div class="hero-content">
-            <h1 id="course-title">Primera Formación de Artistas Educadores</h1>
-            
-            <div class="professor-section">
-                <div class="professor-header">
-                    <button class="professor-button" id="profToggle">
-                        <span id="professor-name">CREO de Creer y Crear y Corporación Con Tribu Ir</span>
-                        <span class="arrow">+</span>
-                    </button>
-                    <div class="professor-photo">
-                        <img id="professor-img" src="../photos/contribuir.jpg" alt="Logo" class="prof-img">
+        <div class="hero">
+            <div class="hero-content">
+                <h1 id="course-title">Primera Formación de Artistas Educadores</h1>
+
+                <div class="professor-section">
+                    <div class="professor-header">
+                        <button class="professor-button" id="profToggle">
+                            <span id="professor-name">CREO de Creer y Crear y Corporación Con Tribu Ir</span>
+                            <span class="arrow">+</span>
+                        </button>
+                        <div class="professor-photo">
+                            <img id="professor-img" src="../photos/contribuir.jpg" alt="Logo" class="prof-img">
+                        </div>
+                    </div>
+
+                    <div class="professor-bio-panel" id="profPanel">
+                        <p id="professor-bio">
+                            ONG conformada por un equipo multidisciplinario de profesionales apasionados por la
+                            educación, salud mental, inclusión y bienestar integral.
+                        </p>
                     </div>
                 </div>
-                
-                <div class="professor-bio-panel" id="profPanel">
-                    <p id="professor-bio">
-                        ONG conformada por un equipo multidisciplinario de profesionales apasionados por la educación, salud mental, inclusión y bienestar integral.
+
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span id="course-duration">Duración: --</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>👥</span>
+                        <span id="course-students">Estudiantes: --</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>⭐</span>
+                        <span id="course-rating">Calificación: --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+
+            <div class="main-content">
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                        </svg>
+                        Descripción del Curso
+                    </h2>
+                    <p id="course-description">
+                        Descripción cargando...
                     </p>
                 </div>
+
+                <div class="section video-intro-section" id="video-section" style="display: none;">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 12l-6-4v8l6-4z" />
+                            <path fill-rule="evenodd"
+                                d="M2 4a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v12h12V4H4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Video Introductorio del Curso
+                    </h2>
+                    <p style="margin-bottom: 1.5rem; color: #4a5568;" id="video-description">
+                        Cargando...
+                    </p>
+                    <div class="video-container" id="video-container">
+                        <p style="text-align: center; color: #718096;">No hay video disponible</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                        </svg>
+                        Objetivos de Aprendizaje
+                    </h2>
+                    <div class="objetivos-list" id="learning-objectives-list">
+                        <p style="color: #a0aec0;">Cargando objetivos...</p>
+                    </div>
+                </div>
+
+                <!--Seccion de modulos del curso-->
+                <div class="section">
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                            <path fill-rule="evenodd"
+                                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Módulos del Curso
+                    </h2>
+                    <div class="modules" id="modules-container">
+                        <!-- Los módulos se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
             </div>
 
-            <div class="meta-info">
-                <div class="meta-item">
-                    <span>⏱️</span>
-                    <span id="course-duration">Duración: --</span>
+            <div class="sidebar">
+
+                <div class="card">
+                    <div style="text-align: center; margin: 0.5rem 0;">
+                        <a href="https://drive.google.com/drive/folders/15QxCyviXQeZevDOchR9OPEKhDDNPU2KQ?usp=sharing"
+                            class="cta-button"
+                            style="display: block; margin: 0 auto; width: 100%; text-decoration: none;">
+                            Ver curso
+                        </a>
+                    </div>
                 </div>
-                <div class="meta-item">
-                    <span>👥</span>
-                    <span id="course-students">Estudiantes: --</span>
+
+                <div class="card">
+                    <h3 style="color: #1e3e5a; margin-bottom: 15px;">Información del Curso</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-duration">--h</span>
+                            <span class="stat-label">Duración</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-price">--</span>
+                            <span class="stat-label">Precio</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-students">--</span>
+                            <span class="stat-label">Estudiantes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-rating">--★</span>
+                            <span class="stat-label">Valoración</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="meta-item">
-                    <span>⭐</span>
-                    <span id="course-rating">Calificación: --</span>
+
+                <div class="card">
+                    <h3 style="color: #1e3e5a; margin-bottom: 15px;">Requisitos</h3>
+                    <ul id="requirements-list" style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; color: #a0aec0;">Cargando requisitos...</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="margin-top: 1rem; text-align: center;">
+                    <h3 style="color: #1e3e5a; margin-bottom: 10px;">¿Qué te pareció el curso?</h3>
+                    <button id="btn-add-review" class="cta-button"
+                        style="display: block; width: 100%; border-radius: 6px; font-size: 1rem; padding: 0.75rem;">
+                        Añadir Reseña
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="faq-floating">
+        <button class="faq-button" id="faqToggle">?</button>
+        <div class="faq-panel" id="faqPanel">
+            <h3>Preguntas Frecuentes</h3>
+            <div class="accordion-item">
+                <button class="accordion-button" data-target="preg1">¿Hay certificado?</button>
+                <div class="accordion-content" id="preg1">
+                    <p>Sí, al completar el curso recibirás un certificado digital oficial.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-button" data-target="preg2">¿Cuánto dura el acceso?</button>
+                <div class="accordion-content" id="preg2">
+                    <p>El acceso es de por vida.</p>
                 </div>
             </div>
         </div>
     </div>
+    <div class="faq-overlay" id="faqOverlay"></div>
 
-    <div class="content-wrapper">
-        
-        <div class="main-content">
-            <div class="section">
-                <h2>
-                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
-                    </svg>
-                    Descripción del Curso
-                </h2>
-                <p id="course-description">
-                    Descripción cargando...
-                </p>
+    <!-- Modal de Reseña -->
+    <div class="lesson-modal" id="reviewModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); justify-content: center; align-items: center; z-index: 10000; opacity: 0; transition: opacity 0.3s;">
+        <div
+            style="background-color: white; border-radius: 0.5rem; padding: 2rem; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0;">
+                <h2 style="margin: 0; color: #1e3e5a; flex: 1;">Añadir Reseña</h2>
+                <button id="closeReviewModal"
+                    style="background-color: #e2e8f0; border: none; border-radius: 0.375rem; width: 2rem; height: 2rem; cursor: pointer; font-size: 1.5rem; color: #4a5568;">×</button>
             </div>
-
-            <div class="section video-intro-section" id="video-section" style="display: none;">
-                <h2>
-                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 12l-6-4v8l6-4z"/>
-                        <path fill-rule="evenodd" d="M2 4a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v12h12V4H4z" clip-rule="evenodd"/>
-                    </svg>   
-                    Video Introductorio del Curso
-                </h2>
-                <p style="margin-bottom: 1.5rem; color: #4a5568;" id="video-description">
-                    Cargando...
-                </p> 
-                <div class="video-container" id="video-container">
-                    <p style="text-align: center; color: #718096;">No hay video disponible</p>
+            <div style="color: #4a5568;">
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Calificación</label>
+                <div style="margin-bottom: 1.5rem; font-size: 2rem; cursor: pointer; color:#f6ad55; user-select:none;"
+                    id="star-rating">
+                    <span data-value="1">☆</span>
+                    <span data-value="2">☆</span>
+                    <span data-value="3">☆</span>
+                    <span data-value="4">☆</span>
+                    <span data-value="5">☆</span>
                 </div>
-            </div>
+                <label style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Comentario</label>
+                <textarea id="reviewComment" rows="4"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 1.5rem; box-sizing: border-box;"
+                    placeholder="Escribe tu reseña aquí..."></textarea>
 
-            <div class="section">
-                <h2>
-                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
-                    </svg>
-                    Objetivos de Aprendizaje
-                </h2>
-                <div class="objetivos-list" id="learning-objectives-list">
-                    <p style="color: #a0aec0;">Cargando objetivos...</p>
-                </div>
-            </div>
-            
-            <!--Seccion de modulos del curso-->
-            <div class="section">
-                <h2>
-                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                        <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                    </svg>
-                    Módulos del Curso
-                </h2>
-                <div class="modules" id="modules-container">
-                    <!-- Los módulos se cargarán aquí dinámicamente -->
-                </div>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            
-            <div class="card">
-                <div style="text-align: center; margin: 0.5rem 0;">
-                    <a href="https://drive.google.com/drive/folders/15QxCyviXQeZevDOchR9OPEKhDDNPU2KQ?usp=sharing" 
-                       class="cta-button" 
-                       style="display: block; margin: 0 auto; width: 100%; text-decoration: none;">
-                       Ver curso
-                    </a>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 style="color: #1e3e5a; margin-bottom: 15px;">Información del Curso</h3>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-value" id="stat-duration">--h</span>
-                        <span class="stat-label">Duración</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" id="stat-price">--</span>
-                        <span class="stat-label">Precio</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" id="stat-students">--</span>
-                        <span class="stat-label">Estudiantes</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" id="stat-rating">--★</span>
-                        <span class="stat-label">Valoración</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 style="color: #1e3e5a; margin-bottom: 15px;">Requisitos</h3>
-                <ul id="requirements-list" style="list-style: none; padding: 0;">
-                    <li style="padding: 10px 0; color: #a0aec0;">Cargando requisitos...</li>
-                </ul>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-<div class="faq-floating">
-    <button class="faq-button" id="faqToggle">?</button>
-    <div class="faq-panel" id="faqPanel">
-        <h3>Preguntas Frecuentes</h3>
-        <div class="accordion-item">
-            <button class="accordion-button" data-target="preg1">¿Hay certificado?</button>
-            <div class="accordion-content" id="preg1">
-                <p>Sí, al completar el curso recibirás un certificado digital oficial.</p>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <button class="accordion-button" data-target="preg2">¿Cuánto dura el acceso?</button>
-            <div class="accordion-content" id="preg2">
-                <p>El acceso es de por vida.</p>
+                <button id="btn-submit-review"
+                    style="background-color: #4299e1; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; width: 100%; font-size: 1rem; cursor: pointer; font-weight: bold;">
+                    Enviar Reseña
+                </button>
+                <p id="review-error-msg" style="color: red; margin-top: 10px; display: none; text-align: center;"></p>
             </div>
         </div>
     </div>
-</div>
-<div class="faq-overlay" id="faqOverlay"></div>
+    <!-- Fin Modal de Reseña -->
 
-<script>
-    function toggleModule(module) {
-        const details = module.querySelector('.module-details');
-        if (details) {
-            const isOpen = details.style.display === 'block';
-            details.style.display = isOpen ? 'none' : 'block';
+    <script>
+        function toggleModule(module) {
+            const details = module.querySelector('.module-details');
+            if (details) {
+                const isOpen = details.style.display === 'block';
+                details.style.display = isOpen ? 'none' : 'block';
+            }
         }
-    }
 
-    function toggleExtra(event) {
-        event.stopPropagation();
-        const extraContent = event.target.parentElement.querySelector('.extra-content');
-        if (extraContent) {
-            const isOpen = extraContent.style.display === 'block';
-            extraContent.style.display = isOpen ? 'none' : 'block';
-            event.target.textContent = isOpen ? 'Ver más' : 'Ver menos';
+        function toggleExtra(event) {
+            event.stopPropagation();
+            const extraContent = event.target.parentElement.querySelector('.extra-content');
+            if (extraContent) {
+                const isOpen = extraContent.style.display === 'block';
+                extraContent.style.display = isOpen ? 'none' : 'block';
+                event.target.textContent = isOpen ? 'Ver más' : 'Ver menos';
+            }
         }
-    }
 
-    function openLessonModal(event) {
-        event.stopPropagation();
-        const extraContainer = event.target.parentElement;
-        const content = extraContainer.querySelector('.extra-content').innerHTML;
-        const title = extraContainer.closest('.module').querySelector('.module-title').textContent;
-        
-        const modal = document.createElement('div');
-        modal.className = 'lesson-modal';
-        
-        modal.innerHTML = `
-            <div class="lesson-modal-content">
-                <div class="lesson-modal-header">
-                    <h2>${title}</h2>
-                    <button class="lesson-modal-close" onclick="this.closest('.lesson-modal').remove()">×</button>
+        function openLessonModal(event) {
+            event.stopPropagation();
+            const extraContainer = event.target.parentElement;
+            const content = extraContainer.querySelector('.extra-content').innerHTML;
+            const title = extraContainer.closest('.module').querySelector('.module-title').textContent;
+
+            const modal = document.createElement('div');
+            modal.className = 'lesson-modal';
+            modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        `;
+
+            modal.innerHTML = `
+            <div style="
+                background-color: white;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                max-width: 95%;
+                max-height: 95vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+                animation: slideUp 0.3s ease-out;
+            ">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0;">
+                    <h2 style="margin: 0; color: #1e3e5a; flex: 1;">${title}</h2>
+                    <button onclick="this.closest('.lesson-modal').remove()" style="
+                        background-color: #e2e8f0;
+                        border: none;
+                        border-radius: 0.375rem;
+                        width: 2rem;
+                        height: 2rem;
+                        cursor: pointer;
+                        font-size: 1.5rem;
+                        color: #4a5568;
+                    ">×</button>
                 </div>
                 <div class="lesson-modal-body">
                     ${content}
                 </div>
             </div>
         `;
-        
-        modal.onclick = (e) => {
-            if (e.target === modal) {
-                modal.remove();
-            }
-        };
-        
-        document.body.appendChild(modal);
-    }
 
-    function getYoutubeEmbedUrl(url) {
-        if (!url) return null;
-        
-        // Si ya está en formato embed, devolverla tal cual
-        if (url.includes('/embed/')) {
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            };
+
+            document.body.appendChild(modal);
+        }
+
+        function getYoutubeEmbedUrl(url) {
+            if (!url) return null;
+
+            // Si ya está en formato embed, devolverla tal cual
+            if (url.includes('/embed/')) {
+                return url;
+            }
+
+            // Extraer ID de YouTube de diferentes formatos
+            let videoId = null;
+
+            // Formato: https://www.youtube.com/watch?v=ID
+            const match1 = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            if (match1) videoId = match1[1];
+
+            // Formato: https://youtube.com/embed/ID
+            const match2 = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
+            if (match2) videoId = match2[1];
+
+            // Si encontramos el ID, devolver URL de embed
+            if (videoId) {
+                return `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            // Si no es YouTube, devolver URL tal cual
             return url;
         }
-        
-        // Extraer ID de YouTube de diferentes formatos
-        let videoId = null;
-        
-        // Formato: https://www.youtube.com/watch?v=ID
-        const match1 = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-        if (match1) videoId = match1[1];
-        
-        // Formato: https://youtube.com/embed/ID
-        const match2 = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
-        if (match2) videoId = match2[1];
-        
-        // Si encontramos el ID, devolver URL de embed
-        if (videoId) {
-            return `https://www.youtube.com/embed/${videoId}`;
-        }
-        
-        // Si no es YouTube, devolver URL tal cual
-        return url;
-    }
 
-    async function loadCourseLessons(courseId) {
-        try {
-            const response = await fetch(`../api/get_lessons.php?course_id=${courseId}`);
-            if (response.ok) {
-                const lessons = await response.json();
-                const container = document.getElementById('modules-container');
-                container.innerHTML = '';
-                
-                if (lessons.length === 0) {
-                    container.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No hay lecciones aún</p>';
-                } else {
-                    lessons.forEach((lesson, index) => {
-                        const moduleDiv = document.createElement('div');
-                        moduleDiv.className = 'module';
-                        moduleDiv.onclick = function() { toggleModule(this); };
-                        
-                        let extraContent = '';
-                        if (lesson.content || lesson.video_url) {
-                            const embedUrl = getYoutubeEmbedUrl(lesson.video_url);
-                            extraContent = `
+        async function loadCourseLessons(courseId) {
+            try {
+                const response = await fetch(`../api/get_lessons.php?course_id=${courseId}`);
+                if (response.ok) {
+                    const lessons = await response.json();
+                    const container = document.getElementById('modules-container');
+                    container.innerHTML = '';
+
+                    if (lessons.length === 0) {
+                        container.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No hay lecciones aún</p>';
+                    } else {
+                        lessons.forEach((lesson, index) => {
+                            const moduleDiv = document.createElement('div');
+                            moduleDiv.className = 'module';
+                            moduleDiv.onclick = function () { toggleModule(this); };
+
+                            let extraContent = '';
+                            if (lesson.content || lesson.video_url) {
+                                const embedUrl = getYoutubeEmbedUrl(lesson.video_url);
+                                extraContent = `
                                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f0f4f8;">
                                     <button style="background-color: #4299e1; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.875rem;" onclick="openLessonModal(event)">Ver más</button>
                                     <div class="extra-content" style="display: none; margin-top: 1rem;">
@@ -290,9 +374,9 @@
                                     </div> 
                                 </div>
                             `;
-                        }
-                        
-                        moduleDiv.innerHTML = `
+                            }
+
+                            moduleDiv.innerHTML = `
                             <div class="module-header">
                                 <span class="module-title">${lesson.title}</span>
                             </div>
@@ -301,79 +385,79 @@
                                 ${extraContent}
                             </div>
                         `;
-                        
-                        container.appendChild(moduleDiv);
-                    });
+
+                            container.appendChild(moduleDiv);
+                        });
+                    }
+                } else {
+                    console.error("Error al cargar las lecciones");
+                    document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
                 }
-            } else {
-                console.error("Error al cargar las lecciones");
+            } catch (error) {
+                console.error("Error cargando lecciones:", error);
                 document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
             }
-        } catch (error) {
-            console.error("Error cargando lecciones:", error);
-            document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
         }
-    }
 
 
-    document.addEventListener('DOMContentLoaded', async function () {
-        // Obtener ID del curso desde URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const courseId = urlParams.get('id');
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Obtener ID del curso desde URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('id');
 
-        // Cargar datos del curso desde la API
-        if (courseId) {
-            try {
-                const response = await fetch(`../api/get_course_detail.php?id=${courseId}`);
-                
-                if (response.ok) {
-                    const courseData = await response.json();
-                    
-                    // Actualizar título
-                    document.getElementById('course-title').textContent = courseData.title;
-                    document.title = courseData.title;
-                    
-                    // Actualizar profesor/instructor
-                    document.getElementById('professor-name').textContent = courseData.instructor || 'Instructor';
-                    if (courseData.avatar) {
-                        document.getElementById('professor-img').src = courseData.avatar;
-                    }
-                    
-                    // Actualizar descripción
-                    document.getElementById('course-description').textContent = courseData.description || 'Descripción no disponible';
-                    
-                    // Actualizar meta información
-                    document.getElementById('course-duration').textContent = 'Duración: ' + (courseData.duration || '-- horas');
-                    document.getElementById('course-students').textContent = 'Estudiantes: ' + (courseData.students || '--');
-                    document.getElementById('course-rating').textContent = 'Calificación: ' + (courseData.rating || '--') + ' ⭐';
-                    
-                    // Actualizar información en la tarjeta lateral
-                    document.getElementById('stat-duration').textContent = courseData.duration || '--';
-                    // PW-11: Mostrar "Gratuito" si el precio es 0
-                    document.getElementById('stat-price').textContent = courseData.price === 0 
-                        ? 'Gratuito' 
-                        : '$' + courseData.price;
-                    document.getElementById('stat-students').textContent = courseData.students || '--';
-                    document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
-                    
-                    // Cargar el video introductorio desde la BDD
-                    const videoSection = document.getElementById('video-section');
-                    const videoContainer = document.getElementById('video-container');
-                    const videoDescription = document.getElementById('video-description');
-                    
-                    if (courseData.intro_video) {
-                        // Función para convertir URL de YouTube a formato embed
-                        function getYoutubeEmbedUrl(url) {
-                            if (!url) return null;
-                            if (url.includes('/embed/')) return url;
-                            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-                            if (match) return `https://www.youtube.com/embed/${match[1]}`;
-                            return url;
+            // Cargar datos del curso desde la API
+            if (courseId) {
+                try {
+                    const response = await fetch(`../api/get_course_detail.php?id=${courseId}`);
+
+                    if (response.ok) {
+                        const courseData = await response.json();
+
+                        // Actualizar título
+                        document.getElementById('course-title').textContent = courseData.title;
+                        document.title = courseData.title;
+
+                        // Actualizar profesor/instructor
+                        document.getElementById('professor-name').textContent = courseData.instructor || 'Instructor';
+                        if (courseData.avatar) {
+                            document.getElementById('professor-img').src = courseData.avatar;
                         }
-                        
-                        const embedUrl = getYoutubeEmbedUrl(courseData.intro_video);
-                        if (embedUrl) {
-                            videoContainer.innerHTML = `
+
+                        // Actualizar descripción
+                        document.getElementById('course-description').textContent = courseData.description || 'Descripción no disponible';
+
+                        // Actualizar meta información
+                        document.getElementById('course-duration').textContent = 'Duración: ' + (courseData.duration || '-- horas');
+                        document.getElementById('course-students').textContent = 'Estudiantes: ' + (courseData.students || '--');
+                        document.getElementById('course-rating').textContent = 'Calificación: ' + (courseData.rating || '--') + ' ⭐';
+
+                        // Actualizar información en la tarjeta lateral
+                        document.getElementById('stat-duration').textContent = courseData.duration || '--';
+                        // PW-11: Mostrar "Gratuito" si el precio es 0
+                        document.getElementById('stat-price').textContent = courseData.price === 0
+                            ? 'Gratuito'
+                            : '$' + courseData.price;
+                        document.getElementById('stat-students').textContent = courseData.students || '--';
+                        document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
+
+                        // Cargar el video introductorio desde la BDD
+                        const videoSection = document.getElementById('video-section');
+                        const videoContainer = document.getElementById('video-container');
+                        const videoDescription = document.getElementById('video-description');
+
+                        if (courseData.intro_video) {
+                            // Función para convertir URL de YouTube a formato embed
+                            function getYoutubeEmbedUrl(url) {
+                                if (!url) return null;
+                                if (url.includes('/embed/')) return url;
+                                const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                                if (match) return `https://www.youtube.com/embed/${match[1]}`;
+                                return url;
+                            }
+
+                            const embedUrl = getYoutubeEmbedUrl(courseData.intro_video);
+                            if (embedUrl) {
+                                videoContainer.innerHTML = `
                                 <div class="video-wrapper">
                                     <iframe 
                                         src="${embedUrl}" 
@@ -384,73 +468,164 @@
                                     </iframe>
                                 </div>
                             `;
-                            videoDescription.textContent = courseData.instructor || 'Te da la bienvenida';
-                            videoSection.style.display = 'block';
+                                videoDescription.textContent = courseData.instructor || 'Te da la bienvenida';
+                                videoSection.style.display = 'block';
+                            }
                         }
-                    }
-                    
-                    // Cargar Objetivos de Aprendizaje desde la BDD
-                    const objectivesList = document.getElementById('learning-objectives-list');
-                    if (courseData.learning_objectives && Array.isArray(courseData.learning_objectives)) {
-                        objectivesList.innerHTML = courseData.learning_objectives.map(obj => 
-                            `<div class="objetivo-item">
+
+                        // Cargar Objetivos de Aprendizaje desde la BDD
+                        const objectivesList = document.getElementById('learning-objectives-list');
+                        if (courseData.learning_objectives && Array.isArray(courseData.learning_objectives)) {
+                            objectivesList.innerHTML = courseData.learning_objectives.map(obj =>
+                                `<div class="objetivo-item">
                                 <div class="check-icon">✓</div>
                                 <span>${obj}</span>
                             </div>`
-                        ).join('');
+                            ).join('');
+                        } else {
+                            objectivesList.innerHTML = '<p style="color: #a0aec0;">No hay objetivos disponibles</p>';
+                        }
+
+                        // Cargar Requisitos desde la BDD
+                        const requirementsList = document.getElementById('requirements-list');
+                        if (courseData.requirements && Array.isArray(courseData.requirements)) {
+                            const requirementsHTML = courseData.requirements.map((req, idx, arr) =>
+                                `<li style="padding: 10px 0; color: #4a5568; ${idx < arr.length - 1 ? 'border-bottom: 1px solid #e2e8f0;' : ''}">✓ ${req}</li>`
+                            ).join('');
+                            requirementsList.innerHTML = requirementsHTML;
+                        } else {
+                            requirementsList.innerHTML = '<li style="padding: 10px 0; color: #a0aec0;">No hay requisitos disponibles</li>';
+                        }
+
+                        window.courseData = courseData;
+
+                        // Cargar las lecciones/módulos del curso
+                        loadCourseLessons(courseId);
                     } else {
-                        objectivesList.innerHTML = '<p style="color: #a0aec0;">No hay objetivos disponibles</p>';
+                        console.error("El curso no existe en la base de datos");
                     }
-                    
-                    // Cargar Requisitos desde la BDD
-                    const requirementsList = document.getElementById('requirements-list');
-                    if (courseData.requirements && Array.isArray(courseData.requirements)) {
-                        const requirementsHTML = courseData.requirements.map((req, idx, arr) => 
-                            `<li style="padding: 10px 0; color: #4a5568; ${idx < arr.length - 1 ? 'border-bottom: 1px solid #e2e8f0;' : ''}">✓ ${req}</li>`
-                        ).join('');
-                        requirementsList.innerHTML = requirementsHTML;
-                    } else {
-                        requirementsList.innerHTML = '<li style="padding: 10px 0; color: #a0aec0;">No hay requisitos disponibles</li>';
-                    }
-                    
-                    window.courseData = courseData;
-                    
-                    // Cargar las lecciones/módulos del curso
-                    loadCourseLessons(courseId);
-                } else {
-                    console.error("El curso no existe en la base de datos");
+                } catch (error) {
+                    console.error("Error cargando detalles del curso:", error);
                 }
-            } catch (error) {
-                console.error("Error cargando detalles del curso:", error);
             }
-        }
 
-        // Eventos de UI
-        const faqToggle = document.getElementById('faqToggle');
-        const faqPanel = document.getElementById('faqPanel');
-        const faqOverlay = document.getElementById('faqOverlay');
-        const profToggle = document.getElementById('profToggle');
-        const profPanel = document.getElementById('profPanel');
+            // Eventos de UI
+            const faqToggle = document.getElementById('faqToggle');
+            const faqPanel = document.getElementById('faqPanel');
+            const faqOverlay = document.getElementById('faqOverlay');
+            const profToggle = document.getElementById('profToggle');
+            const profPanel = document.getElementById('profPanel');
 
-        if (faqToggle) {
-            faqToggle.onclick = (e) => { e.stopPropagation(); faqPanel.classList.toggle('open'); faqOverlay.classList.toggle('open'); };
-            faqOverlay.onclick = () => { faqPanel.classList.remove('open'); faqOverlay.classList.remove('open'); };
-        }
-        
-        if (profToggle) {
-            profToggle.onclick = (e) => { e.stopPropagation(); profPanel.classList.toggle('open'); profToggle.classList.toggle('active'); };
-        }
-        
-        document.querySelectorAll('.accordion-button').forEach(btn => {
-            btn.onclick = function(e) {
-                e.stopPropagation();
-                const target = document.getElementById(this.dataset.target);
-                if(target) target.classList.toggle('open');
-                this.classList.toggle('active');
+            if (faqToggle) {
+                faqToggle.onclick = (e) => { e.stopPropagation(); faqPanel.classList.toggle('open'); faqOverlay.classList.toggle('open'); };
+                faqOverlay.onclick = () => { faqPanel.classList.remove('open'); faqOverlay.classList.remove('open'); };
+            }
+
+            if (profToggle) {
+                profToggle.onclick = (e) => { e.stopPropagation(); profPanel.classList.toggle('open'); profToggle.classList.toggle('active'); };
+            }
+
+            document.querySelectorAll('.accordion-button').forEach(btn => {
+                btn.onclick = function (e) {
+                    e.stopPropagation();
+                    const target = document.getElementById(this.dataset.target);
+                    if (target) target.classList.toggle('open');
+                    this.classList.toggle('active');
+                }
+            });
+
+            // Lógica de Reseñas
+            const btnAddReview = document.getElementById('btn-add-review');
+            const reviewModal = document.getElementById('reviewModal');
+            const closeReviewModal = document.getElementById('closeReviewModal');
+            const starContainer = document.getElementById('star-rating');
+            const btnSubmitReview = document.getElementById('btn-submit-review');
+            let selectedRating = 0;
+
+            if (btnAddReview && reviewModal) {
+                btnAddReview.onclick = () => {
+                    reviewModal.style.display = 'flex';
+                    // Trigger reflow para la animación
+                    setTimeout(() => {
+                        reviewModal.style.opacity = '1';
+                        reviewModal.querySelector('div').style.transform = 'translateY(0)';
+                    }, 10);
+                };
+
+                closeReviewModal.onclick = () => {
+                    reviewModal.style.opacity = '0';
+                    reviewModal.querySelector('div').style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        reviewModal.style.display = 'none';
+                    }, 300);
+                };
+
+                // Estrellas
+                const stars = starContainer.querySelectorAll('span');
+                stars.forEach(star => {
+                    star.onclick = () => {
+                        selectedRating = parseInt(star.getAttribute('data-value'));
+                        stars.forEach(s => {
+                            const val = parseInt(s.getAttribute('data-value'));
+                            s.textContent = val <= selectedRating ? '⭐' : '☆';
+                        });
+                    };
+                });
+
+                // Enviar
+                btnSubmitReview.onclick = async () => {
+                    const comment = document.getElementById('reviewComment').value.trim();
+                    const errorMsg = document.getElementById('review-error-msg');
+
+                    if (selectedRating === 0) {
+                        errorMsg.textContent = 'Por favor selecciona una calificación.';
+                        errorMsg.style.display = 'block';
+                        return;
+                    }
+                    if (!comment) {
+                        errorMsg.textContent = 'Por favor escribe un comentario.';
+                        errorMsg.style.display = 'block';
+                        return;
+                    }
+
+                    errorMsg.style.display = 'none';
+                    const originalText = btnSubmitReview.textContent;
+                    btnSubmitReview.textContent = 'Enviando...';
+                    btnSubmitReview.disabled = true;
+
+                    const formData = new FormData();
+                    formData.append('course_id', courseId);
+                    formData.append('rating', selectedRating);
+                    formData.append('comment', comment);
+
+                    try {
+                        const response = await fetch('../api/add_review.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            alert('¡Gracias por tu reseña!');
+                            closeReviewModal.onclick();
+                            btnAddReview.style.display = 'none'; // ocultar botón si ya opinó
+                        } else {
+                            errorMsg.textContent = result.error || 'Ocurrió un error al enviar.';
+                            errorMsg.style.display = 'block';
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        errorMsg.textContent = 'Error de conexión.';
+                        errorMsg.style.display = 'block';
+                    } finally {
+                        btnSubmitReview.textContent = originalText;
+                        btnSubmitReview.disabled = false;
+                    }
+                };
             }
         });
-    });
-</script>
+    </script>
 
 </body>
+
 </html>
