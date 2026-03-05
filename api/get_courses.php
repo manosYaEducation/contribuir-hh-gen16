@@ -8,7 +8,7 @@ require 'db_connect.php';
 $courses = [];
 
 // SIEMPRE obtener todos los cursos disponibles, sin importar si está autenticado
-$sql = "SELECT c.id, c.title, u.name as instructor, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description FROM courses c LEFT JOIN users u ON c.instructor_id = u.id ORDER BY c.id ASC";
+$sql = "SELECT c.id, c.title, c.instructor_id, u.name as instructor, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description FROM courses c LEFT JOIN users u ON c.instructor_id = u.id ORDER BY c.id ASC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -16,6 +16,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         // Convertir valores a números
         $row['id'] = (int)$row['id'];
+        $row['instructor_id'] = (int)$row['instructor_id'];
         $row['price'] = (int)$row['price'];
         $row['rating'] = (float)$row['rating'];
         $row['students'] = (int)$row['students'];

@@ -362,6 +362,6 @@ document.addEventListener('click', function(event) {
 
 function openCoursePanel() {
     closeUserDropdown();
-    window.location.href = 'ModeladoHTML/admin_course_config.html';
+    window.location.href = 'ModeladoHTML/create_edit_course_config.html';
 }
 

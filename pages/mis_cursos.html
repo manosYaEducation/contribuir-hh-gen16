@@ -118,8 +118,12 @@
             else if (filter === 'completados') filtered = allEnrollments.filter(e => e.progress === 100);
             else if (filter === 'favoritos') filtered = allEnrollments.filter(e => favorites.includes(e.id));
             else if (filter === 'publicados') {
-                filtered = allCourses.filter(c => parseInt(c.instructor) === parseInt(currentUserId));
-                console.log('🔍 Filtrando publicados - ID usuario:', currentUserId, 'Resultados:', filtered);
+                filtered = allCourses.filter(c => {
+                    const cursoId = parseInt(c.instructor_id) || 0;
+                    const usuarioActual = parseInt(currentUserId) || 0;
+                    return cursoId === usuarioActual;
+                });
+                console.log('🔍 Filtrando publicados - ID usuario:', currentUserId, 'instructor_ids en cursos:', allCourses.map(c => c.instructor_id), 'Resultados:', filtered);
             }
             else filtered = allEnrollments;
 
@@ -162,9 +166,9 @@
                 return `
                     <div class="course-card">
                         <img src="${imageSrc}" alt="${course.title}" class="course-image" onerror="this.onerror=null;this.src='../photos/LogoOficial.png';">
-                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" onclick="toggleFavorite(${course.id}, event)">
+                        ${!isPublished ? `<button class="favorite-btn ${isFavorite ? 'favorited' : ''}" onclick="toggleFavorite(${course.id}, event)">
                             ${isFavorite ? '❤️' : '🤍'}
-                        </button>
+                        </button>` : ''}
 
                         <div class="course-body">
                             <div class="course-header">
@@ -236,7 +240,7 @@
         }
 
         function editarCurso(courseId) {
-            window.location.href = `../ModeladoHTML/admin_course_config.html?id=${courseId}`;
+            window.location.href = `../ModeladoHTML/create_edit_course_config.html?id=${courseId}`;
         }
 
         function downloadCertificate(courseId, courseTitle) {
