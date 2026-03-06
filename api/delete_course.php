@@ -2,39 +2,19 @@
 // api/delete_course.php
 // Elimina un curso y su detalle asociado (courses + detail_courses)
 
-session_start();
 require 'db_connect.php';
+require 'auth_check.php';
 
 header('Content-Type: application/json');
 
-// 1. Solo aceptar método DELETE
+// Solo aceptar método DELETE
 if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
     http_response_code(405);
     echo json_encode(['error' => 'Método no permitido. Usar DELETE.']);
     exit();
 }
 
-// 2. Verificar rol de administrador
-// TODO: reemplazar este bloque completo cuando el sistema de roles esté implementado:
-//
-//   if (!isset($_SESSION['user_id'])) {
-//       http_response_code(401);
-//       echo json_encode(['error' => 'No autenticado']);
-//       exit();
-//   }
-//
-//   if ($_SESSION['user_role'] !== 'admin') {
-//       http_response_code(403);
-//       echo json_encode(['error' => 'Solo el Administrador puede eliminar cursos']);
-//       exit();
-//   }
-
-// TODO: Bloqueo temporal hasta que el sistema de roles esté implementado
-http_response_code(403);
-echo json_encode(['error' => 'Endpoint no disponible aún. Requiere sistema de roles.']);
-exit();
-
-// 3. Leer el ID desde la URL (ej: api/delete_course.php?id=5)
+// Leer el ID desde la URL: api/delete_course.php?id=5
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id <= 0) {
@@ -43,7 +23,10 @@ if ($id <= 0) {
     exit();
 }
 
-// 4. Verificar que el curso existe antes de intentar borrar
+// Verificar autenticación + ownership (admin puede cualquiera, instructor solo los suyos)
+requireCourseOwnership($conn, $id);
+
+// Verificar que el curso existe
 $checkStmt = $conn->prepare("SELECT id, title FROM courses WHERE id = ?");
 if (!$checkStmt) {
     http_response_code(500);
@@ -65,11 +48,11 @@ if ($checkResult->num_rows === 0) {
 $course = $checkResult->fetch_assoc();
 $checkStmt->close();
 
-// 5. Iniciar transacción para borrar en ambas tablas de forma segura
+// Transacción para borrar en ambas tablas
 $conn->begin_transaction();
 
 try {
-    // Borrar primero el detalle (tabla hija) para respetar FK
+    // Borrar detalle primero (tabla hija)
     $deleteDetail = $conn->prepare("DELETE FROM detail_courses WHERE course_id = ?");
     if (!$deleteDetail) {
         throw new Exception('Error preparando borrado de detalle: ' . $conn->error);
@@ -91,21 +74,18 @@ try {
     }
     $deleteCourse->close();
 
-    // Confirmar transacción
     $conn->commit();
 
     http_response_code(200);
     echo json_encode([
-        'message' => "Curso '{$course['title']}' eliminado correctamente",
+        'message'   => "Curso '{$course['title']}' eliminado correctamente",
         'deletedId' => $id
     ]);
 
 } catch (Exception $e) {
-    // Revertir si algo falló
     $conn->rollback();
     http_response_code(500);
     echo json_encode(['error' => 'Error al eliminar: ' . $e->getMessage()]);
 }
 
 $conn->close();
-?>

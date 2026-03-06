@@ -1,10 +1,15 @@
 <?php
+// api/add_course.php
 require 'db_connect.php';
+require 'auth_check.php';
 
 header('Content-Type: application/json');
 
-// Validar que todos los campos requeridos estén presentes
-$required_fields = ['title', 'category', 'instructor_id', 'rating', 'price', 'duration', 'description', 'image', 'avatar'];
+// Solo admin e instructor pueden crear cursos
+requireRole(['admin', 'instructor']);
+
+// Validar campos requeridos
+$required_fields = ['title', 'category', 'instructor', 'rating', 'price', 'totalHours', 'level', 'description', 'image', 'avatar'];
 
 foreach ($required_fields as $field) {
     if (!isset($_POST[$field]) || (is_string($_POST[$field]) && empty(trim($_POST[$field])))) {
@@ -15,16 +20,20 @@ foreach ($required_fields as $field) {
 }
 
 // Obtener y limpiar datos
-$title = trim($_POST['title']);
-$category = trim($_POST['category']);
-$instructor_id = (int)$_POST['instructor_id'];
-$rating = (float)$_POST['rating'];
-$price = (int)$_POST['price'];
-$duration = trim($_POST['duration']);
+$title       = trim($_POST['title']);
+$category    = trim($_POST['category']);
+$instructor  = trim($_POST['instructor']);
+$rating      = (float)$_POST['rating'];
+$price       = (float)$_POST['price'];
+$totalHours  = (int)$_POST['totalHours'];
+$level       = trim($_POST['level']);
 $description = trim($_POST['description']);
-$image = trim($_POST['image']);
-$avatar = trim($_POST['avatar']);
-$students = isset($_POST['students']) ? (int)$_POST['students'] : 0;
+$image       = trim($_POST['image']);
+$avatar      = trim($_POST['avatar']);
+$students    = isset($_POST['students']) ? (int)$_POST['students'] : 0;
+
+// El instructor_id siempre es el usuario logueado
+$instructorId = getCurrentUserId();
 
 // Validaciones
 if ($rating < 0 || $rating > 5) {
@@ -57,7 +66,6 @@ if (strlen($description) < 20) {
     exit();
 }
 
-// Validar URLs
 if (!filter_var($image, FILTER_VALIDATE_URL)) {
     http_response_code(400);
     echo json_encode(['error' => 'La URL de la imagen principal no es válida']);
@@ -74,9 +82,7 @@ if (!filter_var($avatar, FILTER_VALIDATE_URL)) {
 $checkStmt = $conn->prepare("SELECT id FROM courses WHERE title = ?");
 $checkStmt->bind_param("s", $title);
 $checkStmt->execute();
-$checkResult = $checkStmt->get_result();
-
-if ($checkResult->num_rows > 0) {
+if ($checkStmt->get_result()->num_rows > 0) {
     http_response_code(409);
     echo json_encode(['error' => 'Ya existe un curso con ese título']);
     $checkStmt->close();
@@ -84,11 +90,11 @@ if ($checkResult->num_rows > 0) {
 }
 $checkStmt->close();
 
-// Insertar curso
+// Insertar curso con instructor_id
 $stmt = $conn->prepare(
     "INSERT INTO courses 
-    (title, description, category, instructor_id, rating, students, price, image, avatar, duration) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    (title, description, category, instructor, instructor_id, rating, students, price, image, avatar, total_hours, level) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 );
 
 if (!$stmt) {
@@ -98,11 +104,12 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "sssiidisss",
+    "sssssdidssi",
     $title,
     $description,
     $category,
-    $instructor_id,
+    $instructor,
+    $instructorId,
     $rating,
     $students,
     $price,
@@ -115,13 +122,14 @@ if ($stmt->execute()) {
     $courseId = $stmt->insert_id;
     http_response_code(201);
     echo json_encode([
-        'message' => 'Curso creado exitosamente',
+        'message'  => 'Curso creado exitosamente',
         'courseId' => $courseId,
-        'course' => [
-            'id' => $courseId,
-            'title' => $title,
-            'category' => $category,
-            'instructor_id' => $instructor_id
+        'course'   => [
+            'id'           => $courseId,
+            'title'        => $title,
+            'category'     => $category,
+            'instructor'   => $instructor,
+            'instructorId' => $instructorId
         ]
     ]);
 } else {
@@ -131,4 +139,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-?>
