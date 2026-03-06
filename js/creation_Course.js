@@ -204,6 +204,19 @@ function addModule() {
 function removeModule(button) {
     if (confirm('¿Estás seguro de eliminar este módulo?')) {
         const moduleItem = button.closest('.module-item');
+        const lessonId = moduleItem.getAttribute('data-lesson-id');
+
+        // Si tiene un lesson_id, eliminar del servidor
+        if (lessonId) {
+            fetch(`../api/delete_lesson.php/${lessonId}`, {
+                method: 'DELETE'
+            }).then(res => res.json())
+              .then(data => {
+                  if (data.error) console.error('Error al eliminar lección:', data.error);
+                  else console.log('Lección eliminada del servidor');
+              }).catch(err => console.error('Error:', err));
+        }
+
         moduleItem.remove();
         updateModuleNumbers();
     }
@@ -351,21 +364,36 @@ async function saveCourse() {
     btn.innerHTML = '⏳ Guardando...';
     btn.disabled = true;
 
+    const isEditing = !!courseData.courseId;
+
     try {
-        // 1. Guardar curso principal
-        const courseMainData = await saveCourseMain();
-        if (!courseMainData.courseId) {
-            throw new Error(courseMainData.error || 'Error al guardar el curso');
+        let courseId;
+
+        if (isEditing) {
+            // MODO EDICIÓN: usar APIs de update
+            courseId = courseData.courseId;
+
+            // 1. Actualizar curso principal
+            await updateCourseMain(courseId);
+
+            // 2. Actualizar detalles del curso
+            await updateCourseDetails(courseId);
+
+            // 3. Actualizar lecciones (eliminar existentes y recrear)
+            await updateLessons(courseId);
+
+        } else {
+            // MODO CREACIÓN: usar APIs de add
+            const courseMainData = await saveCourseMain();
+            if (!courseMainData.courseId) {
+                throw new Error(courseMainData.error || 'Error al guardar el curso');
+            }
+            courseId = courseMainData.courseId;
+            courseData.courseId = courseId;
+
+            await saveCourseDetails(courseId);
+            await saveLessons(courseId);
         }
-
-        const courseId = courseMainData.courseId;
-        courseData.courseId = courseId;
-
-        // 2. Guardar detalles del curso
-        await saveCourseDetails(courseId);
-
-        // 3. Guardar lecciones (módulos)
-        await saveLessons(courseId);
 
         showSuccessMessage(btn, originalText);
     } catch (error) {
@@ -480,6 +508,108 @@ async function saveLessons(courseId) {
 }
 
 // ==========================================
+// FUNCIONES API - ACTUALIZAR CURSO (EDICIÓN)
+// ==========================================
+async function updateCourseMain(courseId) {
+    const payload = {
+        id: parseInt(courseId),
+        title: document.getElementById('courseTitle').value,
+        description: document.getElementById('shortDescription').value,
+        category: document.getElementById('category').value,
+        price: document.getElementById('isFree').checked ? 0 : parseInt(document.getElementById('price').value) || 0,
+        duration: document.getElementById('duration').value + ' horas'
+    };
+
+    const response = await fetch('../api/update_course.php', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    return data;
+}
+
+async function updateCourseDetails(courseId) {
+    const payload = {
+        course_id: parseInt(courseId),
+        learning_objectives: objectivesData,
+        requirements: requirementsData,
+        intro_video: document.getElementById('introVideoUrl').value
+    };
+
+    const response = await fetch('../api/update_detail_course.php', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    if (data.error) {
+        // Si no existe el detalle, crear uno nuevo
+        console.warn('Update detail falló, intentando crear:', data.error);
+        return await saveCourseDetails(courseId);
+    }
+    return data;
+}
+
+async function updateLessons(courseId) {
+    const modules = document.querySelectorAll('.module-item');
+
+    // Separar módulos existentes (con data-lesson-id) de nuevos
+    for (let i = 0; i < modules.length; i++) {
+        const module = modules[i];
+        const lessonId = module.getAttribute('data-lesson-id');
+
+        if (lessonId) {
+            // Actualizar lección existente
+            const payload = {
+                lesson_id: parseInt(lessonId),
+                title: module.querySelector('.module-title-input').value,
+                duration: parseInt(module.querySelector('.module-duration').value) || 0,
+                description: module.querySelector('.module-description').value,
+                content: module.querySelector('.module-content').value,
+                video_url: module.querySelector('.module-complement').value,
+                order_number: i + 1
+            };
+
+            const response = await fetch(`../api/update_lesson.php?lesson_id=${lessonId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(`Error al actualizar lección ${i + 1}: ${data.error}`);
+            }
+        } else {
+            // Crear nueva lección
+            const formData = new FormData();
+            formData.append('course_id', courseId);
+            formData.append('order_number', i + 1);
+            formData.append('title', module.querySelector('.module-title-input').value);
+            formData.append('duration', module.querySelector('.module-duration').value);
+            formData.append('description', module.querySelector('.module-description').value);
+            formData.append('content', module.querySelector('.module-content').value);
+            formData.append('video_url', module.querySelector('.module-complement').value);
+            formData.append('is_free', 0);
+
+            const response = await fetch('../api/add_lesson.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(`Error al crear lección ${i + 1}: ${data.error}`);
+            }
+        }
+    }
+}
+
+// ==========================================
 // FUNCIONES DE UTILIDAD
 // ==========================================
 function showSuccessMessage(btn, originalText) {
@@ -494,11 +624,149 @@ function showSuccessMessage(btn, originalText) {
 
 async function loadCourseData(courseId) {
     try {
-        // Cargar datos del curso para edición
         console.log('Cargando datos del curso:', courseId);
-        // Aquí iría la lógica para cargar curso existente
+
+        const response = await fetch(`../api/get_full_course.php?id=${encodeURIComponent(courseId)}`);
+        if (!response.ok) throw new Error('No se pudo cargar el curso');
+
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+
+        // Actualizar título del header
+        const headerTitle = document.querySelector('.header-title h1');
+        if (headerTitle) headerTitle.textContent = 'Editando: ' + data.title;
+
+        // Cambiar texto del botón guardar
+        const saveBtn = document.getElementById('saveCourseBtn');
+        if (saveBtn) saveBtn.innerHTML = '💾 Actualizar Curso';
+
+        // --- Sección General ---
+        document.getElementById('courseTitle').value = data.title || '';
+        document.getElementById('shortDescription').value = data.description || '';
+
+        const categorySelect = document.getElementById('category');
+        if (categorySelect && data.category) {
+            // Intentar seleccionar por valor exacto, si no, buscar por texto
+            const optionByValue = categorySelect.querySelector(`option[value="${data.category}"]`);
+            if (optionByValue) {
+                categorySelect.value = data.category;
+            } else {
+                // Buscar por texto del option
+                for (const opt of categorySelect.options) {
+                    if (opt.text.toLowerCase() === data.category.toLowerCase()) {
+                        categorySelect.value = opt.value;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Imagen de portada
+        if (data.image) {
+            const preview = document.getElementById('imagePreview');
+            const imgSrc = data.image.startsWith('http') ? data.image : '../' + data.image;
+            preview.src = imgSrc;
+            preview.style.display = 'block';
+        }
+
+        // --- Sección Contenido ---
+        const durationInput = document.getElementById('duration');
+        if (durationInput && data.duration) {
+            const durationNum = parseInt(data.duration);
+            if (!isNaN(durationNum)) durationInput.value = durationNum;
+        }
+
+        const introVideoInput = document.getElementById('introVideoUrl');
+        if (introVideoInput && data.intro_video) {
+            introVideoInput.value = data.intro_video;
+        }
+
+        // Objetivos de aprendizaje
+        if (Array.isArray(data.learning_objectives)) {
+            objectivesData = [...data.learning_objectives];
+            renderObjectives();
+        }
+
+        // Requisitos
+        if (Array.isArray(data.requirements)) {
+            requirementsData = [...data.requirements];
+            renderRequirements();
+        }
+
+        // --- Sección Precio ---
+        const priceInput = document.getElementById('price');
+        const isFreeCheckbox = document.getElementById('isFree');
+        if (priceInput && data.price !== undefined) {
+            priceInput.value = data.price;
+            if (parseInt(data.price) === 0 && isFreeCheckbox) {
+                isFreeCheckbox.checked = true;
+                priceInput.disabled = true;
+                priceInput.style.opacity = '0.5';
+            }
+        }
+
+        // --- Sección Módulos (Lecciones) ---
+        if (Array.isArray(data.lessons) && data.lessons.length > 0) {
+            const modulesList = document.getElementById('modulesList');
+            const btnAdd = modulesList.querySelector('.btn-add');
+
+            data.lessons.forEach(lesson => {
+                const newModule = document.createElement('div');
+                newModule.className = 'module-item';
+                newModule.setAttribute('data-module-id', lesson.order_number || '');
+                newModule.setAttribute('data-lesson-id', lesson.id);
+
+                newModule.innerHTML = `
+                    <div class="module-header">
+                        <div class="module-header-info">
+                            <div class="module-number">${lesson.order_number || ''}</div>
+                            <input type="text" class="module-title-input" placeholder="Título del módulo" value="${(lesson.title || '').replace(/"/g, '&quot;')}" required>
+                        </div>
+                        <div class="module-actions">
+                            <button type="button" class="icon-btn delete" title="Eliminar" onclick="removeModule(this)">🗑️</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Duración de la Lección (Horas) <span class="required">*</span>
+                        </label>
+                        <input type="number" class="form-input module-duration" min="1" placeholder="Ej: 2" value="${lesson.duration || ''}" required>
+                        <span class="form-help">Duración en Horas</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            Descripción <span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea module-description" maxlength="200" required>${lesson.description || ''}</textarea>
+                        <span class="form-help">Máximo 200 caracteres</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Contenido <span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea module-content" required>${lesson.content || ''}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Complemento del módulo
+                        </label>
+                        <input type="text" class="form-input module-complement" placeholder="Ej: https://www.youtube.com/ o https://docs.google.com/document/" value="${(lesson.video_url || '').replace(/"/g, '&quot;')}" required>
+                        <span class="form-help">Pega un link de un archivo o un video</span>
+                    </div>
+                `;
+
+                modulesList.insertBefore(newModule, btnAdd);
+            });
+        }
+
+        console.log('✅ Datos del curso cargados correctamente');
     } catch (error) {
         console.error('Error al cargar datos:', error);
+        alert('Error al cargar los datos del curso: ' + error.message);
     }
 }
 
