@@ -1,6 +1,5 @@
 <?php
 require 'db_connect.php';
-require 'check_session.php';
 
 header('Content-Type: application/json');
 

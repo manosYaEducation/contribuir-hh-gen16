@@ -4,10 +4,21 @@ require 'db_connect.php';
 header('Content-Type: application/json');
 
 // Validar que todos los campos requeridos estén presentes
-$required_fields = ['title', 'category', 'instructor_id', 'rating', 'price', 'duration', 'description', 'image', 'avatar'];
+// Campos string que no pueden estar vacíos
+$required_string_fields = ['title', 'category', 'duration', 'description', 'image', 'avatar'];
 
-foreach ($required_fields as $field) {
+foreach ($required_string_fields as $field) {
     if (!isset($_POST[$field]) || (is_string($_POST[$field]) && empty(trim($_POST[$field])))) {
+        http_response_code(400);
+        echo json_encode(['error' => "El campo '$field' es requerido"]);
+        exit();
+    }
+}
+
+// Validar que campos numéricos existan (pueden ser 0)
+$required_numeric_fields = ['instructor_id', 'rating', 'price'];
+foreach ($required_numeric_fields as $field) {
+    if (!isset($_POST[$field])) {
         http_response_code(400);
         echo json_encode(['error' => "El campo '$field' es requerido"]);
         exit();
@@ -57,16 +68,16 @@ if (strlen($description) < 20) {
     exit();
 }
 
-// Validar URLs
-if (!filter_var($image, FILTER_VALIDATE_URL)) {
+// Validar URLs o nombres de archivo
+if (!filter_var($image, FILTER_VALIDATE_URL) && !preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $image)) {
     http_response_code(400);
-    echo json_encode(['error' => 'La URL de la imagen principal no es válida']);
+    echo json_encode(['error' => 'La imagen debe ser una URL válida o un nombre de archivo']);
     exit();
 }
 
-if (!filter_var($avatar, FILTER_VALIDATE_URL)) {
+if (!filter_var($avatar, FILTER_VALIDATE_URL) && !preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $avatar)) {
     http_response_code(400);
-    echo json_encode(['error' => 'La URL del avatar no es válida']);
+    echo json_encode(['error' => 'El avatar debe ser una URL válida o un nombre de archivo']);
     exit();
 }
 
