@@ -419,13 +419,12 @@ async function saveCourseMain() {
     formData.append('duration', document.getElementById('duration').value);
     formData.append('rating', 0); // Rating inicial
     formData.append('students', 0); // Estudiantes iniciales
-    formData.append('image', 'photos/LogoOficial.png'); // Imagen por defecto
     formData.append('avatar', 'photos/usuario_sin_imagen.png'); // Avatar por defecto
 
-    // Agregar imagen si existe
+    // Agregar imagen si existe (adjuntar el archivo binario real)
     const imageFile = document.getElementById('courseImage').files[0];
     if (imageFile) {
-        formData.append('image', 'uploads/' + imageFile.name);
+        formData.append('courseImageFile', imageFile);
     }
 
     try {
@@ -511,19 +510,23 @@ async function saveLessons(courseId) {
 // FUNCIONES API - ACTUALIZAR CURSO (EDICIÓN)
 // ==========================================
 async function updateCourseMain(courseId) {
-    const payload = {
-        id: parseInt(courseId),
-        title: document.getElementById('courseTitle').value,
-        description: document.getElementById('shortDescription').value,
-        category: document.getElementById('category').value,
-        price: document.getElementById('isFree').checked ? 0 : parseInt(document.getElementById('price').value) || 0,
-        duration: document.getElementById('duration').value + ' horas'
-    };
+    const formData = new FormData();
+    formData.append('id', parseInt(courseId));
+    formData.append('title', document.getElementById('courseTitle').value);
+    formData.append('description', document.getElementById('shortDescription').value);
+    formData.append('category', document.getElementById('category').value);
+    formData.append('price', document.getElementById('isFree').checked ? 0 : parseInt(document.getElementById('price').value) || 0);
+    formData.append('duration', document.getElementById('duration').value + ' horas');
+
+    // Agregar imagen si se seleccionó una nueva
+    const imageFile = document.getElementById('courseImage').files[0];
+    if (imageFile) {
+        formData.append('courseImageFile', imageFile);
+    }
 
     const response = await fetch('../api/update_course.php', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        method: 'POST',
+        body: formData
     });
 
     const data = await response.json();

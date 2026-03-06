@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 // Validar que todos los campos requeridos estén presentes
 // Campos string que no pueden estar vacíos
-$required_string_fields = ['title', 'category', 'duration', 'description', 'image', 'avatar'];
+$required_string_fields = ['title', 'category', 'duration', 'description', 'avatar'];
 
 foreach ($required_string_fields as $field) {
     if (!isset($_POST[$field]) || (is_string($_POST[$field]) && empty(trim($_POST[$field])))) {
@@ -33,9 +33,30 @@ $rating = (float)$_POST['rating'];
 $price = (int)$_POST['price'];
 $duration = trim($_POST['duration']);
 $description = trim($_POST['description']);
-$image = trim($_POST['image']);
 $avatar = trim($_POST['avatar']);
 $students = isset($_POST['students']) ? (int)$_POST['students'] : 0;
+
+// Manejar subida de imagen
+$image = 'photos/LogoOficial.png'; // imagen por defecto
+if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = __DIR__ . '/../uploads/';
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $_FILES['courseImageFile']['tmp_name']);
+    finfo_close($finfo);
+    if (!in_array($mimeType, $allowedTypes)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tipo de imagen no permitido. Use JPG, PNG, GIF o WEBP']);
+        exit();
+    }
+    $ext = strtolower(pathinfo($_FILES['courseImageFile']['name'], PATHINFO_EXTENSION));
+    $safeFilename = 'course_' . uniqid('', true) . '.' . $ext;
+    if (move_uploaded_file($_FILES['courseImageFile']['tmp_name'], $uploadDir . $safeFilename)) {
+        $image = 'uploads/' . $safeFilename;
+    }
+} elseif (isset($_POST['image']) && !empty(trim($_POST['image']))) {
+    $image = trim($_POST['image']);
+}
 
 // Validaciones
 if ($rating < 0 || $rating > 5) {
@@ -68,10 +89,10 @@ if (strlen($description) < 20) {
     exit();
 }
 
-// Validar URLs o nombres de archivo
-if (!filter_var($image, FILTER_VALIDATE_URL) && !preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $image)) {
+// Validar la imagen solo si no es la ruta por defecto
+if ($image !== 'photos/LogoOficial.png' && !filter_var($image, FILTER_VALIDATE_URL) && !preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $image)) {
     http_response_code(400);
-    echo json_encode(['error' => 'La imagen debe ser una URL válida o un nombre de archivo']);
+    echo json_encode(['error' => 'La imagen debe ser una URL válida o un nombre de archivo de imagen']);
     exit();
 }
 
