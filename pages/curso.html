@@ -201,19 +201,19 @@
                 <h3 style="color: #2d3748; margin-bottom: 15px;">Información del Curso</h3>
                 <div class="stats">
                     <div class="stat-item">
-                        <span class="stat-value">12h</span>
+                        <span class="stat-value" id="stat-duration">--</span>
                         <span class="stat-label">Duración</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">4</span>
-                        <span class="stat-label">Módulos</span>
+                        <span class="stat-value" id="stat-category">--</span>
+                        <span class="stat-label">Categoría</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">852</span>
+                        <span class="stat-value" id="stat-students">--</span>
                         <span class="stat-label">Estudiantes</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value">4.8★</span>
+                        <span class="stat-value" id="stat-rating">--</span>
                         <span class="stat-label">Valoración</span>
                     </div>
                 </div>
@@ -415,6 +415,12 @@
                     document.getElementById('course-duration').textContent = 'Duración: ' + (courseData.duration || '-- horas');
                     document.getElementById('course-students').textContent = 'Estudiantes: ' + (courseData.students || '--');
                     document.getElementById('course-rating').textContent = 'Calificación: ' + (courseData.rating || '--') + ' ⭐';
+
+                    // === ACTUALIZAR TARJETA "INFORMACIÓN DEL CURSO" ===
+                    document.getElementById('stat-duration').textContent = courseData.duration || '--';
+                    document.getElementById('stat-category').textContent = courseData.category || '--';
+                    document.getElementById('stat-students').textContent = courseData.students || '--';
+                    document.getElementById('stat-rating').textContent = (courseData.rating || '--') + '★';
 
                     // Cargar Objetivos de Aprendizaje desde la BDD
                     const objectivesList = document.getElementById('learning-objectives-list');
