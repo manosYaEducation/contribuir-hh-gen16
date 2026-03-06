@@ -41,7 +41,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // 4. Validación de complejidad de contraseña
-if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)) {
+if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d).{8,}$/', $password)) {
     http_response_code(400);
     echo json_encode(['message' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.']);
     exit();

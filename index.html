@@ -272,7 +272,11 @@
                 </div>
                 <button type="submit" class="btn-submit">Ingresar</button>
                 <p class="modal-switch">¿No tienes cuenta? <a
-                        onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a></p>
+                        onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a>
+                </p>
+                <div id="loginRateLimitMsg" style="display:none; color: red; text-align: center; margin-top: 8px;">
+                    Demasiados intentos fallidos. Podés intentar de nuevo en <strong id="loginCountdown"></strong>
+                </div>
             </form>
         </div>
     </div>
@@ -305,7 +309,7 @@
 
                 <button type="submit" class="btn-submit">Registrarse</button>
 
-                <p class="modal-switch">
+                <p class="modal-switch"> 
                     ¿Ya tienes cuenta?
                     <a onclick="switchToModal('registerModal', 'loginModal')">Inicia sesión</a>
                 </p>
