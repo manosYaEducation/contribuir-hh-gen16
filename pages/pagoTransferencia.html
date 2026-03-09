@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago por Transferencia Bancaria</title>
+    <!-- Incluir CSS específico -->
+    <link rel="stylesheet" href="../css/pagoTransferencia.css">
+    <!-- Iconos Phosphor para WhatsApp -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+
+    <div class="payment-modal">
+        <!-- Header -->
+        <div class="modal-header">
+            <span class="badge"><span class="badge-dot">●</span> PAGO MANUAL</span>
+            <h1>Pago por <span class="highlight">transferencia bancaria</span></h1>
+            <p>Realiza la transferencia con los datos de abajo y contáctanos por WhatsApp para confirmar.</p>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Sección 1 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="step-number">1</span> DATOS BANCARIOS
+            </div>
+
+            <div class="data-box">
+                <div class="data-row">
+                    <span class="data-label">Banco</span>
+                    <span class="data-value">Ejemplo Banco Nacional</span>
+                    <button class="btn-copy" onclick="copyText('Ejemplo Banco Nacional', this)">Copiar</button>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Tipo de cuenta</span>
+                    <span class="data-value">Ejemplo Cuenta<br>Corriente</span>
+                    <button class="btn-copy" onclick="copyText('Ejemplo Cuenta Corriente', this)">Copiar</button>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">N° de cuenta</span>
+                    <span class="data-value">Ejemplo 0123456789</span>
+                    <button class="btn-copy" onclick="copyText('Ejemplo 0123456789', this)">Copiar</button>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">RUT</span>
+                    <span class="data-value">Ejemplo 12.345.678-9</span>
+                    <button class="btn-copy" onclick="copyText('Ejemplo 12.345.678-9', this)">Copiar</button>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Titular</span>
+                    <span class="data-value">Ejemplo Empresa SpA</span>
+                    <button class="btn-copy" onclick="copyText('Ejemplo Empresa SpA', this)">Copiar</button>
+                </div>
+                <div class="data-row no-border">
+                    <span class="data-label">Email</span>
+                    <span class="data-value">ejemplo@correo.com</span>
+                    <button class="btn-copy" onclick="copyText('ejemplo@correo.com', this)">Copiar</button>
+                </div>
+            </div>
+
+            <div class="amount-box">
+                <span class="amount-label">Monto a transferir</span>
+                <span class="amount-value" id="course-price">$99.990</span>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Sección 2 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="step-number">2</span> CONFIRMA TU PAGO
+            </div>
+            <button class="btn-whatsapp" onclick="confirmWhatsapp()">
+                <i class="ph-fill ph-whatsapp-logo"></i> Confirmar pago por WhatsApp
+            </button>
+            <p class="text-center sm-text">Te responderemos en menos de 24 horas hábiles</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <span class="company-name">Con Tribu Ir</span>
+            <span class="footer-note">Pago 100% seguro</span>
+        </div>
+    </div>
+
+    <!-- Script para cargar datos y configurar eventos -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        let courseName = "curso seleccionado";
+
+        // Función para copiar texto
+        function copyText(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = "Copiado";
+                btnElement.classList.add("copied");
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.classList.remove("copied");
+                }, 2000);
+            }).catch(err => {
+                console.error("Error al copiar texto: ", err);
+                alert("Error al copiar al portapapeles.");
+            });
+        }
+
+        // Cargar precio y título del curso
+        document.addEventListener('DOMContentLoaded', async function () {
+            if (courseId) {
+                try {
+                    const response = await fetch(`../api/get_course_detail.php?id=${courseId}`);
+                    if (response.ok) {
+                        const courseData = await response.json();
+                        // Actualizar título del curso
+                        if (courseData.title) {
+                            courseName = courseData.title;
+                        }
+                        // Actualizar precio
+                        if (courseData.price) {
+                            // Formato moneda chilena CLP
+                            document.getElementById('course-price').textContent = "$" + parseInt(courseData.price).toLocaleString('es-CL');
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error cargando detalles del curso:", error);
+                }
+            }
+        });
+
+        // Enviar a WhatsApp
+        function confirmWhatsapp() {
+            // Reemplazar este número por el número real
+            const phoneNumber = "569XXXXXXXX";
+            const message = `Hola, quiero confirmar mi pago por transferencia para el curso: ${courseName} (ID: ${courseId}). Adjunto mi comprobante de pago.`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            // Abrir en nueva pestaña
+            window.open(whatsappUrl, '_blank');
+
+            // Opcional: Volver al dashboard / mis cursos tras confirmar
+            // window.location.href = 'mis_cursos.html'; 
+        }
+    </script>
+</body>
+
+</html>
