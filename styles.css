@@ -829,6 +829,27 @@ header {
     background: var(--color-primary-dark);
 }
 
+.btn-course-details {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.btn-course-details:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
 /* ===== CONTACT SECTION ===== */
 .section-contact {
     background: #f1f1f1;

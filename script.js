@@ -310,6 +310,9 @@ function createCourseCard(course) {
                     </a>
                 </div>
             </div>
+            <a href="pages/curso2.html?id=${course.id}" class="btn-course-details" style="text-decoration:none;">
+                Ver Detalles
+            </a>
         </div>`;
     return card;
 }
