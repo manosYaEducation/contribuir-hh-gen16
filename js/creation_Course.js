@@ -448,7 +448,8 @@ async function saveCourseDetails(courseId) {
         course_id: courseId,
         learning_objectives: objectivesData,  // Cambio: objetivos → learning_objectives
         requirements: requirementsData,        // Cambio: requisitos → requirements
-        intro_video: document.getElementById('introVideoUrl').value  // Cambio: intro_video_url → intro_video
+        intro_video: document.getElementById('introVideoUrl').value,  // Cambio: intro_video_url → intro_video
+        recursos: document.getElementById('recursosUrl').value
     };
 
     try {
@@ -539,7 +540,8 @@ async function updateCourseDetails(courseId) {
         course_id: parseInt(courseId),
         learning_objectives: objectivesData,
         requirements: requirementsData,
-        intro_video: document.getElementById('introVideoUrl').value
+        intro_video: document.getElementById('introVideoUrl').value,
+        recursos: document.getElementById('recursosUrl').value
     };
 
     const response = await fetch('../api/update_detail_course.php', {

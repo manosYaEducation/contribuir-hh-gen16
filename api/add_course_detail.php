@@ -24,6 +24,7 @@ $course_id = (int)$data['course_id'];
 //$learning_objectives = isset($data['learning_objectives']) ? trim($data['learning_objectives']) : null;
 //$requirements = isset($data['requirements']) ? trim($data['requirements']) : null;
 $intro_video = isset($data['intro_video']) ? trim($data['intro_video']) : null;
+$recursos = isset($data['recursos']) ? trim($data['recursos']) : null;
 
 $learning_objectives = null;
 
@@ -101,19 +102,20 @@ if ($detail_exists) {
         "UPDATE detail_courses SET 
         learning_objectives = ?,
         requirements = ?,
-        intro_video = ?
+        intro_video = ?,
+        recursos = ?
         WHERE course_id = ?"
     );
     
-    $stmt->bind_param("sssi", $learning_objectives, $requirements, $intro_video, $course_id);
+    $stmt->bind_param("ssssi", $learning_objectives, $requirements, $intro_video, $recursos, $course_id);
 } else {
     // Insertar si no existe
     $stmt = $conn->prepare(
-        "INSERT INTO detail_courses (course_id, learning_objectives, requirements, intro_video)
-        VALUES (?, ?, ?, ?)"
+        "INSERT INTO detail_courses (course_id, learning_objectives, requirements, intro_video, recursos)
+        VALUES (?, ?, ?, ?, ?)"
     );
     
-    $stmt->bind_param("isss", $course_id, $learning_objectives, $requirements, $intro_video);
+    $stmt->bind_param("issss", $course_id, $learning_objectives, $requirements, $intro_video, $recursos);
 }
 
 if ($stmt->execute()) {

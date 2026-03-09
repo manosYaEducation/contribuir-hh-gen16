@@ -36,14 +36,14 @@
                             <span class="arrow">+</span>
                         </button>
                         <div class="professor-photo">
-                            <img id="professor-img" alt="Logo" class="prof-img" style="display:none"> 
-                            <img src="../photos/usuario_sin_imagen.png" alt="Logo" class="prof-img">
+                            <img id="professor-img" src="../photos/contribuir.jpg" alt="Logo" class="prof-img">
                         </div>
                     </div>
 
                     <div class="professor-bio-panel" id="profPanel">
                         <p id="professor-bio">
-                            Profesor que imparte el curso, con experiencia en el área y una breve biografía que resalta sus logros y trayectoria profesional. Esta sección se puede expandir para mostrar más información sobre el profesor, como su formación académica, proyectos destacados, publicaciones o cualquier otro dato relevante que ayude a los estudiantes a conocer mejor al instructor del curso.
+                            ONG conformada por un equipo multidisciplinario de profesionales apasionados por la
+                            educación, salud mental, inclusión y bienestar integral.
                         </p>
                     </div>
                 </div>
@@ -139,12 +139,13 @@
                          + Invitar a un usuario
                     </button>
                 </div>
-            <div class="card">
+            <div class="card" id="recursos-card" style="display: none;">
                 <div style="text-align: center; margin: 0.5rem 0;">
-                    <a href="https://drive.google.com/drive/folders/15QxCyviXQeZevDOchR9OPEKhDDNPU2KQ?usp=sharing" 
+                    <a id="recursos-link" href="#" 
                        class="cta-button" 
+                       target="_blank"
                        style="display: block; margin: 0 auto; width: 100%; text-decoration: none;">
-                       Ver curso
+                       Ver recursos
                     </a>
                 </div>
             </div>
@@ -476,6 +477,14 @@
                         }
 
                         window.courseData = courseData;
+
+                        // Mostrar enlace de recursos si existe
+                        if (courseData.recursos) {
+                            const recursosCard = document.getElementById('recursos-card');
+                            const recursosLink = document.getElementById('recursos-link');
+                            recursosLink.href = courseData.recursos;
+                            recursosCard.style.display = 'block';
+                        }
 
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);

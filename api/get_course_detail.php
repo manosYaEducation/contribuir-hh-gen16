@@ -13,7 +13,8 @@ if ($id > 0) {
                u.name as instructor,
                d.learning_objectives, 
                d.requirements, 
-               d.intro_video
+               d.intro_video,
+               d.recursos
         FROM courses c
         LEFT JOIN users u ON c.instructor_id = u.id
         LEFT JOIN detail_courses d ON c.id = d.course_id

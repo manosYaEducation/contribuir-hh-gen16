@@ -112,6 +112,14 @@ if (isset($data['intro_video']) && $data['intro_video'] !== '') {
     $types .= 's';
 }
 
+// recursos
+if (isset($data['recursos'])) {
+    $recursos = trim($data['recursos']);
+    $updates[] = "recursos = ?";
+    $params[] = $recursos;
+    $types .= 's';
+}
+
 if (empty($updates)) {
     http_response_code(400);
     echo json_encode(['error' => 'No hay campos para actualizar']);
