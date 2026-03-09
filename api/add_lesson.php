@@ -1,7 +1,9 @@
 <?php
 header('Content-Type: application/json');
 require 'db_connect.php';
+require 'auth_check.php';                        // agregado
 
+requireRole(['admin', 'instructor']);             // agregado
 // Validar que los datos requeridos estén presentes
 $required_fields = ['course_id', 'title'];
 
