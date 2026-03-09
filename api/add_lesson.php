@@ -76,7 +76,7 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("issiisii", $course_id, $title, $description, $order_number, $content, $video_url, $duration, $is_free);
+$stmt->bind_param("ississii", $course_id, $title, $description, $order_number, $content, $video_url, $duration, $is_free);
 
 if ($stmt->execute()) {
     $lesson_id = $conn->insert_id;

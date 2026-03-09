@@ -3,16 +3,39 @@ require 'db_connect.php';
 
 header('Content-Type: application/json');
 
-// Validar que sea una solicitud PUT
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+// Aceptar POST (multipart/form-data con imagen) o PUT (JSON sin imagen)
+if (!in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT'])) {
     http_response_code(405);
-    echo json_encode(['error' => 'Método no permitido. Use PUT']);
+    echo json_encode(['error' => 'Método no permitido. Use POST o PUT']);
     exit();
 }
 
-// Obtener datos del PUT
-$input = file_get_contents('php://input');
-$data = json_decode($input, true);
+// Leer datos según el método
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = $_POST;
+} else {
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
+}
+
+// Manejar subida de imagen de portada
+if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = __DIR__ . '/../uploads/';
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $_FILES['courseImageFile']['tmp_name']);
+    finfo_close($finfo);
+    if (!in_array($mimeType, $allowedTypes)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tipo de imagen no permitido. Use JPG, PNG, GIF o WEBP']);
+        exit();
+    }
+    $ext = strtolower(pathinfo($_FILES['courseImageFile']['name'], PATHINFO_EXTENSION));
+    $safeFilename = 'course_' . uniqid('', true) . '.' . $ext;
+    if (move_uploaded_file($_FILES['courseImageFile']['tmp_name'], $uploadDir . $safeFilename)) {
+        $data['image'] = 'uploads/' . $safeFilename;
+    }
+}
 
 // Validar que el ID del curso esté presente
 if (!isset($data['id'])) {

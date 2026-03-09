@@ -139,12 +139,13 @@
                          + Invitar a un usuario
                     </button>
                 </div>
-            <div class="card">
+            <div class="card" id="recursos-card" style="display: none;">
                 <div style="text-align: center; margin: 0.5rem 0;">
-                    <a href="https://drive.google.com/drive/folders/15QxCyviXQeZevDOchR9OPEKhDDNPU2KQ?usp=sharing" 
+                    <a id="recursos-link" href="#" 
                        class="cta-button" 
+                       target="_blank"
                        style="display: block; margin: 0 auto; width: 100%; text-decoration: none;">
-                       Ver curso
+                       Ver recursos
                     </a>
                 </div>
             </div>
@@ -476,6 +477,14 @@
                         }
 
                         window.courseData = courseData;
+
+                        // Mostrar enlace de recursos si existe
+                        if (courseData.recursos) {
+                            const recursosCard = document.getElementById('recursos-card');
+                            const recursosLink = document.getElementById('recursos-link');
+                            recursosLink.href = courseData.recursos;
+                            recursosCard.style.display = 'block';
+                        }
 
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);

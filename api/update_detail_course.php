@@ -14,18 +14,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
-// Validar que el ID esté presente
-if (!isset($data['id'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'El ID del detalle es requerido']);
-    exit();
+// Soportar búsqueda por course_id o por id de detail_courses
+$detail_id = 0;
+
+if (isset($data['course_id'])) {
+    // Buscar el detalle por course_id
+    $lookup_sql = "SELECT id, course_id FROM detail_courses WHERE course_id = ?";
+    $lookup_stmt = $conn->prepare($lookup_sql);
+    $cid = (int)$data['course_id'];
+    $lookup_stmt->bind_param("i", $cid);
+    $lookup_stmt->execute();
+    $lookup_result = $lookup_stmt->get_result();
+
+    if ($lookup_result->num_rows > 0) {
+        $row = $lookup_result->fetch_assoc();
+        $detail_id = (int)$row['id'];
+    }
+    $lookup_stmt->close();
+} elseif (isset($data['id'])) {
+    $detail_id = (int)$data['id'];
 }
 
-$detail_id = (int)($data['id'] ?? 0);
-
 if ($detail_id <= 0) {
-    http_response_code(400);
-    echo json_encode(['error' => 'ID del detalle inválido']);
+    http_response_code(404);
+    echo json_encode(['error' => 'Detalle del curso no encontrado']);
     exit();
 }
 
@@ -97,6 +109,14 @@ if (isset($data['intro_video']) && $data['intro_video'] !== '') {
     $intro_video = trim($data['intro_video']);
     $updates[] = "intro_video = ?";
     $params[] = $intro_video;
+    $types .= 's';
+}
+
+// recursos
+if (isset($data['recursos'])) {
+    $recursos = trim($data['recursos']);
+    $updates[] = "recursos = ?";
+    $params[] = $recursos;
     $types .= 's';
 }
 
