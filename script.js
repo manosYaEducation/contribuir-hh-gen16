@@ -1,13 +1,14 @@
 /* ===== VARIABLES GLOBALES ===== */
 var isLoggedIn = false;
 var currentUser = null;
+var currentRole = null;  // Variable para almacenar el rol
 var selectedCategory = "Todas";
 var coursesData = []; // Variable para almacenar los cursos
 
 /* ===== INICIALIZACION ===== */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('- Iniciando aplicación...');
-    checkSessionStatus();
+    await checkSessionStatus();  // esperar que el rol esté disponible
     init();
    
     // Conectar los formularios a las funciones de JS
@@ -155,6 +156,7 @@ async function checkSessionStatus() {
             if (data.loggedIn) {
                 isLoggedIn = true;
                 currentUser = { name: data.name };
+                currentRole = data.role;  // Almacenar el rol del usuario
                 updateUserUI();
 
                 // Mostrar panel de creación solo si no es student
@@ -316,9 +318,11 @@ function createCourseCard(course) {
                     </a>
                 </div>
             </div>
+            ${currentRole === 'admin' || currentRole === 'instructor' ? `
             <a href="pages/curso2.html?id=${course.id}" class="btn-course-details" style="text-decoration:none;">
                 Ver Detalles
             </a>
+        ` : ''}
         </div>`;
     return card;
 }
