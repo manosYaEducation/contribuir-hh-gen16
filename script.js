@@ -42,6 +42,10 @@ function openModal(modalId) {
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
+    if (modalId === 'loginModal') {
+        const pwd = document.getElementById('loginPassword');
+        if (pwd) pwd.value = '';
+    }
 }
 
 function switchToModal(fromModalId, toModalId) {
@@ -52,6 +56,10 @@ function switchToModal(fromModalId, toModalId) {
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
+        if (event.target.id === 'loginModal') {
+            const pwd = document.getElementById('loginPassword');
+            if (pwd) pwd.value = '';
+        }
     }
 };
 
