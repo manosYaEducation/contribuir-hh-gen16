@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'validators.php';
 
 header('Content-Type: application/json');
 
@@ -10,16 +11,12 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
 
 // 1. Validar campos obligatorios
 if (empty($email) || empty($password)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Email y contraseña son requeridos.']);
-    exit();
+    jsonError(400, 'Email y contraseña son requeridos.');
 }
 
-// 2. Validar formato de email
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Formato de email inválido.']);
-    exit();
+// 2. Validar formato de email (función compartida de validators.php)
+if (!isValidEmail($email)) {
+    jsonError(400, 'Formato de email inválido.');
 }
 
 // 3. Buscar el usuario por email

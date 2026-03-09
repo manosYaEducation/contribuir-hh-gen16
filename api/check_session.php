@@ -19,7 +19,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
     ]);
 } else {
     // Si no existen, no hay sesión activa.
-    http_response_code(401); // Código 401 No Autorizado
+    http_response_code(200); // 200 OK — la consulta fue válida, simplemente no hay sesión
     echo json_encode([
         'loggedIn' => false
     ]);
