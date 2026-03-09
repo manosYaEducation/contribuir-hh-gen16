@@ -17,7 +17,7 @@
                 <button class="tab-btn" onclick="filterCourses('activos', this)">En Progreso</button>
                 <button class="tab-btn" onclick="filterCourses('completados', this)">Completados</button>
                 <button class="tab-btn active" onclick="filterCourses('todos', this)">Todos</button>
-                <button class="tab-btn" onclick="filterCourses('publicados', this)">Publicados 📝</button>
+                <button class="tab-btn" onclick="filterCourses('publicados', this)" id="tab-publicados" style="display:none;">Publicados 📝</button>
                 <button class="tab-btn" onclick="filterCourses('favoritos', this)">Favoritos ❤️</button>
             </div>
         </div>
@@ -71,6 +71,12 @@
                 const sessionData = await sessionResponse.json();
                 currentUserId = sessionData.user_id;
 
+                // Mostrar tab "Publicados" solo si no es student
+                if (sessionData.role !== 'student') {
+                    const publishedTab = document.getElementById('tab-publicados');
+                    if (publishedTab) publishedTab.style.display = 'inline-block';
+                }
+
                 enrollmentsResponse = await fetch('../api/get_enrollments.php', { credentials: 'same-origin' });
                 if (!enrollmentsResponse.ok) throw new Error('Error al cargar cursos');
                 
@@ -80,7 +86,6 @@
                 allEnrollments = await enrollmentsResponse.json();
                 allCourses = await coursesResponse.json();
                 
-                // Enriquecer allCourses con campos faltantes para que tenga el mismo formato que allEnrollments
                 allCourses = allCourses.map(course => ({
                     ...course,
                     progress: course.progress || 0,
