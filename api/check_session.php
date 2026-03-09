@@ -15,7 +15,8 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
         'loggedIn' => true,
         'user_id' => $_SESSION['user_id'],
         'name' => $_SESSION['user_name'],
-        'email' => $_SESSION['user_email'] ?? null
+        'email' => $_SESSION['user_email'] ?? null,
+        'role' => $_SESSION['user_role'] ?? null   
     ]);
 } else {
     // Si no existen, no hay sesión activa.

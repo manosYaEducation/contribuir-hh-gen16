@@ -1,15 +1,12 @@
 <?php
-session_start();
+require 'auth_check.php';
 require 'db_connect.php';
 
 header('Content-Type: application/json');
 
-// Verificar autenticación
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['error' => 'No autenticado']);
-    exit();
-}
+# Proteger el endpoint con verificación de usuario
+requireRole(['admin', 'instructor']);
+
 
 $userId = $_SESSION['user_id'];
 $invitedEmail = isset($_POST['email']) ? trim($_POST['email']) : '';
