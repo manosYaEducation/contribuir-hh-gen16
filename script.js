@@ -326,7 +326,7 @@ function createCourseCard(course) {
                     </a>
                 </div>
             </div>
-            ${currentRole === 'admin' || currentRole === 'instructor' ? `
+            ${course.show_details ? `
             <a href="pages/curso2.html?id=${course.id}" class="btn-course-details" style="text-decoration:none;">
                 Ver Detalles
             </a>

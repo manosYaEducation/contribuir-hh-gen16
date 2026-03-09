@@ -34,22 +34,12 @@ foreach ($required_numeric_fields as $field) {
 }
 
 // Obtener y limpiar datos
-<<<<<<< HEAD
 $title = trim($_POST['title']);
 $category = trim($_POST['category']);
 $instructor_id = (int)$_POST['instructor_id'];
 $rating = (float)$_POST['rating'];
 $price = (int)$_POST['price'];
 $duration = trim($_POST['duration']);
-=======
-$title       = trim($_POST['title']);
-$category    = trim($_POST['category']);
-$instructor  = trim($_POST['instructor']);
-$rating      = (float)$_POST['rating'];
-$price       = (float)$_POST['price'];
-$totalHours  = (int)$_POST['totalHours'];
-$level       = trim($_POST['level']);
->>>>>>> joaquin/verificar-roles/09-03-26
 $description = trim($_POST['description']);
 $avatar = trim($_POST['avatar']);
 $students = isset($_POST['students']) ? (int)$_POST['students'] : 0;
@@ -135,13 +125,8 @@ $checkStmt->close();
 // Insertar curso con instructor_id
 $stmt = $conn->prepare(
     "INSERT INTO courses 
-<<<<<<< HEAD
     (title, description, category, instructor_id, rating, students, price, image, avatar, duration) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-=======
-    (title, description, category, instructor, instructor_id, rating, students, price, image, avatar, total_hours, level) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
->>>>>>> joaquin/verificar-roles/09-03-26
 );
 
 if (!$stmt) {
@@ -151,20 +136,11 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-<<<<<<< HEAD
     "sssiidisss",
     $title,
     $description,
     $category,
     $instructor_id,
-=======
-    "sssssdidssi",
-    $title,
-    $description,
-    $category,
-    $instructor,
-    $instructorId,
->>>>>>> joaquin/verificar-roles/09-03-26
     $rating,
     $students,
     $price,
@@ -179,20 +155,11 @@ if ($stmt->execute()) {
     echo json_encode([
         'message'  => 'Curso creado exitosamente',
         'courseId' => $courseId,
-<<<<<<< HEAD
         'course' => [
             'id' => $courseId,
             'title' => $title,
             'category' => $category,
             'instructor_id' => $instructor_id
-=======
-        'course'   => [
-            'id'           => $courseId,
-            'title'        => $title,
-            'category'     => $category,
-            'instructor'   => $instructor,
-            'instructorId' => $instructorId
->>>>>>> joaquin/verificar-roles/09-03-26
         ]
     ]);
 } else {

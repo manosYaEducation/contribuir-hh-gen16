@@ -3,7 +3,10 @@
 // Retorna TODOS los cursos del catálogo sin restricciones de autenticación
 
 header('Content-Type: application/json');
+require 'auth_check.php';  // inicia sesión y expone $_SESSION
 require 'db_connect.php';
+
+$isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 
 $courses = [];
 
@@ -20,6 +23,7 @@ if ($result->num_rows > 0) {
         $row['price'] = (int)$row['price'];
         $row['rating'] = (float)$row['rating'];
         $row['students'] = (int)$row['students'];
+        $row['show_details'] = $isAdmin;
         
         $courses[] = $row;
     }
