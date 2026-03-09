@@ -156,6 +156,12 @@ async function checkSessionStatus() {
                 isLoggedIn = true;
                 currentUser = { name: data.name };
                 updateUserUI();
+
+                // Mostrar panel de creación solo si no es student
+                if (data.role !== 'student') {
+                    const coursePanelBtn = document.getElementById('course-panel-btn');
+                    if (coursePanelBtn) coursePanelBtn.style.display = 'block';
+                }
             }
         }
     } catch (error) {

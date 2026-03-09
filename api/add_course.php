@@ -8,11 +8,8 @@ header('Content-Type: application/json');
 // Solo admin e instructor pueden crear cursos
 requireRole(['admin', 'instructor']);
 
-<<<<<<< HEAD
-=======
 // Validar campos requeridos
 $required_fields = ['title', 'category', 'instructor', 'rating', 'price', 'totalHours', 'level', 'description', 'image', 'avatar'];
->>>>>>> joaquin/verificar-roles/09-03-26
 
 // Validar que todos los campos requeridos estén presentes
 // Campos string que no pueden estar vacíos
