@@ -49,9 +49,8 @@ $image = 'photos/LogoOficial.png'; // imagen por defecto
 if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = __DIR__ . '/../uploads/';
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mimeType = finfo_file($finfo, $_FILES['courseImageFile']['tmp_name']);
-    finfo_close($finfo);
+    $imageInfo = getimagesize($_FILES['courseImageFile']['tmp_name']);
+    $mimeType = $imageInfo ? $imageInfo['mime'] : '';
     if (!in_array($mimeType, $allowedTypes)) {
         http_response_code(400);
         echo json_encode(['error' => 'Tipo de imagen no permitido. Use JPG, PNG, GIF o WEBP']);
