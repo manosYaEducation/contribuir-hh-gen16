@@ -1,7 +1,15 @@
 <?php
-header('Content-Type: application/json');
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
 require 'check_session.php';
+
+// Limpiar cualquier output previo
+ob_end_clean();
+header('Content-Type: application/json');
 // para probar =>/delete_lesson.php/5
 
 // Solo permitir método DELETE
@@ -77,4 +85,3 @@ if ($delete_stmt->execute()) {
 $check_stmt->close();
 $delete_stmt->close();
 $conn->close();
-?>

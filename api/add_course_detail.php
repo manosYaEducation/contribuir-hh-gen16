@@ -1,6 +1,13 @@
 <?php
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
 
+// Limpiar cualquier output previo
+ob_end_clean();
 header('Content-Type: application/json');
 
 // Obtener datos - aceptar JSON o Form-data
@@ -141,4 +148,3 @@ function is_valid_json($string) {
     json_decode($string);
     return (json_last_error() === JSON_ERROR_NONE);
 }
-?>

@@ -1,6 +1,13 @@
 <?php
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
 
+// Limpiar cualquier output previo
+ob_end_clean();
 header('Content-Type: application/json');
 
 // Validar que sea una solicitud PUT
@@ -158,4 +165,3 @@ if ($update_stmt->execute()) {
 $update_stmt->close();
 $verify_stmt->close();
 $conn->close();
-?>

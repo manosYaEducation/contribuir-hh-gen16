@@ -1,9 +1,17 @@
 <?php
-header('Content-Type: application/json');
-require 'db_connect.php';
-require 'auth_check.php';                        // agregado
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
 
-requireRole(['admin', 'instructor']);             // agregado
+require 'db_connect.php';
+require 'auth_check.php';
+
+// Limpiar cualquier output previo
+ob_end_clean();
+header('Content-Type: application/json');
+
+requireRole(['admin', 'instructor']);
 // Validar que los datos requeridos estén presentes
 $required_fields = ['course_id', 'title'];
 
@@ -106,4 +114,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-?>

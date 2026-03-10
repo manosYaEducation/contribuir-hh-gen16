@@ -1,6 +1,13 @@
 <?php
+// Capturar cualquier output espurio (warnings, notices con HTML)
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
 
+// Limpiar cualquier output previo
+ob_end_clean();
 header('Content-Type: application/json');
 
 // Aceptar POST (multipart/form-data con imagen) o PUT (JSON sin imagen)
@@ -21,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Manejar subida de imagen de portada
 if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = __DIR__ . '/../uploads/';
+    // Crear directorio si no existe
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mimeType = finfo_file($finfo, $_FILES['courseImageFile']['tmp_name']);
@@ -34,6 +45,10 @@ if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] ===
     $safeFilename = 'course_' . uniqid('', true) . '.' . $ext;
     if (move_uploaded_file($_FILES['courseImageFile']['tmp_name'], $uploadDir . $safeFilename)) {
         $data['image'] = 'uploads/' . $safeFilename;
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Error al subir la imagen. Verifique permisos del directorio uploads/']);
+        exit();
     }
 }
 
@@ -141,4 +156,3 @@ if ($update_stmt->execute()) {
 $update_stmt->close();
 $verify_stmt->close();
 $conn->close();
-?>

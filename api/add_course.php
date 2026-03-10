@@ -1,8 +1,15 @@
 <?php
 // api/add_course.php
+// Capturar cualquier output espurio (warnings, notices con HTML)
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
 require 'auth_check.php';
 
+// Limpiar cualquier output previo (whitespace de includes, warnings, etc.)
+ob_end_clean();
 header('Content-Type: application/json');
 
 // Solo admin e instructor pueden crear cursos
@@ -48,6 +55,10 @@ $students = isset($_POST['students']) ? (int)$_POST['students'] : 0;
 $image = 'photos/LogoOficial.png'; // imagen por defecto
 if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = __DIR__ . '/../uploads/';
+    // Crear directorio si no existe
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     $imageInfo = getimagesize($_FILES['courseImageFile']['tmp_name']);
     $mimeType = $imageInfo ? $imageInfo['mime'] : '';
@@ -60,6 +71,10 @@ if (isset($_FILES['courseImageFile']) && $_FILES['courseImageFile']['error'] ===
     $safeFilename = 'course_' . uniqid('', true) . '.' . $ext;
     if (move_uploaded_file($_FILES['courseImageFile']['tmp_name'], $uploadDir . $safeFilename)) {
         $image = 'uploads/' . $safeFilename;
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Error al subir la imagen. Verifique permisos del directorio uploads/']);
+        exit();
     }
 } elseif (isset($_POST['image']) && !empty(trim($_POST['image']))) {
     $image = trim($_POST['image']);

@@ -24,5 +24,4 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['user_name'])) {
     echo json_encode([
         'loggedIn' => false
     ]);
-}
-?>
+}

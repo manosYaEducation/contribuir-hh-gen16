@@ -50,4 +50,4 @@ if (empty(DB_NAME)) {
     die('ERROR: DB_NAME no está configurada en .env');
 }
 
-?>
+// end of config.php — no closing tag to prevent whitespace injection

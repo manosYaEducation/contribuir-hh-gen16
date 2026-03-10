@@ -1,6 +1,14 @@
 <?php
-header('Content-Type: application/json');
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
+
+// Limpiar cualquier output previo
+ob_end_clean();
+header('Content-Type: application/json');
 
 // Validar que el método sea PUT
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
@@ -175,4 +183,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-?>

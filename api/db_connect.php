@@ -12,4 +12,4 @@ if ($conn->connect_error) {
 
 // Establecer charset a UTF-8
 $conn->set_charset("utf8mb4");
-?>
+// end of db_connect.php — no closing tag to prevent whitespace injection

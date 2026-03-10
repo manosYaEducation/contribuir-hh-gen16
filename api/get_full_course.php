@@ -1,6 +1,14 @@
 <?php
 // api/get_full_course.php
+// Capturar cualquier output espurio
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require 'db_connect.php';
+
+// Limpiar cualquier output previo
+ob_end_clean();
 header('Content-Type: application/json');
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -64,4 +72,3 @@ $course['lessons'] = $lessons;
 
 echo json_encode($course);
 $conn->close();
-?>

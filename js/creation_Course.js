@@ -13,6 +13,19 @@ let courseData = {
 let objectivesData = [];
 let requirementsData = [];
 
+// Helper: parsear JSON de forma segura, capturando respuestas con HTML de errores PHP
+async function safeJsonParse(response) {
+    const text = await response.text();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        // Si la respuesta contiene HTML de errores PHP, extraer mensaje útil
+        console.error('Respuesta no-JSON del servidor:', text);
+        const cleanText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        throw new Error('Error en la solicitud: ' + (cleanText.substring(0, 150) || 'respuesta vacía'));
+    }
+}
+
 // ==========================================
 // FUNCIONES DE INICIALIZACIÓN
 // ==========================================
@@ -433,7 +446,7 @@ async function saveCourseMain() {
             body: formData
         });
 
-        const data = await response.json();
+        const data = await safeJsonParse(response);
         return data;
     } catch (error) {
         throw new Error('Error en la solicitud: ' + error.message);
@@ -461,7 +474,7 @@ async function saveCourseDetails(courseId) {
             body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        const data = await safeJsonParse(response);
         if (!data.success && data.error) {
             throw new Error(data.error || 'Error al guardar detalles');
         }
@@ -497,7 +510,7 @@ async function saveLessons(courseId) {
                 body: formData
             });
 
-            const data = await response.json();
+            const data = await safeJsonParse(response);
             if (!data.success && data.error) {
                 throw new Error(`Error al guardar lección ${i + 1}: ${data.error}`);
             }
@@ -530,7 +543,7 @@ async function updateCourseMain(courseId) {
         body: formData
     });
 
-    const data = await response.json();
+    const data = await safeJsonParse(response);
     if (data.error) throw new Error(data.error);
     return data;
 }
@@ -550,7 +563,7 @@ async function updateCourseDetails(courseId) {
         body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const data = await safeJsonParse(response);
     if (data.error) {
         // Si no existe el detalle, crear uno nuevo
         console.warn('Update detail falló, intentando crear:', data.error);
@@ -585,7 +598,7 @@ async function updateLessons(courseId) {
                 body: JSON.stringify(payload)
             });
 
-            const data = await response.json();
+            const data = await safeJsonParse(response);
             if (data.error) {
                 throw new Error(`Error al actualizar lección ${i + 1}: ${data.error}`);
             }
@@ -606,7 +619,7 @@ async function updateLessons(courseId) {
                 body: formData
             });
 
-            const data = await response.json();
+            const data = await safeJsonParse(response);
             if (data.error) {
                 throw new Error(`Error al crear lección ${i + 1}: ${data.error}`);
             }
