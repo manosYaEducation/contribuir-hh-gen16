@@ -45,6 +45,13 @@ define('DB_PASSWORD', $_ENV['DB_PASSWORD'] ?? '');
 define('DB_NAME', $_ENV['DB_NAME'] ?? '');
 define('APP_ENV', $_ENV['APP_ENV'] ?? 'production');
 
+// Configuración de correo (PHPMailer SMTP)
+define('MAIL_HOST', $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com');
+define('MAIL_PORT', intval($_ENV['MAIL_PORT'] ?? 587));
+define('MAIL_USERNAME', $_ENV['MAIL_USERNAME'] ?? '');
+define('MAIL_PASSWORD', $_ENV['MAIL_PASSWORD'] ?? '');
+define('MAIL_FROM_NAME', $_ENV['MAIL_FROM_NAME'] ?? 'Con Tribu Ir');
+
 // Validar que las variables necesarias estén definidas
 if (empty(DB_NAME)) {
     die('ERROR: DB_NAME no está configurada en .env');

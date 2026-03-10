@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.log('- Iniciando aplicación...');
     await checkSessionStatus();  // esperar que el rol esté disponible
     init();
-   
+
     // Conectar los formularios a las funciones de JS
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
-    
+
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
     if (registerForm) registerForm.addEventListener('submit', handleRegister);
 });
@@ -23,11 +23,11 @@ async function init() {
     try {
         await loadCoursesData();
         console.log('Total de cursos en catálogo:', coursesData.length);
-        
+
         if (coursesData.length === 0) {
             console.warn('No hay cursos en la base de datos');
         }
-        
+
         renderCourses();
         renderCategories();
         setupScrollListener();
@@ -84,10 +84,10 @@ async function handleRegister(event) {
     const formData = new FormData(form);
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
-    
+
     if (password !== confirmPassword) {
         alert('Las contraseñas no coinciden. Por favor, revísalas.');
-        return; 
+        return;
     }
 
     try {
@@ -214,13 +214,13 @@ function goToMyCourses() {
     closeUserDropdown();
     console.log('goToMyCourses llamada');
     console.log('isLoggedIn:', isLoggedIn);
-    
+
     if (!isLoggedIn) {
         alert('Debes iniciar sesión para ver tus cursos.');
         openModal('loginModal');
         return;
     }
-    
+
     console.log('Redirigiendo a mis_cursos.html');
     window.location.href = 'pages/mis_cursos.html';
 }
@@ -279,7 +279,7 @@ function renderCourses() {
     const grid = document.getElementById('coursesGrid');
     const searchValue = document.getElementById('searchCourses').value.toLowerCase();
     grid.innerHTML = '';
-    
+
     const filtered = coursesData.filter(course => {
         const matchSearch = course.title.toLowerCase().includes(searchValue) || course.instructor.toLowerCase().includes(searchValue);
         const matchCategory = selectedCategory === 'Todas' || course.category === selectedCategory;
@@ -299,11 +299,11 @@ function createCourseCard(course) {
     const card = document.createElement('div');
     card.className = 'course-card';
     // PW-11: Mostrar "Curso Gratuito" si el precio es 0
-    const priceDisplay = course.price === 0 
-        ? 'Curso Gratuito' 
+    const priceDisplay = course.price === 0
+        ? 'Curso Gratuito'
         : '$' + Number(course.price).toLocaleString('es-CL');
 
-    
+
     card.innerHTML = `
         <img src="${course.image}" alt="${course.title}" class="course-image">
         <div class="course-body">
@@ -378,7 +378,7 @@ function sendMessage(event) {
 function toggleUserDropdown() {
     const btn = document.getElementById('userDropdownBtn');
     const menu = document.getElementById('userDropdownMenu');
-    
+
     btn.classList.toggle('active');
     menu.classList.toggle('show');
 }
@@ -386,7 +386,7 @@ function toggleUserDropdown() {
 function closeUserDropdown() {
     const btn = document.getElementById('userDropdownBtn');
     const menu = document.getElementById('userDropdownMenu');
-    
+
     btn.classList.remove('active');
     menu.classList.remove('show');
 }
@@ -395,7 +395,7 @@ function closeUserDropdown() {
 document.addEventListener('click', function(event) {
     const userSection = document.getElementById('userSection');
     const userDropdown = document.querySelector('.user-dropdown');
-    
+
     if (userSection && !userSection.classList.contains('hidden')) {
         if (userDropdown && !userDropdown.contains(event.target)) {
             closeUserDropdown();

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
-require 'rate_limiter.php'; // ← NUEVO
+require 'validators.php';
 
 header('Content-Type: application/json');
 
@@ -9,15 +9,12 @@ $email    = isset($_POST['email'])    ? trim($_POST['email'])    : '';
 $password = isset($_POST['password']) ? $_POST['password']       : '';
 
 if (empty($email) || empty($password)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Email y contraseña son requeridos.']);
-    exit();
+    jsonError(400, 'Email y contraseña son requeridos.');
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Formato de email inválido.']);
-    exit();
+// 2. Validar formato de email (función compartida de validators.php)
+if (!isValidEmail($email)) {
+    jsonError(400, 'Formato de email inválido.');
 }
 
 // Verificar límite ANTES de consultar la BD

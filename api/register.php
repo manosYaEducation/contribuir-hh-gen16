@@ -1,5 +1,6 @@
 <?php
 require 'db_connect.php';
+require 'validators.php';
 
 header('Content-Type: application/json');
 
@@ -9,42 +10,26 @@ $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 $confirmPassword = isset($_POST['confirmPassword']) ? $_POST['confirmPassword'] : '';
 
-// --- VALIDACIONES DE SEGURIDAD ---
+// --- VALIDACIONES DE SEGURIDAD (usando funciones compartidas de validators.php) ---
 
 // 1. Verificar campos obligatorios
 if (empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
-    http_response_code(400);
-    echo json_encode([
-        'message' => 'Error: Todos los campos del formulario son obligatorios.',
-        'debug' => [
-            'name' => !empty($name) ? 'OK' : 'VACÍO',
-            'email' => !empty($email) ? 'OK' : 'VACÍO',
-            'password' => !empty($password) ? 'OK' : 'VACÍO',
-            'confirmPassword' => !empty($confirmPassword) ? 'OK' : 'VACÍO'
-        ]
-    ]);
-    exit();
+    jsonError(400, 'Error: Todos los campos del formulario son obligatorios.');
 }
 
 // 2. Verificar que las contraseñas coincidan
-if ($password !== $confirmPassword) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Error: Las contraseñas no coinciden.']);
-    exit();
+if (!passwordsMatch($password, $confirmPassword)) {
+    jsonError(400, 'Error: Las contraseñas no coinciden.');
 }
 
 // 3. Validación de formato de email
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Error: El formato del correo electrónico no es válido.']);
-    exit();
+if (!isValidEmail($email)) {
+    jsonError(400, 'Error: El formato del correo electrónico no es válido.');
 }
 
 // 4. Validación de complejidad de contraseña
-if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d).{8,}$/', $password)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.']);
-    exit();
+if (!isValidPassword($password)) {
+    jsonError(400, 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.');
 }
 
 // 5. Validación de longitud del nombre
@@ -77,7 +62,7 @@ $stmt->close();
 
 // --- CREAR USUARIO ---
 
-$password_hash = password_hash($password, PASSWORD_BCRYPT);
+$password_hash = hashPassword($password);
 $stmt_insert = $conn->prepare("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)");
 
 if (!$stmt_insert) {

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Con Tribu Ir</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Css/recovery_password.css">
 </head>
 
 <body>
@@ -48,7 +49,7 @@
                         <button class="btn btn-secondary" onclick="goToMyCourses()" style="margin-left: 0.5rem;">
                             📚 Mis Cursos
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -134,8 +135,7 @@
 
             <div class="about-grid">
                 <div class="about-image">
-                    <img src="photos/QuienesSomos.png"
-                        alt="Comunidad educativa">
+                    <img src="photos/QuienesSomos.png" alt="Comunidad educativa">
                 </div>
                 <div class="about-text">
                     <h1>Con Tribu Ir</h1>
@@ -272,14 +272,15 @@
                 </div>
                 <button type="submit" class="btn-submit">Ingresar</button>
                 <p class="modal-switch">¿No tienes cuenta? <a
-                        onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a>
-                </p>
-                <div id="loginRateLimitMsg" style="display:none; color: red; text-align: center; margin-top: 8px;">
-                    Demasiados intentos fallidos. Podés intentar de nuevo en <strong id="loginCountdown"></strong>
-                </div>
+                        onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a></p>
+                <p class="modal-switch recovery-link">¿Olvidaste tu contraseña? <a
+                        onclick="switchToModal('loginModal', 'forgotPasswordModal')">Recuperar contraseña</a></p>
             </form>
         </div>
     </div>
+
+    <!-- Contenedor para los modales de recuperación (cargados dinámicamente por js/recovery.js) -->
+    <div id="recovery-modals"></div>
 
     <div id="registerModal" class="modal">
         <div class="modal-content">
@@ -368,6 +369,7 @@
 </footer>
 
     <script src="script.js"></script>
+    <script src="js/recovery_password.js"></script>
 </body>
 
 </html>
