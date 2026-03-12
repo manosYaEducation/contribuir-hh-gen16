@@ -10,7 +10,7 @@
  * 
  * Dependencias:
  *   - Funciones globales de script.js: openModal(), closeModal(), switchToModal()
- *   - Componente HTML: components/recovery_password_modal.html (cargado vía fetch)
+ *   - Componente HTML: ModeladoHTML/recovery_password_modal.html (cargado vía fetch)
  *   - Estilos CSS: Css/recovery_password.css
  * 
  * ============================================================
@@ -38,7 +38,7 @@ async function initRecoveryModule() {
             return;
         }
 
-        const response = await fetch('components/recovery_password_modal.html');
+        const response = await fetch('ModeladoHTML/recovery_password_modal.html');
         if (!response.ok) {
             console.error('recovery_password.js: Error al cargar recovery_password_modal.html:', response.status);
             return;

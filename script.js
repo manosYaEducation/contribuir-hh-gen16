@@ -123,7 +123,15 @@ async function handleLogin(event) {
         if (response.ok) {
             isLoggedIn = true;
             currentUser = { name: result.name };
+            currentRole = result.role; // Store the user role from login response
             updateUserUI();
+            
+            // Mostrar panel de creación solo si no es student
+            if (currentRole && currentRole !== 'student') {
+                const coursePanelBtn = document.getElementById('course-panel-btn');
+                if (coursePanelBtn) coursePanelBtn.style.display = 'block';
+            }
+            
             closeModal('loginModal');
             form.reset();
         } else if (response.status === 429) {

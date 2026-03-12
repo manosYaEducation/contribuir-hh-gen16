@@ -2,6 +2,7 @@
 session_start();
 require 'db_connect.php';
 require 'validators.php';
+require 'rate_limiter.php';
 
 header('Content-Type: application/json');
 
