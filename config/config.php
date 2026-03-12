@@ -39,11 +39,12 @@ function loadEnv($file) {
 loadEnv($env_file);
 
 // Obtener variables de configuración
-define('DB_SERVERNAME', $_ENV['DB_SERVERNAME'] ?? 'localhost');
-define('DB_USERNAME', $_ENV['DB_USERNAME'] ?? 'root');
-define('DB_PASSWORD', $_ENV['DB_PASSWORD'] ?? '');
-define('DB_NAME', $_ENV['DB_NAME'] ?? '');
-define('APP_ENV', $_ENV['APP_ENV'] ?? 'production');
+define('DB_SERVERNAME', $_ENV['DB_HOST']     ?? $_ENV['DB_SERVERNAME'] ?? 'localhost');
+define('DB_USERNAME',   $_ENV['DB_USERNAME'] ?? 'root');
+define('DB_PASSWORD',   $_ENV['DB_PASSWORD'] ?? '');
+define('DB_NAME',       $_ENV['DB_DATABASE'] ?? $_ENV['DB_NAME'] ?? '');
+define('DB_PORT',       (int)($_ENV['DB_PORT'] ?? 3306));
+define('APP_ENV',       $_ENV['APP_ENV']     ?? 'production');
 
 // Configuración de correo (PHPMailer SMTP)
 define('MAIL_HOST', $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com');
