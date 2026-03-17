@@ -1,5 +1,6 @@
 <?php
 // api/get_course_detail.php
+session_start();
 require 'db_connect.php';
 header('Content-Type: application/json');
 
@@ -31,6 +32,21 @@ if ($id > 0) {
         }
         if ($row['requirements']) {
             $row['requirements'] = json_decode($row['requirements'], true);
+        }
+        // Proteger recursos: solo visible para usuarios inscritos
+        // intro_video se mantiene público siempre
+        if (isset($row['recursos']) && $row['recursos']) {
+            $showRecursos = false;
+            if (isset($_SESSION['user_id'])) {
+                $enrollStmt = $conn->prepare("SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?");
+                $enrollStmt->bind_param("ii", $_SESSION['user_id'], $id);
+                $enrollStmt->execute();
+                $showRecursos = $enrollStmt->get_result()->num_rows > 0;
+                $enrollStmt->close();
+            }
+            if (!$showRecursos) {
+                unset($row['recursos']);
+            }
         }
         // Devolver los datos del curso encontrado
         echo json_encode($row);

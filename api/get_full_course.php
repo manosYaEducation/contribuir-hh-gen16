@@ -5,6 +5,7 @@ ob_start();
 ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
+session_start();
 require 'db_connect.php';
 
 // Limpiar cualquier output previo
@@ -51,6 +52,25 @@ if ($course['requirements']) {
     $course['requirements'] = json_decode($course['requirements'], true);
 }
 
+// --- Control de acceso para lecciones ---
+// Sin sesión → siempre restringido
+// Con sesión + gratuito → acceso libre
+// Con sesión + paga → solo si inscrito
+$isPaid = floatval($course['price']) > 0;
+$hasAccess = false;
+
+if (isset($_SESSION['user_id'])) {
+    if (!$isPaid) {
+        $hasAccess = true;
+    } else {
+        $enrollStmt = $conn->prepare("SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?");
+        $enrollStmt->bind_param("ii", $_SESSION['user_id'], $id);
+        $enrollStmt->execute();
+        $hasAccess = $enrollStmt->get_result()->num_rows > 0;
+        $enrollStmt->close();
+    }
+}
+
 // Lecciones del curso
 $stmt2 = $conn->prepare("
     SELECT id, title, description, order_number, content, video_url, duration, is_free
@@ -64,11 +84,17 @@ $result2 = $stmt2->get_result();
 
 $lessons = [];
 while ($row = $result2->fetch_assoc()) {
+    // Si no tiene acceso, omitir contenido protegido
+    if (!$hasAccess) {
+        unset($row['content']);
+        unset($row['video_url']);
+    }
     $lessons[] = $row;
 }
 $stmt2->close();
 
 $course['lessons'] = $lessons;
+$course['content_restricted'] = !$hasAccess;
 
 echo json_encode($course);
 $conn->close();

@@ -330,12 +330,27 @@
             try {
                 const response = await fetch(`../api/get_lessons.php?course_id=${courseId}`);
                 if (response.ok) {
-                    const lessons = await response.json();
+                    const data = await response.json();
                     const container = document.getElementById('modules-container');
                     container.innerHTML = '';
 
-                    if (lessons.length === 0) {
-                        container.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No hay lecciones aún</p>';
+                    // El backend ahora puede devolver {restricted, lessons} o un array directo
+                    const isRestricted = data.restricted === true;
+                    const lessons = isRestricted ? data.lessons : data;
+
+                    // Mostrar banner si el contenido está restringido
+                    if (isRestricted) {
+                        const banner = document.createElement('div');
+                        banner.style.cssText = 'background: linear-gradient(135deg, #ebf8ff 0%, #e9d8fd 100%); border: 1px solid #bee3f8; border-radius: 0.5rem; padding: 1rem 1.5rem; margin-bottom: 1rem; text-align: center;';
+                        banner.innerHTML = `
+                            <p style="margin: 0; color: #2b6cb0; font-weight: 600;">🔒 Contenido restringido</p>
+                            <p style="margin: 0.5rem 0 0; color: #4a5568; font-size: 0.9rem;">Inscríbete en este curso para acceder al contenido completo de los módulos.</p>
+                        `;
+                        container.appendChild(banner);
+                    }
+
+                    if (!Array.isArray(lessons) || lessons.length === 0) {
+                        container.innerHTML += '<p style="text-align: center; color: #718096; padding: 2rem;">No hay lecciones aún</p>';
                     } else {
                         lessons.forEach((lesson, index) => {
                             const moduleDiv = document.createElement('div');
@@ -493,16 +508,38 @@
 
                         window.courseData = courseData;
 
-                        // Mostrar enlace de recursos si existe
-                        if (courseData.recursos) {
-                            const recursosCard = document.getElementById('recursos-card');
-                            const recursosLink = document.getElementById('recursos-link');
-                            recursosLink.href = courseData.recursos;
-                            recursosCard.style.display = 'block';
-                        }
-
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);
+
+                        // --- Control de acceso: recursos y reseña solo para inscritos ---
+                        try {
+                            const enrollRes = await fetch('../api/get_enrollments.php');
+                            if (enrollRes.ok) {
+                                const enrollments = await enrollRes.json();
+                                const isEnrolled = enrollments.some(e => e.id == courseId);
+                                if (isEnrolled) {
+                                    // Mostrar enlace de recursos solo si inscrito
+                                    if (courseData.recursos) {
+                                        const recursosCard = document.getElementById('recursos-card');
+                                        const recursosLink = document.getElementById('recursos-link');
+                                        recursosLink.href = courseData.recursos;
+                                        recursosCard.style.display = 'block';
+                                    }
+                                } else {
+                                    // No inscrito → ocultar reseña y recursos
+                                    const reviewCard = document.getElementById('btn-add-review');
+                                    if (reviewCard) reviewCard.closest('.card').style.display = 'none';
+                                }
+                            } else {
+                                // No logueado (401) → ocultar reseña y recursos
+                                const reviewCard = document.getElementById('btn-add-review');
+                                if (reviewCard) reviewCard.closest('.card').style.display = 'none';
+                            }
+                        } catch (e) {
+                            // Error de red → ocultar por seguridad
+                            const reviewCard = document.getElementById('btn-add-review');
+                            if (reviewCard) reviewCard.closest('.card').style.display = 'none';
+                        }
                     } else {
                         console.error("El curso no existe en la base de datos");
                     }
