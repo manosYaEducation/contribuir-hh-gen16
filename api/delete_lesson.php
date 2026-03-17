@@ -5,7 +5,7 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
 require 'db_connect.php';
-require 'check_session.php';
+require 'auth_check.php';
 
 // Limpiar cualquier output previo
 ob_end_clean();
@@ -61,6 +61,12 @@ if ($check_result->num_rows === 0) {
     echo json_encode(['error' => 'Lección no encontrada']);
     exit;
 }
+
+$lesson_info = $check_result->fetch_assoc();
+$course_id = (int)$lesson_info['course_id'];
+
+// Validar que el usuario tiene autorización para eliminar del curso
+requireCourseOwnership($conn, $course_id);
 
 // Eliminar la lección
 $delete_sql = "DELETE FROM lessons WHERE id = ?";
