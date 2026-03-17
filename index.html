@@ -275,9 +275,13 @@
                         onclick="switchToModal('loginModal', 'registerModal')">Regístrate aquí</a></p>
                 <p class="modal-switch recovery-link">¿Olvidaste tu contraseña? <a
                         onclick="switchToModal('loginModal', 'forgotPasswordModal')">Recuperar contraseña</a></p>
+                <div id="loginRateLimitMsg" style="display:none; color: red; text-align: center; margin-top: 8px;">
+                    Demasiados intentos fallidos. Podés intentar de nuevo en <strong id="loginCountdown"></strong>
+                </div>
             </form>
         </div>
     </div>
+    
 
     <!-- Contenedor para los modales de recuperación (cargados dinámicamente por js/recovery.js) -->
     <div id="recovery-modals"></div>
