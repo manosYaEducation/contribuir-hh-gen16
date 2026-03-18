@@ -322,7 +322,7 @@ function createCourseCard(course) {
                 <div class="instructor-info"><div class="instructor-name">${course.instructor}</div></div>
             </div>
             <div class="course-rating">
-                <span class="rating-stars">⭐ ${course.rating || 5.0}</span>
+                <span class="rating-stars">⭐ ${(course.rating != null ? parseFloat(course.rating) : 0).toFixed(1)}</span>
                 <span>👥 ${course.students || 0} estudiantes</span>
             </div>
             <p class="course-description">${course.description}</p>
