@@ -11,7 +11,14 @@ $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 $courses = [];
 
 // SIEMPRE obtener todos los cursos disponibles, sin importar si está autenticado
-$sql = "SELECT c.id, c.title, c.instructor_id, u.name as instructor, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description FROM courses c LEFT JOIN users u ON c.instructor_id = u.id ORDER BY c.id ASC";
+$sql = "SELECT c.id, c.title, c.instructor_id, u.name as instructor, c.avatar, c.category, c.price, 
+               COALESCE(ROUND(AVG(rv.rating), 1), c.rating) as rating, 
+               c.students, c.duration, c.image, c.description 
+        FROM courses c 
+        LEFT JOIN users u ON c.instructor_id = u.id 
+        LEFT JOIN reviews rv ON c.id = rv.course_id
+        GROUP BY c.id, c.title, c.instructor_id, u.name, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description
+        ORDER BY c.id ASC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

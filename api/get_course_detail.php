@@ -15,7 +15,7 @@ if ($id > 0) {
                d.requirements,
                d.intro_video,
                d.recursos,
-               ROUND(COALESCE(AVG(rv.rating), 0), 1) as rating,
+               COALESCE(ROUND(AVG(rv.rating), 1), c.rating) as rating,
                COUNT(rv.id) as review_count
         FROM courses c
         LEFT JOIN users u ON c.instructor_id = u.id
