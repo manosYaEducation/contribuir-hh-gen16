@@ -7,7 +7,7 @@ $course_id = isset($_GET['course_id']) ? (int)$_GET['course_id'] : 0;
 
 if ($course_id > 0) {
     $stmt = $conn->prepare("
-        SELECT r.id, r.rating, r.comment, r.created_at, u.name as user_name
+        SELECT r.id, r.user_id, r.rating, r.comment, r.created_at, u.name as user_name
         FROM reviews r
         JOIN users u ON r.user_id = u.id
         WHERE r.course_id = ?

@@ -187,6 +187,9 @@
                         style="display: block; width: 100%; border-radius: 6px; font-size: 1rem; padding: 0.75rem;">
                         Añadir Reseña
                     </button>
+                    <p id="review-done-msg" style="display: none; color: #4299e1; font-weight: bold; font-size: 1rem; margin: 0;">
+                        ✓ Ya realizaste una reseña
+                    </p>
                 </div>
 
             </div>
@@ -511,6 +514,7 @@
 
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);
+<<<<<<< HEAD
 
                         // --- Control de acceso: recursos y reseña solo para inscritos ---
                         try {
@@ -541,6 +545,11 @@
                             const reviewCard = document.getElementById('btn-add-review');
                             if (reviewCard) reviewCard.closest('.card').style.display = 'none';
                         }
+=======
+                        
+                        // Verificar si el usuario ya tiene reseña en este curso
+                        checkUserReview(courseId);
+>>>>>>> Feature/QArturo/2026-03-18/Fix26
                     } else {
                         console.error("El curso no existe en la base de datos");
                     }
@@ -573,6 +582,40 @@
                 this.classList.toggle('active');
             }
         });
+
+        // Función para verificar si el usuario actual tiene reseña en este curso
+        async function checkUserReview(courseId) {
+            try {
+                // Obtener user_id de la sesión
+                const sessionRes = await fetch('../api/check_session.php', { credentials: 'same-origin' });
+                const sessionData = await sessionRes.json();
+                
+                if (!sessionData.loggedIn) return;
+                
+                const currentUserId = sessionData.user_id;
+                
+                // Obtener reseñas del curso
+                const reviewsRes = await fetch(`../api/get_reviews.php?course_id=${courseId}`);
+                const reviews = await reviewsRes.json();
+                
+                // Verificar si el usuario actual tiene una reseña
+                const hasReview = Array.isArray(reviews) && reviews.some(r => r.user_id == currentUserId);
+                
+                if (hasReview) {
+                    const btnAddReview = document.getElementById('btn-add-review');
+                    const reviewDoneMsg = document.getElementById('review-done-msg');
+                    if (btnAddReview) {
+                        btnAddReview.style.display = 'none';
+                    }
+                    if (reviewDoneMsg) {
+                        reviewDoneMsg.style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error("Error verificando reseña:", error);
+            }
+        }
+
         // Lógica de Reseñas
             const btnAddReview = document.getElementById('btn-add-review');
             const reviewModal = document.getElementById('reviewModal');
@@ -648,6 +691,10 @@
                             alert('¡Gracias por tu reseña!');
                             closeReviewModal.onclick();
                             btnAddReview.style.display = 'none'; // ocultar botón si ya opinó
+                            const reviewDoneMsg = document.getElementById('review-done-msg');
+                            if (reviewDoneMsg) {
+                                reviewDoneMsg.style.display = 'block';
+                            }
                         } else {
                             errorMsg.textContent = result.error || 'Ocurrió un error al enviar.';
                             errorMsg.style.display = 'block';
