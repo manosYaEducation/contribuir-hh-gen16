@@ -5,6 +5,7 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
 require 'db_connect.php';
+require 'auth_check.php';
 
 // Limpiar cualquier output previo
 ob_end_clean();
@@ -41,8 +42,8 @@ if ($lesson_id <= 0) {
     exit();
 }
 
-// Verificar que la lección existe
-$check_sql = "SELECT id FROM lessons WHERE id = ?";
+// Verificar que la lección existe y obtener el course_id asociado
+$check_sql = "SELECT id, course_id FROM lessons WHERE id = ?";
 $stmt_check = $conn->prepare($check_sql);
 $stmt_check->bind_param("i", $lesson_id);
 $stmt_check->execute();
@@ -53,7 +54,13 @@ if ($result_check->num_rows === 0) {
     echo json_encode(['error' => 'La lección especificada no existe']);
     exit();
 }
+
+$lesson_info = $result_check->fetch_assoc();
+$course_id = (int)$lesson_info['course_id'];
 $stmt_check->close();
+
+// Validar que el usuario tiene autorización para editar este curso
+requireCourseOwnership($conn, $course_id);
 
 // Recolectar campos a actualizar
 $fields_to_update = [];

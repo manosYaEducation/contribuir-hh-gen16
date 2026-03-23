@@ -5,6 +5,7 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
 require 'db_connect.php';
+require 'auth_check.php';
 
 // Limpiar cualquier output previo
 ob_end_clean();
@@ -79,6 +80,9 @@ if ($verify_result->num_rows === 0) {
     echo json_encode(['error' => 'Curso no encontrado']);
     exit();
 }
+
+// Validar que el usuario tiene autorización para editar este curso
+requireCourseOwnership($conn, $course_id);
 
 // Campos actualizables
 $fields = ['title', 'category', 'instructor', 'rating', 'price', 'students', 'duration', 'image', 'avatar', 'description'];

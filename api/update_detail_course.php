@@ -5,6 +5,7 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
 require 'db_connect.php';
+require 'auth_check.php';
 
 // Limpiar cualquier output previo
 ob_end_clean();
@@ -23,6 +24,7 @@ $data = json_decode($input, true);
 
 // Soportar búsqueda por course_id o por id de detail_courses
 $detail_id = 0;
+$course_id = 0;
 
 if (isset($data['course_id'])) {
     // Buscar el detalle por course_id
@@ -36,6 +38,7 @@ if (isset($data['course_id'])) {
     if ($lookup_result->num_rows > 0) {
         $row = $lookup_result->fetch_assoc();
         $detail_id = (int)$row['id'];
+        $course_id = (int)$row['course_id'];
     }
     $lookup_stmt->close();
 } elseif (isset($data['id'])) {
@@ -62,7 +65,14 @@ if ($verify_result->num_rows === 0) {
 }
 
 $row = $verify_result->fetch_assoc();
-$course_id = $row['course_id'];
+if ($course_id === 0) {
+    $course_id = (int)$row['course_id'];
+}
+
+// Validar que el usuario tiene autorización para editar este curso
+if ($course_id > 0) {
+    requireCourseOwnership($conn, $course_id);
+}
 
 // Campos actualizables
 $updates = [];
