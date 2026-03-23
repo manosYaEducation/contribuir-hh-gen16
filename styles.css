@@ -641,6 +641,14 @@ header.scrolled {
     background: linear-gradient(160deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
 }
 
+.section-mission .section-title {
+    color: var(--color-amber-200);
+}
+
+.section-mission .section-title::after {
+    background: linear-gradient(90deg, var(--color-amber-200), var(--color-secondary));
+}
+
 .mission-content {
     background: var(--color-white);
     border: none;
