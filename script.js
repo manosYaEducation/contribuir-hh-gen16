@@ -132,6 +132,10 @@ async function handleLogin(event) {
                 if (coursePanelBtn) coursePanelBtn.style.display = 'block';
             }
             
+            // Recargar cursos para actualizar detalles según el nuevo rol
+            await loadCoursesData();
+            renderCourses();
+            
             closeModal('loginModal');
             form.reset();
         } else if (response.status === 429) {
@@ -180,6 +184,12 @@ async function checkSessionStatus() {
                     const coursePanelBtn = document.getElementById('course-panel-btn');
                     if (coursePanelBtn) coursePanelBtn.style.display = 'block';
                 }
+            } else {
+                // No hay sesión activa, resetear UI
+                isLoggedIn = false;
+                currentUser = null;
+                currentRole = null;
+                updateUserUI();
             }
         }
     } catch (error) {
@@ -196,6 +206,16 @@ async function logout() {
     }
     isLoggedIn = false;
     currentUser = null;
+    currentRole = null;  // Resetear el rol
+    
+    // Ocultar el botón del panel de creación
+    const coursePanelBtn = document.getElementById('course-panel-btn');
+    if (coursePanelBtn) coursePanelBtn.style.display = 'none';
+    
+    // Recargar cursos para actualizar detalles según el rol reseteado
+    await loadCoursesData();
+    renderCourses();
+    
     updateUserUI();
 }
 
@@ -204,16 +224,29 @@ function updateUserUI() {
     const registerBtn = document.getElementById('registerBtn');
     const userSection = document.getElementById('userSection');
     const userName = document.getElementById('userName');
+    const coursePanelBtn = document.getElementById('course-panel-btn');
 
     if (isLoggedIn && currentUser) {
         loginBtn.style.display = 'none';
         registerBtn.style.display = 'none';
         userSection.classList.remove('hidden');
         userName.textContent = 'Hola, ' + currentUser.name;
+        
+        // Solo mostrar botón de panel si no es student
+        if (coursePanelBtn && currentRole && currentRole !== 'student') {
+            coursePanelBtn.style.display = 'block';
+        } else if (coursePanelBtn) {
+            coursePanelBtn.style.display = 'none';
+        }
     } else {
         loginBtn.style.display = 'block';
         registerBtn.style.display = 'block';
         userSection.classList.add('hidden');
+        
+        // Asegurar que el botón de panel esté oculto cuando no hay sesión
+        if (coursePanelBtn) {
+            coursePanelBtn.style.display = 'none';
+        }
     }
 }
 
