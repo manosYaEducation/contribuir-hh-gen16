@@ -10,16 +10,22 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id > 0) {
     // 2. Preparar la consulta para buscar ESE curso específico con sus detalles
     $stmt = $conn->prepare("
-        SELECT c.id, c.title, c.instructor_id, c.avatar, c.category, c.price, c.rating, c.students, c.duration, c.image, c.description,
+        SELECT c.id, c.title, c.instructor_id, c.avatar, c.category, c.price, c.students, c.duration, c.image, c.description,
                u.name as instructor,
-               d.learning_objectives, 
-               d.requirements, 
+               d.learning_objectives,
+               d.requirements,
                d.intro_video,
-               d.recursos
+               d.recursos,
+               COALESCE(ROUND(AVG(rv.rating), 1), c.rating) as rating,
+               COUNT(rv.id) as review_count
         FROM courses c
         LEFT JOIN users u ON c.instructor_id = u.id
         LEFT JOIN detail_courses d ON c.id = d.course_id
+        LEFT JOIN reviews rv ON c.id = rv.course_id
         WHERE c.id = ?
+        GROUP BY c.id, c.title, c.instructor_id, c.avatar, c.category, c.price,
+                 c.students, c.duration, c.image, c.description,
+                 u.name, d.learning_objectives, d.requirements, d.intro_video, d.recursos
     ");
     $stmt->bind_param("i", $id);
     $stmt->execute();

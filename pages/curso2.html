@@ -515,6 +515,7 @@
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                         // --- Control de acceso: recursos y reseña solo para inscritos ---
                         try {
@@ -550,6 +551,11 @@
                         // Verificar si el usuario ya tiene reseña en este curso
                         checkUserReview(courseId);
 >>>>>>> Feature/QArturo/2026-03-18/Fix26
+=======
+
+                        // Cargar reseñas y actualizar el rating con el promedio real
+                        loadReviews(courseId);
+>>>>>>> Feature/JRivera/2026-03-18-Fix-N°6-Responsividad_de_calificacion
                     } else {
                         console.error("El curso no existe en la base de datos");
                     }
@@ -691,10 +697,15 @@
                             alert('¡Gracias por tu reseña!');
                             closeReviewModal.onclick();
                             btnAddReview.style.display = 'none'; // ocultar botón si ya opinó
+<<<<<<< HEAD
                             const reviewDoneMsg = document.getElementById('review-done-msg');
                             if (reviewDoneMsg) {
                                 reviewDoneMsg.style.display = 'block';
                             }
+=======
+                            // Recargar reseñas y actualizar rating en pantalla
+                            loadReviews(courseId);
+>>>>>>> Feature/JRivera/2026-03-18-Fix-N°6-Responsividad_de_calificacion
                         } else {
                             errorMsg.textContent = result.error || 'Ocurrió un error al enviar.';
                             errorMsg.style.display = 'block';
@@ -710,7 +721,83 @@
                 };
             }
         });
-    
+
+        // ===== FUNCIÓN: Cargar reseñas y actualizar rating en pantalla =====
+        async function loadReviews(courseId) {
+            try {
+                const res = await fetch(`../api/get_reviews.php?course_id=${courseId}`);
+                if (!res.ok) return;
+                const reviews = await res.json();
+
+                // Calcular promedio real desde las reseñas
+                let avgRating = 0;
+                if (reviews.length > 0) {
+                    const sum = reviews.reduce((acc, r) => acc + parseFloat(r.rating), 0);
+                    avgRating = Math.round((sum / reviews.length) * 10) / 10;
+                }
+
+                const ratingDisplay = avgRating > 0 ? avgRating.toFixed(1) : '--';
+
+                // Actualizar rating en la tarjeta lateral (stat-rating)
+                const statRating = document.getElementById('stat-rating');
+                if (statRating) statRating.textContent = (avgRating > 0 ? avgRating.toFixed(1) : '--') + '★';
+
+                // Actualizar rating en el hero (course-rating)
+                const courseRating = document.getElementById('course-rating');
+                if (courseRating) courseRating.textContent = 'Calificación: ' + ratingDisplay + ' ⭐';
+
+                // Renderizar sección de reseñas
+                let reviewsSection = document.getElementById('reviews-section');
+                if (!reviewsSection) {
+                    // Crear la sección si no existe, después del sidebar
+                    reviewsSection = document.createElement('div');
+                    reviewsSection.id = 'reviews-section';
+                    reviewsSection.className = 'section';
+                    // Insertar al final del main-content
+                    const mainContent = document.querySelector('.main-content');
+                    if (mainContent) mainContent.appendChild(reviewsSection);
+                }
+
+                if (reviews.length === 0) {
+                    reviewsSection.innerHTML = `
+                        <h2>
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            Reseñas
+                        </h2>
+                        <p style="color:#a0aec0; text-align:center; padding: 1rem 0;">Aún no hay reseñas para este curso. ¡Sé el primero en opinar!</p>
+                    `;
+                    return;
+                }
+
+                // Generar estrellas visuales
+                function starsHtml(rating) {
+                    let html = '';
+                    for (let i = 1; i <= 5; i++) {
+                        html += i <= rating ? '⭐' : '☆';
+                    }
+                    return html;
+                }
+
+                const reviewsHtml = reviews.map(r => `
+                    <div style="padding: 1rem 0; border-bottom: 1px solid #e2e8f0;">
+                        <div style="font-weight: 600; color: #1e3e5a; margin-bottom: 4px;">${r.user_name}</div>
+                        <div style="font-size: 1.1rem; margin-bottom: 6px;">${starsHtml(r.rating)}</div>
+                        <div style="color: #4a5568; font-size: 0.95rem;">${r.comment}</div>
+                    </div>
+                `).join('');
+
+                reviewsSection.innerHTML = `
+                    <h2>
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        Reseñas
+                        <span style="font-size:0.9rem; color:#718096; font-weight:400; margin-left:8px;">(${reviews.length} ${reviews.length === 1 ? 'reseña' : 'reseñas'} · Promedio: ${avgRating.toFixed(1)}★)</span>
+                    </h2>
+                    <div>${reviewsHtml}</div>
+                `;
+            } catch (e) {
+                console.error('Error cargando reseñas:', e);
+            }
+        }
 
     // Modal de invitación
     function openInviteModal() {

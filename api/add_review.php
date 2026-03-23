@@ -58,8 +58,21 @@ $stmt = $conn->prepare("INSERT INTO reviews (user_id, course_id, rating, comment
 $stmt->bind_param("iiis", $user_id, $course_id, $rating, $comment);
 
 if ($stmt->execute()) {
+    // Recalcular el promedio de rating y actualizar la tabla courses
+    $stmt_avg = $conn->prepare("SELECT ROUND(AVG(rating), 1) as avg_rating FROM reviews WHERE course_id = ?");
+    $stmt_avg->bind_param("i", $course_id);
+    $stmt_avg->execute();
+    $avg_result = $stmt_avg->get_result()->fetch_assoc();
+    $stmt_avg->close();
+
+    $new_rating = $avg_result['avg_rating'] ?? 0;
+    $stmt_upd = $conn->prepare("UPDATE courses SET rating = ? WHERE id = ?");
+    $stmt_upd->bind_param("di", $new_rating, $course_id);
+    $stmt_upd->execute();
+    $stmt_upd->close();
+
     http_response_code(201);
-    echo json_encode(['message' => 'Reseña enviada correctamente']);
+    echo json_encode(['message' => 'Reseña enviada correctamente', 'new_rating' => $new_rating]);
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Error al guardar la reseña: ' . $conn->error]);
