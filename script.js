@@ -126,8 +126,8 @@ async function handleLogin(event) {
             currentRole = result.role; // Store the user role from login response
             updateUserUI();
             
-            // Mostrar panel de creación solo si no es student
-            if (currentRole && currentRole !== 'student') {
+            // Mostrar panel de creación solo si es admin o instructor
+            if (currentRole && (currentRole === 'admin' || currentRole === 'instructor')) {
                 const coursePanelBtn = document.getElementById('course-panel-btn');
                 if (coursePanelBtn) coursePanelBtn.style.display = 'block';
             }
@@ -179,8 +179,8 @@ async function checkSessionStatus() {
                 currentRole = data.role;  // Almacenar el rol del usuario
                 updateUserUI();
 
-                // Mostrar panel de creación solo si no es student
-                if (data.role !== 'student') {
+                // Mostrar panel de creación solo si es admin o instructor
+                if (data.role === 'admin' || data.role === 'instructor') {
                     const coursePanelBtn = document.getElementById('course-panel-btn');
                     if (coursePanelBtn) coursePanelBtn.style.display = 'block';
                 }
@@ -232,8 +232,8 @@ function updateUserUI() {
         userSection.classList.remove('hidden');
         userName.textContent = 'Hola, ' + currentUser.name;
         
-        // Solo mostrar botón de panel si no es student
-        if (coursePanelBtn && currentRole && currentRole !== 'student') {
+        // Solo mostrar botón de panel si es admin o instructor
+        if (coursePanelBtn && currentRole && (currentRole === 'admin' || currentRole === 'instructor')) {
             coursePanelBtn.style.display = 'block';
         } else if (coursePanelBtn) {
             coursePanelBtn.style.display = 'none';
