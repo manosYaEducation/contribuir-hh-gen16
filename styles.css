@@ -681,7 +681,7 @@ header.scrolled {
 }
 
 .highlight-primary {
-    color: var(--color-primary);
+    color: var(--color-amber-200);
 }
 
 .highlight-secondary {
