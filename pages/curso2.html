@@ -514,8 +514,6 @@
 
                         // Cargar las lecciones/módulos del curso
                         loadCourseLessons(courseId);
-<<<<<<< HEAD
-<<<<<<< HEAD
 
                         // --- Control de acceso: recursos y reseña solo para inscritos ---
                         try {
@@ -546,16 +544,10 @@
                             const reviewCard = document.getElementById('btn-add-review');
                             if (reviewCard) reviewCard.closest('.card').style.display = 'none';
                         }
-=======
-                        
-                        // Verificar si el usuario ya tiene reseña en este curso
-                        checkUserReview(courseId);
->>>>>>> Feature/QArturo/2026-03-18/Fix26
-=======
 
-                        // Cargar reseñas y actualizar el rating con el promedio real
+                        // Verificar si el usuario ya tiene reseña en este curso y cargar reseñas
+                        checkUserReview(courseId);
                         loadReviews(courseId);
->>>>>>> Feature/JRivera/2026-03-18-Fix-N°6-Responsividad_de_calificacion
                     } else {
                         console.error("El curso no existe en la base de datos");
                     }
@@ -697,15 +689,12 @@
                             alert('¡Gracias por tu reseña!');
                             closeReviewModal.onclick();
                             btnAddReview.style.display = 'none'; // ocultar botón si ya opinó
-<<<<<<< HEAD
                             const reviewDoneMsg = document.getElementById('review-done-msg');
                             if (reviewDoneMsg) {
                                 reviewDoneMsg.style.display = 'block';
                             }
-=======
                             // Recargar reseñas y actualizar rating en pantalla
                             loadReviews(courseId);
->>>>>>> Feature/JRivera/2026-03-18-Fix-N°6-Responsividad_de_calificacion
                         } else {
                             errorMsg.textContent = result.error || 'Ocurrió un error al enviar.';
                             errorMsg.style.display = 'block';
