@@ -4,6 +4,8 @@ var currentUser = null;
 var currentRole = null;  // Variable para almacenar el rol
 var selectedCategory = "Todas";
 var coursesData = []; // Variable para almacenar los cursos
+var currentPage = 1; // Página actual para paginación
+var coursesPerPage = 6; // Cursos por página, ajustar según necesidad
 
 /* ===== INICIALIZACION ===== */
 document.addEventListener('DOMContentLoaded', async function() {
@@ -315,19 +317,23 @@ function renderCategories() {
 
 function filterByCategory(category, clickedButton) {
     selectedCategory = category;
+    currentPage = 1;
     document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
     clickedButton.classList.add('active');
     renderCourses();
 }
 
 function filterCourses() {
+    currentPage = 1;
     renderCourses();
 }
 
 function renderCourses() {
     const grid = document.getElementById('coursesGrid');
+    const pagination = document.getElementById('paginationControls');
     const searchValue = document.getElementById('searchCourses').value.toLowerCase();
     grid.innerHTML = '';
+    if (pagination) pagination.innerHTML = '';
 
     const filtered = coursesData.filter(course => {
         const matchSearch = course.title.toLowerCase().includes(searchValue) || course.instructor.toLowerCase().includes(searchValue);
@@ -341,7 +347,53 @@ function renderCourses() {
         grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;"><h3>No se encontraron cursos</h3></div>';
         return;
     }
-    filtered.forEach(course => grid.appendChild(createCourseCard(course)));
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / coursesPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const start = (currentPage - 1) * coursesPerPage;
+    const end = start + coursesPerPage;
+    const visibleCourses = filtered.slice(start, end);
+
+    visibleCourses.forEach(course => grid.appendChild(createCourseCard(course)));
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const pagination = document.getElementById('paginationControls');
+    if (!pagination) return;
+
+    pagination.innerHTML = '';
+    if (totalPages <= 1) return;
+
+    const createButton = (label, page, disabled = false, active = false) => {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.className = 'pagination-btn';
+        if (active) btn.classList.add('active');
+        if (disabled) {
+            btn.disabled = true;
+            btn.classList.add('disabled');
+        } else {
+            btn.addEventListener('click', () => {
+                currentPage = page;
+                renderCourses();
+                window.scrollTo({ top: document.getElementById('cursos').offsetTop - 100, behavior: 'smooth' });
+            });
+        }
+        return btn;
+    };
+
+    const prevBtn = createButton('← Anterior', Math.max(1, currentPage - 1), currentPage === 1);
+    pagination.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = createButton(i.toString(), i, false, i === currentPage);
+        pagination.appendChild(pageBtn);
+    }
+
+    const nextBtn = createButton('Siguiente →', Math.min(totalPages, currentPage + 1), currentPage === totalPages);
+    pagination.appendChild(nextBtn);
 }
 
 function createCourseCard(course) {
