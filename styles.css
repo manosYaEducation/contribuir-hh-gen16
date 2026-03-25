@@ -297,6 +297,32 @@ header.scrolled {
     padding-left: 1.5rem;
 }
 
+/* ===== NAVBAR MOBILE ===== */
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .logo {
+        margin-right: 1rem;
+    }
+
+    .nav-desktop {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+        margin-top: 0.4rem;
+    }
+
+    .nav-link {
+        font-size: 0.875rem;
+        padding: 0.15rem 0;
+    }
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     background: linear-gradient(160deg, #f0fdf4 0%, #fefce8 40%, #fff7ed 100%);
