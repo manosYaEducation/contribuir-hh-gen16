@@ -67,7 +67,7 @@ header.scrolled {
 }
 
 .logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.625rem;
     font-size: 1.375rem;
@@ -76,6 +76,11 @@ header.scrolled {
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.logo span {
+    white-space: nowrap;
 }
 
 .logo-icon { /* Icono de la Landing Page */
