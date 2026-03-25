@@ -664,7 +664,7 @@
                     alert('Para inscribirte en cursos gratuitos, primero debes iniciar sesión.');
                     btn.disabled = false;
                     btn.textContent = originalText;
-                    window.location.href = '../index.html'; // Mandar al login
+                    window.location.href = '../index.html?openLoginModal=1'; // Mandar al login y abrir modal
                 } else if (response.status === 409) {
                     alert('¡Ya estás inscrito en este curso!');
                     btn.disabled = false;
