@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
     if (registerForm) registerForm.addEventListener('submit', handleRegister);
+
+    // Detectar si viene desde curso.html sin autenticación
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('openLoginModal') === '1') {
+        openModal('loginModal');
+        // Limpiar el parámetro de la URL para que no se vuelva a abrir
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 });
 
 async function init() {
