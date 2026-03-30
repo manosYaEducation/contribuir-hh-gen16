@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Progreso por Módulo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .progress-bar { width: 100%; height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #28a745; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Prueba de Progreso por Módulo</h1>
+
+    <div class="test-section">
+        <h3>1. Verificar APIs</h3>
+        <button onclick="testAPIs()">Probar APIs</button>
+        <div id="api-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Simular Progreso</h3>
+        <p>Esta es una simulación. Para probar real:</p>
+        <ol>
+            <li>Ve a <a href="pages/mis_cursos.html" target="_blank">Mis Cursos</a></li>
+            <li>Haz click en "Continuar" de un curso</li>
+            <li>Marca/desmarca checkboxes de módulos</li>
+            <li>Regresa a "Mis Cursos" - debería actualizarse automáticamente</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Barra de Progreso de Ejemplo</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="example-progress" style="width: 0%"></div>
+        </div>
+        <p id="progress-text">0%</p>
+        <button onclick="simulateProgress()">Simular Progreso</button>
+    </div>
+
+    <script>
+        async function testAPIs() {
+            const results = document.getElementById('api-results');
+            results.innerHTML = '🔄 Probando...';
+
+            try {
+                // Test session check
+                const sessionRes = await fetch('api/check_session.php');
+                const sessionData = await sessionRes.json();
+
+                // Test enrollments (will fail if not logged in, but that's expected)
+                const enrollRes = await fetch('api/get_enrollments.php');
+                let enrollData;
+                if (enrollRes.ok) {
+                    enrollData = await enrollRes.json();
+                } else {
+                    enrollData = { error: 'No autenticado (esperado)' };
+                }
+
+                results.innerHTML = `
+                    <div class="success">
+                        <strong>✅ APIs funcionando:</strong><br>
+                        Session: ${JSON.stringify(sessionData)}<br>
+                        Enrollments: ${JSON.stringify(enrollData)}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Error en APIs:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function simulateProgress() {
+            const progress = Math.floor(Math.random() * 100);
+            document.getElementById('example-progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = progress + '%';
+        }
+    </script>
+</body>
+</html>

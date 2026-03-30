@@ -11,6 +11,7 @@
         <a href="../index.html" class="back-button">← Volver al inicio</a>
 
         <div class="header">
+            <div id="updateIndicator" class="update-indicator" style="display: none;">🔄 Actualizando...</div>
             <h1>📚 Mis Cursos</h1>
             <p>Gestiona tus inscripciones y continúa aprendiendo</p>
             <div class="tabs">
@@ -60,11 +61,29 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadEnrollments();
+            
+            // Recargar datos cuando la página vuelve a ser visible (usuario regresa desde otra página)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    console.log('🔄 Usuario regresó a mis_cursos, recargando datos...');
+                    loadEnrollments();
+                }
+            });
+            
+            // También recargar cuando la ventana obtiene foco
+            window.addEventListener('focus', function() {
+                console.log('🎯 Ventana de mis_cursos obtuvo foco, verificando actualización...');
+                loadEnrollments();
+            });
         });
 
         async function loadEnrollments() {
             let sessionResponse, enrollmentsResponse, coursesResponse;
             try {
+                // Mostrar indicador de actualización
+                const indicator = document.getElementById('updateIndicator');
+                if (indicator) indicator.style.display = 'block';
+                
                 sessionResponse = await fetch('../api/check_session.php', { credentials: 'same-origin' });
                 if (!sessionResponse.ok) throw new Error('No autenticado');
                 
@@ -96,9 +115,18 @@
                 console.log('✅ Total de todos los cursos:', allCourses.length);
                 console.log('👤 ID del usuario logeado:', currentUserId);
                 console.log('📋 Todos los cursos:', allCourses);
-                filterCourses('todos');
+                
+                // Ocultar indicador de actualización
+                if (indicator) indicator.style.display = 'none';
+                
+                // Aplicar el filtro actual después de recargar
+                filterCourses(currentFilter);
             } catch (error) {
                 console.error('Error:', error);
+                // Ocultar indicador en caso de error
+                const indicator = document.getElementById('updateIndicator');
+                if (indicator) indicator.style.display = 'none';
+                
                 document.getElementById('coursesContainer').innerHTML = '';
                 document.getElementById('emptyState').innerHTML = `
                     <div class="empty-state-icon">ERROR</div>

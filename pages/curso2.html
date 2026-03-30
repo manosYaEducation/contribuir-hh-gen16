@@ -151,7 +151,13 @@
                     </a>
                 </div>
             </div>
-
+            <div class="card">
+                <h3 style="color: #1e3e5a; margin-bottom: 8px;">Progreso</h3>
+                <div style="background: #e2e8f0; border-radius: 0.5rem; height: 18px; overflow: hidden;">
+                    <div id="course-progress-bar" style="width: 0%; height: 100%; background: #48bb78; transition: width 0.3s;"></div>
+                </div>
+                <p id="course-progress-label" style="margin: 0.5rem 0 0; font-weight: bold;">0%</p>
+            </div>
                 <div class="card">
                     <h3 style="color: #1e3e5a; margin-bottom: 15px;">Información del Curso</h3>
                     <div class="stats">
@@ -361,6 +367,8 @@
                             moduleDiv.className = 'module';
                             moduleDiv.onclick = function () { toggleModule(this); };
 
+                            const checkboxId = `lesson-checkbox-${lesson.id}`;
+
                             let extraContent = '';
                             if (lesson.content || lesson.video_url) {
                                 const embedUrl = getYoutubeEmbedUrl(lesson.video_url);
@@ -376,8 +384,11 @@
                             }
 
                             moduleDiv.innerHTML = `
-                            <div class="module-header">
-                                <span class="module-title">${lesson.title}</span>
+                            <div class="module-header" style="display:flex; align-items:center; justify-content:space-between; gap: 0.75rem;">
+                                <label for="${checkboxId}" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; flex:1;">
+                                  <input type="checkbox" id="${checkboxId}" data-lesson-id="${lesson.id}" onchange="handleLessonCompletionChange(this)" style="width:16px; height:16px;" />
+                                  <span class="module-title">${lesson.title}</span>
+                                </label>
                             </div>
                             <div class="module-details" style="display: none; padding: 1rem; border-top: 1px solid #e2e8f0;">
                                 <p>${lesson.description}</p>
@@ -387,6 +398,13 @@
 
                             container.appendChild(moduleDiv);
                         });
+
+                        // Tras renderizar módulos, cargar estados y progreso
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const courseId = urlParams.get('id');
+                        if (courseId) {
+                            loadLessonProgress(courseId);
+                        }
                     }
                 } else {
                     console.error("Error al cargar las lecciones");
@@ -395,6 +413,90 @@
             } catch (error) {
                 console.error("Error cargando lecciones:", error);
                 document.getElementById('modules-container').innerHTML = '<p>Error al cargar los módulos</p>';
+            }
+        }
+
+        function setCourseProgress(percent) {
+            const bar = document.getElementById('course-progress-bar');
+            const label = document.getElementById('course-progress-label');
+            if (bar) bar.style.width = Math.max(0, Math.min(100, percent)) + '%';
+            if (label) label.textContent = Math.max(0, Math.min(100, percent)) + '%';
+        }
+
+        async function handleLessonCompletionChange(checkbox) {
+            const lessonId = parseInt(checkbox.dataset.lessonId);
+            const completed = checkbox.checked ? 1 : 0;
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('id');
+
+            if (!courseId || !lessonId) {
+                alert('Falta ID de curso o módulo.');
+                checkbox.checked = !checkbox.checked;
+                return;
+            }
+
+            try {
+                const response = await fetch('../api/update_lesson_progress.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ course_id: courseId, lesson_id: lessonId, completed: completed })
+                });
+
+                const responseText = await response.text();
+                console.log('update_lesson_progress response:', response.status, responseText);
+
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    throw new Error('Respuesta inválida del servidor: ' + responseText);
+                }
+
+                if (!response.ok) {
+                    const serverError = data && data.error ? data.error : response.statusText;
+                    throw new Error(serverError + (data && data.detail ? ' (' + data.detail + ')' : ''));
+                }
+
+                if (!data.success) {
+                    throw new Error(data.error + (data.detail ? ' (' + data.detail + ')' : ''));
+                }
+
+                setCourseProgress(data.course_progress);
+            } catch (error) {
+                console.error('Error al actualizar progreso por módulo', error);
+                checkbox.checked = !checkbox.checked;
+                alert('No se pudo actualizar el progreso: ' + error.message);
+            }
+        }
+
+        async function loadLessonProgress(courseId) {
+            try {
+                const response = await fetch(`../api/get_lesson_progress.php?course_id=${courseId}`, { credentials: 'same-origin' });
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.warn('No se pudo obtener el progreso del curso', response.status, text);
+                    return;
+                }
+
+                const data = await response.json();
+                if (!data.success) {
+                    console.warn('Progreso no disponible:', data.error);
+                    return;
+                }
+
+                setCourseProgress(data.course_progress);
+
+                if (Array.isArray(data.lessons)) {
+                    data.lessons.forEach(item => {
+                        const checkbox = document.querySelector(`#lesson-checkbox-${item.modulo_id}`);
+                        if (checkbox) {
+                            checkbox.checked = item.is_completed === 1;
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error cargando progreso de lecciones:', error);
             }
         }
 
