@@ -31,6 +31,10 @@
                     <button class="btn btn-primary" id="registerBtn" onclick="openModal('registerModal')">
                         Unirse
                     </button>
+                    <!-- Botón exclusivo para admin -->
+                    <button class="btn" id="adminPanelBtn" onclick="window.location.href='admin_panel.php'" style="display:none; margin-right: 0.5rem; background-color: #ffc107; color: #000;">
+                        ⚙️ Panel de Administración
+                    </button>
                     <div id="userSection" class="user-section hidden">
                         <div class="user-dropdown">
                             <button class="user-dropdown-btn" id="userDropdownBtn" onclick="toggleUserDropdown()">

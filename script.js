@@ -225,6 +225,7 @@ function updateUserUI() {
     const userSection = document.getElementById('userSection');
     const userName = document.getElementById('userName');
     const coursePanelBtn = document.getElementById('course-panel-btn');
+    const adminPanelBtn = document.getElementById('adminPanelBtn');
 
     if (isLoggedIn && currentUser) {
         loginBtn.style.display = 'none';
@@ -238,6 +239,13 @@ function updateUserUI() {
         } else if (coursePanelBtn) {
             coursePanelBtn.style.display = 'none';
         }
+
+        // Solo mostrar Admin Panel si es admin
+        if (adminPanelBtn && currentRole === 'admin') {
+            adminPanelBtn.style.display = 'inline-block';
+        } else if (adminPanelBtn) {
+            adminPanelBtn.style.display = 'none';
+        }
     } else {
         loginBtn.style.display = 'block';
         registerBtn.style.display = 'block';
@@ -246,6 +254,9 @@ function updateUserUI() {
         // Asegurar que el botón de panel esté oculto cuando no hay sesión
         if (coursePanelBtn) {
             coursePanelBtn.style.display = 'none';
+        }
+        if (adminPanelBtn) {
+            adminPanelBtn.style.display = 'none';
         }
     }
 }
