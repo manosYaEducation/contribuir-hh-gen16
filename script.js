@@ -468,3 +468,7 @@ function openCoursePanel() {
     window.location.href = 'ModeladoHTML/create_edit_course_config.html';
 }
 
+function openAdminPanel() {
+    closeUserDropdown();
+    window.location.href = 'admin_panel.php';
+}
