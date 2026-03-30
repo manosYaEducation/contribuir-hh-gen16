@@ -32,10 +32,11 @@ if (!in_array($new_role, $valid_roles)) {
 
 // Opcional: Evitar que un admin se quite el rol a sí mismo si es el único? No lo haremos tan complejo, 
 // pero evitemos actualizar si el userId no existe.
-$stmt = $conn->prepare("UPDATE users SET role = ? WHERE id = ?");
+// Actualizar role_id buscando el nombre del rol
+$stmt = $conn->prepare("UPDATE users SET role_id = (SELECT id FROM roles WHERE name = ?) WHERE id = ?");
 if (!$stmt) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Error interno al preparar la consulta."]);
+    echo json_encode(["status" => "error", "message" => "Error interno al preparar la consulta: " . $conn->error]);
     exit();
 }
 

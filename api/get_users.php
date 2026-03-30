@@ -9,7 +9,10 @@ requireRole(['admin']);
 
 $users = [];
 
-$sql = "SELECT id, name, email, role FROM users ORDER BY id ASC";
+$sql = "SELECT u.id, u.name, u.email, r.name AS role 
+        FROM users u 
+        LEFT JOIN roles r ON u.role_id = r.id 
+        ORDER BY u.id ASC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
