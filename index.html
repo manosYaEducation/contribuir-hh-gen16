@@ -39,10 +39,7 @@
                                 <span class="dropdown-arrow">▼</span>
                             </button>
                             <div id="userDropdownMenu" class="user-dropdown-menu">
-                                <!--
-                                <a class="dropdown-option" onclick="openProfile()">👤 Perfil</a>
-                                <a class="dropdown-option" onclick="openAdminPanel()">⚙️ Panel de administración</a>
-                                -->
+                                <a class="dropdown-option" id="adminPanelBtn" onclick="openAdminPanel()" style="display:none;">⚙️ Panel de Administración</a>
                                 <a class="dropdown-option" id="course-panel-btn" onclick="openCoursePanel()" style="display:none;">Panel creación curso</a>
                                 <a class="dropdown-option logout-option" onclick="logout()">Cerrar sesión</a>
                             </div>
